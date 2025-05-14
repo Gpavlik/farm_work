@@ -1,0 +1,24 @@
+.header {
+  border-bottom: #ececec 1px solid;
+  position: relative;
+
+  @media screen and (max-width: 767px) {
+    padding-top: 22px;
+    padding-bottom: 22px;
+    height: 60px;
+  }
+  @media screen and (min-width: 768px) {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+  @media screen and (min-width: 1200px) {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+.header__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -1,0 +1,42 @@
+.footer {
+  display: block;
+  background: var(--fuller-color);
+  font-weight: 400;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.find-us {
+  display: flex;
+  align-items: baseline;
+  @media screen and (max-width: 1199px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 1200px) {
+    flex-wrap: nowrap;
+  }
+}
+
+.find {
+  @media screen and (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  @media screen and (min-width: 768px) {
+    width: 231px;
+    margin-right: 70px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 1200px) {
+    width: 231px;
+    margin-right: 70px;
+  }
+}

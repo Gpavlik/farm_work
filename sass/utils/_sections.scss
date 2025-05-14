@@ -1,0 +1,28 @@
+.clients,
+.properties,
+.team,
+.works,
+.hero {
+  @media screen and (max-width: 1199px) {
+    margin: 0px auto;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    margin: 0px auto;
+    padding-top: 94px;
+    padding-bottom: 94px;
+  }
+}
+.about-us {
+  @media screen and (max-width: 1199px) {
+    display: none;
+  }
+
+  @media screen and (min-width: 1200px) {
+    margin: 0px auto;
+    padding-top: 94px;
+    padding-bottom: 94px;
+  }
+}

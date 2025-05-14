@@ -1,0 +1,31 @@
+@import "./utils/vars";
+@import "./utils/visually-hidden";
+@import "./utils/sections";
+
+@import "./base/common";
+@import "./base/reset";
+
+@import "./components/button";
+@import "./components/container";
+@import "./components/main-title";
+@import "./components/overay";
+@import "./components/socials";
+@import "./components/logo";
+@import "./components/contacts";
+@import "./components/nav";
+@import "./components/spam";
+@import "./components/sub";
+@import "./components/ceck";
+@import "./components/form";
+@import "./components/mobile-menu";
+
+@import "./layouts/about-us";
+@import "./layouts/clients";
+@import "./layouts/footer";
+@import "./layouts/header";
+@import "./layouts/hero";
+@import "./layouts/properties";
+@import "./layouts/team";
+@import "./layouts/works";
+@import "./layouts/backdrop";
+@import "./layouts/modal";

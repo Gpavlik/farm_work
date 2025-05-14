@@ -1,0 +1,52 @@
+.spam {
+  margin-left: auto;
+  @media screen and (max-width: 1199px) {
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  &__form {
+    display: flex;
+
+    @media screen and (max-width: 1199px) {
+      flex-direction: column;
+      align-items: center;
+      row-gap: 20px;
+      margin-bottom: 60px;
+    }
+  }
+  &__icon {
+    fill: #ffffff;
+  }
+
+  &__input {
+    width: 450px;
+    height: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+    border-radius: 4px;
+    margin-right: 12px;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1, 25;
+    letter-spacing: 0.03em;
+    background-color: #2f303a;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 15px;
+
+    @media screen and (max-width: 480px) {
+      max-width: 450px;
+    }
+    @media screen and (min-width: 1200px) {
+      width: 358px;
+    }
+
+    &:hover,
+    &:focus {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+    }
+  }
+}

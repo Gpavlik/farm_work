@@ -1,0 +1,23 @@
+.social__title,
+.spam__title {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 20px;
+  @media screen and (max-width: 1199px) {
+    text-align: center;
+  }
+}
+.spam__title {
+  @media screen and (max-width: 1199px) {
+    margin-top: 60px;
+  }
+}
+.social__title {
+  @media screen and (max-width: 767px) {
+    margin-top: 60px;
+  }
+}

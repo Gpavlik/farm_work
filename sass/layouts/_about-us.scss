@@ -1,0 +1,35 @@
+.card-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card {
+  gap: 30px;
+  position: relative;
+  width: 370px;
+  height: 294px;
+}
+
+.work-image-description {
+  position: absolute;
+  display: flex;
+  bottom: 0px;
+  width: 370px;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(47, 48, 58, 0.8);
+}
+
+.work-image-description-text {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
