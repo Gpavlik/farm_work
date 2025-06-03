@@ -1447,7 +1447,7 @@ img {
   margin-bottom: 30px;
 }
 .list > .item:nth-child(1)::before {
-  background-image: url(../images/ico/antenna.svg);
+  background-image: url(../images/hand3.svg);
 }
 .list > .item:nth-child(2)::before {
   background-image: url(../images/ico/clock\ 1.svg);
