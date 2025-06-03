@@ -35,11 +35,14 @@
           </a>
         </li>
         <li class="contacts__contact1">
-          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04, +38 (067) 500-82-74">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
             <svg class="contacts__contact-icon" width="20px" height="20px">
               <use href="./images/sprite.svg#icon-phone"></use>
-            </svg>+38 (044) 537-08-04, +38 (067) 500-82-74</a>
-          </a>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone " href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
         </li>
       </ul>
     </div>
@@ -88,12 +91,13 @@
   <main>
     <section class="hero">
       <div class="container">
-        <h1 class="hero-title">Ефективні рішення для вашого бізнесу</h1>
-        <button class="hero__btn hero__btn--select" type="button" data-modal-open>Заказать услугу</button>
+        <h1 class="hero-title">Навчаючись розвиваємось і стаємо кращими!</h1>
+        <!--<button class="hero__btn hero__btn--select" type="button" data-modal-open>Розпочати</button>-->
     </section>
     <section class="properties">
-      <div class="container">
-        <h2 class="propertie">Возможности</h2>
+         <div class="container">
+          <h1 class="title" style="font-size: 36px; margin-bottom: 50px; text-align: center">Наші цінності</h1>
+              <h2 class="propertie">Можливості</h2>
         <ul class="list">
           <li class="item">
             <h3 class="title">УВАГА ДО ДЕТАЛЕЙ</h3>
@@ -122,7 +126,7 @@
         </ul>
       </div>
     </section>
-    <section class="about-us">
+    <!--<section class="about-us">
       <div class="container">
         <h2 class="title">Чим ми займаємося</h2>
         <ul class="card-list">
@@ -173,10 +177,10 @@
           </li>
         </ul>
       </div>
-    </section>
+    </section>-->     
     <section class="team">
       <div class="container">
-        <h2 class="title">Наша команда</h2>
+        <h2 class="title">Нещодавно до нас приєднались</h2>
         <ul class="team-cards">
           <li class="card-description">
             <picture>
@@ -414,7 +418,7 @@
               </div>
             </div>
     </section>
-    <section class="clients">
+    <!--<section class="clients">
       <div class="container">
         <h2 class="title">Постійні клієнти</h1>
           <ul class="client-list">
@@ -462,7 +466,7 @@
             </li>
           </ul>
       </div>
-    </section>
+    </section>-->
   </main>
   <footer class="footer">
     <div class="container">
@@ -478,7 +482,8 @@
                 href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
             </li>
             <li class="contacts__contact contacts__contact--footer">
-              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04, +38 (067) 500-82-74">+38 (044) 537-08-04, +38 (067) 500-82-74</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
             </li>
           </ul>
         </div>
@@ -537,7 +542,7 @@
         <svg class="close__icon" width="11px" height="11px">
           <use href="./images/sprite.svg#icon-X"></use>
         </svg></a></button>
-      <p class="modal__title">Залиште свої дані, ми вам передзвонимо</p>
+      <p class="modal__title">Залиште свої дані для реєстрації</p>
       <form class="form" name="signup_form" autocomplete="on" novalidate>
         <label class="form__label">
           <p class="form__name">Ім'я</p>
@@ -547,21 +552,21 @@
           </svg></a>
         </label>
         <label class="form__label">
-          <p class="form__name">Телефон</p>
-          <input class="form__input" type="tel" name="phone" />
+          <p class="form__name">Місто</p>
+          <input class="form__input" type="text" name="city" />
           <svg class="form__icon" width="13px" height="13px">
-            <use href="./images/sprite.svg#icon-tube"></use>
+            <use href="./images/ico/city (2).svg"></use>
           </svg></a>
         </label>
         <label class="form__label">
-          <p class="form__name">Пошта</p>
+          <p class="form__name">e-mail</p>
           <input class="form__input" type="email" name="email" />
           <svg class="form__icon" width="15px" height="12px">
             <use href="./images/sprite.svg#icon-envy"></use>
           </svg></a>
         </label>
         <label class="form__label">
-          <p class="form__name">Коментар</p>
+          <p class="form__name">Залиште Ваші побажання</p>
           <textarea class="form__input" name="feedback" row="6" placeholder="Введіть текст"></textarea>
         </label>
         <label class="check">
@@ -572,11 +577,9 @@
               </use>
             </svg>
           </span>
-          <span class="check__name">Погоджуюся з розсилкою та приймаю <a class="check__link" href="https://pharmasco.com/">Умови
-              договору</a></span>
+          <span class="check__name">Підтвердіть, що Ви не робот</span>
         </label>
-        <button class="submit-btn" type="submit">Відправити</button>
-      </form>
+        <button class="submit-btn"><a class="spam__title" href="./portfolio.html" >Навчатися!</a></button>
     </div>
     <script src="./js/modal.js"></script>
     <script src="./js/menu.js"></script>
