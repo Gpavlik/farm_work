@@ -1,7 +1,7 @@
 :root {
   --main-text: "roboto";
   --logo-text: "Raleway";
-  --brand-color: #2196f3;
+  --brand-color: #069606;
   --main-text-color: #757575;
   --title-color: #212121;
   --fuller-color: #2f303a;
@@ -172,7 +172,7 @@ img {
   color: #ffffff;
   width: 200px;
   height: 50px;
-  background: #2196f3;
+  background: #069606;
   -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
@@ -319,7 +319,7 @@ img {
           align-items: center;
   width: 370px;
   height: 294px;
-  background-color: rgba(33, 150, 243, 0.9);
+  background-color: #069606;
   position: absolute;
   top: 0;
   left: 0;
@@ -606,7 +606,7 @@ img {
   content: "";
   height: 4px;
   width: 100%;
-  background: #2196f3;
+  background: #069606;
   border-radius: 2px;
   position: absolute;
   top: 53px;
@@ -615,7 +615,7 @@ img {
   transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .nav__link--active {
-  color: #2196f3;
+  color: #069606;
   position: relative;
 }
 .nav__link--active::after {
@@ -625,7 +625,7 @@ img {
   content: "";
   height: 4px;
   width: 100%;
-  background: #2196f3;
+  background: #069606;
   border-radius: 2px;
   position: absolute;
   top: 53px;
@@ -820,7 +820,7 @@ img {
   transition: border 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .form__input:hover, .form__input:focus {
-  border: 1px solid #2196f3;
+  border: 1px solid #069606;
   cursor: pointer;
 }
 .form__input:last-child {
@@ -910,7 +910,7 @@ img {
   position: relative;
 }
 .form__label:hover .form__icon, .form__label:focus .form__icon {
-  fill: #2196f3;
+  fill: #069606;
 }
 
 .mobile-menu-btn {
@@ -962,7 +962,7 @@ img {
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .mobile-menu-btn.is-open .mobile-menu-close:hover {
-  fill: #2196f3;
+  fill: #069606;
 }
 
 /**

@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio</title>
+  <title>Курси</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
@@ -13,32 +13,32 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.css"
     integrity="sha512-Y0MM+V6ymRKN2zStTqzQ227DWhhp4Mzdo6gnlRnuaNCbc+YN/ZH0sBCLTM4M0oSy9c9VKiCvd4Jk44aCLrNS5Q=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="./css/main.min.css" />
+  <link rel="stylesheet" href="./css/main.css" />
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
   <header class="header">
     <div class="container header__container">
-      <a class="logo" href="./index.html">Web<span class="logo logo--black">Studio</span></a>
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
       <ul class="nav">
-        <li class="nav__referent"><a class="nav__link" href="./index.html">Студія</a></li>
-        <li class="nav__referent"><a class="nav__link nav__link--active" href="./portfolio.html">Портфоліо</a></li>
-        <li class="nav__referent"><a class="nav__link" href="/contact">Контакти</a></li>
+        <li class="nav__referent"><a class="nav__link" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts">Контакти</a></li>
       </ul>
       <ul class="contacts">
         <li class="contacts__contact">
-          <a class="contacts__contact-mail " href="mailto:info@devstudio.com">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
             <svg class="contacts__contact-icon" width="20px" height="20px">
               <use href="./images/sprite.svg#icon-envelope"></use>
-            </svg>info@devstudio.com</a>
+            </svg>contact@pharmasco.com</a>
           </a>
         </li>
         <li class="contacts__contact">
-          <a class="contacts__contact-phone " href="tel:+380961111111">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04, +38 (067) 500-82-74">
             <svg class="contacts__contact-icon" width="20px" height="20px">
               <use href="./images/sprite.svg#icon-phone"></use>
-            </svg>+38 096 111 11 11</a>
+            </svg>+38 (044) 537-08-04, +38 (067) 500-82-74</a>
           </a>
         </li>
       </ul>
@@ -52,10 +52,10 @@
     <div class="mobile-menu" data-menu>
       <ul class="mobile-menu-nav">
         <li class="mobile-menu-nav-item">
-          <a class="link " href="./index.html">Студія </a>
+          <a class="link " href="./index.html">Головна</a>
         </li>
         <li class="mobile-menu-nav-item">
-          <a class="link current" href="./portfolio.html">Портфоліо</a>
+          <a class="link current" href="./portfolio.html">Курси</a>
         </li>
         <li class="mobile-menu-nav-item">
           <a class="link" href="/contact">Контакти</a>
@@ -63,10 +63,10 @@
       </ul>
       <ul class="mobile-menu-contacts">
         <li class="mobile-menu-contacts-item">
-          <a class="link accent" href="tel:+380961111111"> +38 096 111 11 11 </a>
+          <a class="link accent" href="tel:+tel:+38 (044) 537-08-04, +38 (067) 500-82-74"> +38 (044) 537-08-04, +38 (067) 500-82-74 </a>
         </li>
         <li class="mobile-menu-contacts-item">
-          <a class="link" href="mailto:info@devstudio.com">info@devstudio.com</a>
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
         </li>
       </ul>
       <ul class="mobile-menu-socials">
@@ -90,11 +90,11 @@
       <div class="container">
         <h2 class="works__title">работы</h2>
         <ul class="button">
-          <li class="button-section"><button class="btn btn--select" type="button">Всі</button></li>
-          <li class="button-section"><button class="btn" type="button">Веб-сайти</button></li>
-          <li class="button-section"><button class="btn" type="button">Додатки</button></li>
-          <li class="button-section"><button class="btn" type="button">Дизайн</button></li>
+          <li class="button-section"><button class="btn btn--select" type="button">Продукти</button></li>
+          <li class="button-section"><button class="btn" type="button">Тренінги</button></li>
+          <li class="button-section"><button class="btn" type="button">Стандарти</button></li>
           <li class="button-section"><button class="btn" type="button">Маркетинг</button></li>
+          <li class="button-section"><button class="btn" type="button">Новини</button></li>
         </ul>
         <ul class="works-cards">
           <li class="description">
@@ -431,18 +431,17 @@
     <div class="container">
       <div class="find-us">
         <div class="find">
-          <a class="logo footer__logo" href="/">Web<span class="logo logo--footer">Studio</span></a>
+          <a class="logo footer__logo" href="/"><img src="./images/logo.svg" alt="logo" width="160"></a>
           <ul class="contacts contacts--footer">
             <li class="contacts__contact contacts__contact--footer">
-              <address class="contacts__post">м. Київ, пр-т Лесі Українки, 26</address>
+              <address class="contacts__post">Україна, Київська обл., м. Вишгород, вул. Шолуденка, 15г</address>
             </li>
             <li class="contacts__contact contacts__contact--footer">
               <a class="contacts__contact-mail contacts__contact-mail--footer"
-                href="mailto:info@devstudio.com">info@devstudio.com</a>
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
             </li>
             <li class="contacts__contact contacts__contact--footer">
-              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+380961111111">+38 096 111 11
-                11</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04, +38 (067) 500-82-74">+38 (044) 537-08-04, +38 (067) 500-82-74</a>
             </li>
           </ul>
         </div>
