@@ -1457,7 +1457,8 @@ border: 1px solid rgba(33, 33, 33, 0.2);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 70px;
-  border-radius: 10px;
+  border: #c7c5c5 1px solid;
+  border-radius: 20px;
   margin-bottom: 30px;
 }
 .list > .item:nth-child(1)::before {
