@@ -107,7 +107,7 @@ img {
         flex-wrap: wrap;
     -webkit-box-pack: start;
         -ms-flex-pack: start;
-            justify-content: flex-start;
+            justify-content: center;
   }
 }
 @media screen and (min-width: 768px) {
@@ -126,10 +126,20 @@ img {
             justify-content: center;
   }
 }
-
+.atext {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: var(--main-text-color);
+}
 .btn {
   background-color: #f5f4fa;
-  border-radius: 4px;
+  border-radius: 20px;
   font-size: 16px;
   line-height: 1.62;
   text-align: center;
@@ -139,14 +149,18 @@ img {
   cursor: pointer;
   font-weight: 500;
   height: 38px;
-  padding: 6px 22px;
+  padding: 0px 22px;
   -webkit-transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1), background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), -webkit-box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
   transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1), background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), -webkit-box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
   transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1), background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
   transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1), background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1), -webkit-box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+border: 1px solid rgba(33, 33, 33, 0.2);
+  -webkit-box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08), 0px 2px 2px rgba(0, 0, 0, 0.12);
+          box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08), 0px 2px 2px rgba(0, 0, 0, 0.12);
 }
 .btn--select, .btn:hover, .btn:focus {
   background: var(--brand-color);
+  transition: background 0.5s ease-in-out;
   color: #ffffff;
   -webkit-box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08), 0px 2px 2px rgba(0, 0, 0, 0.12);
           box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08), 0px 2px 2px rgba(0, 0, 0, 0.12);
@@ -1625,7 +1639,7 @@ img {
   margin-bottom: 30px;
   width: 370px;
   background: #ffffff;
-  border: 1px solid #eeeeee;
+  border: 1px solid #069606;
   border-radius: 10px;
 }
 @media screen and (max-width: 767px) {
