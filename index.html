@@ -2,6 +2,7 @@
 <html lang="ua">
 
 <head>
+  <script src="script.js"></script>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -96,7 +97,7 @@
     <section class="hero">
       <div class="container">
         <h1 class="hero-title">Навчаючись розвиваємось і стаємо кращими!</h1>
-        <!--<button class="hero__btn hero__btn--select" type="button" data-modal-open>Розпочати</button>-->
+        <button class="hero__btn hero__btn--select" type="button" data-modal-open>Розпочати</button>
     </section>
     <section class="properties">
          <div class="container">
@@ -538,33 +539,33 @@
         <svg class="close__icon" width="11px" height="11px">
           <use href="./images/sprite.svg#icon-X"></use>
         </svg></a></button>
-      <p class="modal__title">Залиште свої дані для реєстрації</p>
-      <form class="form" name="signup_form" autocomplete="on" novalidate>
+      <p class="modal__title">Залиште свої дані для доступу до матеріалів сайту</p>
+      <form id="loginForm" class="form" name="signup_form" autocomplete="on" novalidate>
         <label class="form__label">
           <p class="form__name">Ім'я</p>
-          <input class="form__input" type="text" name="name" autofocus />
+          <input class="form__input" type="text" name="name" autofocus placeholder="Введіть ваше ім'я та прізвище" required/>
           <svg class="form__icon" width="12px" height="12px">
             <use href="./images/sprite.svg#icon-man"></use>
           </svg></a>
         </label>
         <label class="form__label">
           <p class="form__name">Місто</p>
-          <input class="form__input" type="text" name="city" />
+          <input class="form__input" type="text" name="city" placeholder="Введіть ваше місто" required/>
           <svg class="form__icon" width="13px" height="13px">
             <use href="./images/ico/city (2).svg"></use>
           </svg></a>
         </label>
         <label class="form__label">
           <p class="form__name">e-mail</p>
-          <input class="form__input" type="email" name="email" />
+          <input class="form__input" type="email" id="emailInput" name="email"  placeholder="Введіть ваш корпоративний email" required>
           <svg class="form__icon" width="15px" height="12px">
             <use href="./images/sprite.svg#icon-envy"></use>
           </svg></a>
         </label>
-        <label class="form__label">
+        <!--<label class="form__label">
           <p class="form__name">Залиште Ваші побажання</p>
           <textarea class="form__input" name="feedback" row="6" placeholder="Введіть текст"></textarea>
-        </label>
+        </label>-->
         <label class="check">
           <input class="check__checkbox" visualy hidden type="checkbox" name="policy" value="agree" />
           <span class="custom-checkbox">
@@ -575,10 +576,11 @@
           </span>
           <span class="check__name">Підтвердіть, що Ви не робот</span>
         </label>
-        <button class="submit-btn"><a class="spam__title" href="./portfolio.html" >Навчатися!</a></button>
-    </div>
+        <button type="submit" class="submit-btn">Навчатися!</button>
+      </form>
+      </div>
     <script src="./js/modal.js"></script>
     <script src="./js/menu.js"></script>
+    <script src="script.js"></script>
 </body>
-
 </html>
