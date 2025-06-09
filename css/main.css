@@ -6,7 +6,40 @@
   --title-color: #212121;
   --fuller-color: #2f303a;
 }
+.button-section {
+            position: relative;
+            display: inline-block;
+              }
 
+.menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 150px;
+        }
+
+        .menu a {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            
+        }
+
+        .menu a:hover {
+            color: #069606;
+            border: 1px solid #069606;
+            border-radius: 20px;
+            transition: opacity 1.3s ease, visibility 1.3s ease;
+        }
+
+        .button-section:hover .menu {
+            display: block;
+            transition: opacity 1.3s ease, visibility 1.3s ease;
+        }
 .works__title {
   position: absolute;
   white-space: nowrap;
@@ -1130,7 +1163,7 @@ border: 1px solid rgba(33, 33, 33, 0.2);
   gap: 30px;
   position: relative;
   width: 370px;
-  height: 294px;
+  height: 294px;  
 }
 
 .work-image-description {
