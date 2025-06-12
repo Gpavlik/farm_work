@@ -28,7 +28,9 @@
 </script>
 <body>
   <header class="header">
+    
     <div class="container header__container">
+      
       <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
       <!--<ul class="nav">
         <li class="nav__referent"><a class="nav__link nav__link--active" href="./index.html">Головна</a></li>
@@ -54,6 +56,7 @@
             </svg>+38 (067) 500-82-74</a>
         </li>
       </ul>
+      <button style="margin-top: 0.5%; margin-right: 10%; font-size: smaller;" class="btn" onclick="toggleDarkMode()">Tема</button>
     </div>
     <button class="mobile-menu-btn" type="button" data-menu-button>
       <svg class="mobile-menu-icon" width="24" height="16">
@@ -98,9 +101,11 @@
         <li class="mobile-menu-socials-item">
           <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
         </li>
+        
       </ul>
+      
     </div>
-  </header>
+    </header>
   <main>
     <section class="hero">
       <div class="container">
@@ -589,5 +594,22 @@
     <script src="./js/modal.js"></script>
     <script src="./js/menu.js"></script>
     <script src="script.js"></script>
+    <script>
+  // Зчитуємо тему з localStorage
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    // Записуємо вибір
+    if (document.body.classList.contains('dark-mode')) {
+      localStorage.setItem('theme', 'dark');
+    } else {
+      localStorage.setItem('theme', 'light');
+    }
+  }
+</script>
+<script src="theme-toggle.js"></script>
 </body>
 </html>
