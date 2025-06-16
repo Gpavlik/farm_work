@@ -120,13 +120,14 @@ background-color: white;
   transition: all 1s ease;
 }
 body.dark-mode {
-  background-color: #2c2c2c;
+  background-color: #000000;
   color: #e0e0e0;
 }
 body.dark-mode .team {
   background-color: #707070;
   color: #e0e0e0;
 }
+
 
 ul {
   -webkit-padding-start: 0px;

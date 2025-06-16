@@ -143,7 +143,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work">Basic</h3>
+              <h3 class="text__work">Visit structure</h3>
               <p class="text__sub">Базовий тренінг ТПРК</p>
             </div>
           </li>
@@ -179,7 +179,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work">Medium</h3>
+              <h3 class="text__work">Decision-maker</h3>
               <p class="text__sub">Тренінг по роботі з ЛПР</p>
             </div>
           </li>
@@ -251,7 +251,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work">Mailing</h3>
+              <h3 class="text__work">business emailing</h3>
               <p class="text__sub">Тренінг з ділового листування</p>
             </div>
           </li>
@@ -287,7 +287,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work">Objection</h3>
+              <h3 class="text__work">Handling objections</h3>
               <p class="text__sub">Робота з запереченнями</p>
             </div>
           </li>
@@ -323,7 +323,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work"><span lang="en">Competitor</span></h3>
+              <h3 class="text__work"><span lang="en">Dealing with competitor</span></h3>
               <p class="text__sub">Робота з конкурентами</p>
             </div>
           </li>
@@ -359,7 +359,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work">Response</h3>
+              <h3 class="text__work">Reviews writing</h3>
               <p class="text__sub">Тренінг з написання відгуків</p>
             </div>
           </li>
@@ -459,7 +459,7 @@
               </picture>
 
               <div class="bg">
-                <a class="atext" href="./trening10.html">
+                <a class="atext" href="./trening10.html" onclick="showPasswordPrompt(event, './trening10.html')">
                   <p class="bg__uppertext">
                     На цьому тренінгу ви отримаєте знання про стилі керування персоналом, які допоможуть вам у вашій практиці.
                   </p>
@@ -467,7 +467,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work">Leadership</h3>
+              <h3 class="text__work">Situational leadership</h3>
               <p class="text__sub">Ситуаційне лідерство</p>
             </div>
           </li>
@@ -495,7 +495,7 @@
               </picture>
 
               <div class="bg">
-                <a class="atext" href="./trening11.html">
+                <a class="atext" href="./trening11.html" onclick="showPasswordPrompt(event, './trening11.html')">
                   <p class="bg__uppertext">
                     На цьому тренінгу ви отримаєте знання про управління та розвиток співробітників, які допоможуть вам у вашій практиці.
                   </p>
@@ -539,7 +539,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work">Negotiations</h3>
+              <h3 class="text__work">Negotiation process</h3>
               <p class="text__sub">Тренінг з ведення переговорів.</p>
             </div>
           </li>
@@ -638,7 +638,7 @@
                 <img src="./images2/works/img-5_sm1x.jpg" alt="Inspiration" width="450" height="294" />
               </picture>
               <div class="bg">
-                <a class="atext" href="./trening15.html">
+                <a class="atext" href="./trening15.html" onclick="showPasswordPrompt(event, './trening15.html')">
                   <p class="bg__uppertext">
                     На цьому тренінгу ви отримаєте знання про підвищення якості готової продукції і зменшення браку, які допоможуть вам у вашій практиці.
                   </p>
@@ -676,13 +676,13 @@
               <div class="bg">
                 <a class="atext" href="./trening16.html">
                 <p class="bg__uppertext">
-                  На цьому тренінгу ви отримаєте знання про особливосты дистанцыйних продажыв, які допоможуть вам у вашій практиці.
+                  На цьому тренінгу ви отримаєте знання про особливості дистанційних продажів, які допоможуть вам у вашій практиці.
                 </p>
                 </a>
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work"><span lang="en">Call Sales</span></h3>
+              <h3 class="text__work"><span lang="en">Call sales</span></h3>
               <p class="text__sub">Тренінг з дистанційного продажу</p>
             </div>
           </li>
@@ -718,7 +718,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work"><span lang="en">Sale</span></h3>
+              <h3 class="text__work"><span lang="en">Discounts offering</span></h3>
               <p class="text__sub">Тренінг по роботі зі знижками</p>
             </div>
           </li>
@@ -755,7 +755,7 @@
               </div>
             </div>
             <div class="text">
-              <h3 class="text__work"><span lang="en">Conference</span></h3>
+              <h3 class="text__work"><span lang="en">Conference activities</span></h3>
               <p class="text__sub">Тренінг по роботі на конференціях</p>
             </div>
           </li>
@@ -828,6 +828,31 @@
   </footer>
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
+  <script>
+function handleProtectedLink(event, url) {
+    event.preventDefault();
+
+    // Перевіряємо, чи пароль уже збережений
+    let storedPassword = localStorage.getItem("protectedPassword");
+    
+    if (!storedPassword) {
+        let password = prompt("Введіть пароль:");
+        if (password === "secret123") { // Замініть на ваш реальний пароль
+            localStorage.setItem("protectedPassword", password);
+            window.location.href = url;
+        } else {
+            alert("Неправильний пароль!");
+        }
+    } else {
+        // Якщо пароль уже введений і збігається, відкриваємо посилання
+        if (storedPassword === "secret123") { 
+            window.location.href = url;
+        } else {
+            alert("Неправильний пароль!");
+        }
+    }
+}
+</script>
 </body>
 
 </html>
