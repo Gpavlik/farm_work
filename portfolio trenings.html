@@ -828,31 +828,26 @@
   </footer>
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
-  <script>
-function handleProtectedLink(event, url) {
-    event.preventDefault();
+    <script>
+        function showPasswordPrompt(event, url) {
+            event.preventDefault(); // Зупиняємо стандартне відкриття посилання
+            
+            if (localStorage.getItem("accessGranted") === "true") {
+                window.location.href = url; // Якщо пароль вже введено раніше, переходимо автоматично
+                return;
+            }
 
-    // Перевіряємо, чи пароль уже збережений
-    let storedPassword = localStorage.getItem("protectedPassword");
-    
-    if (!storedPassword) {
-        let password = prompt("Введіть пароль:");
-        if (password === "secret123") { // Замініть на ваш реальний пароль
-            localStorage.setItem("protectedPassword", password);
-            window.location.href = url;
-        } else {
-            alert("Неправильний пароль!");
+            const password = prompt("Введіть пароль:");
+            const correctPassword = "12345"; // Замініть на реальний пароль
+
+            if (password === correctPassword) {
+                localStorage.setItem("accessGranted", "true"); // Зберігаємо статус входу
+                window.location.href = url; // Переходимо до захищеного контенту
+            } else {
+                alert("Неправильний пароль!");
+            }
         }
-    } else {
-        // Якщо пароль уже введений і збігається, відкриваємо посилання
-        if (storedPassword === "secret123") { 
-            window.location.href = url;
-        } else {
-            alert("Неправильний пароль!");
-        }
-    }
-}
-</script>
+    </script>
 </body>
 
 </html>

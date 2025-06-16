@@ -118,6 +118,7 @@ body {
 background-color: white;
   color: black;
   transition: all 1s ease;
+  margin-top: 100px;
 }
 body.dark-mode {
   background-color: #000000;
@@ -127,7 +128,16 @@ body.dark-mode .team {
   background-color: #707070;
   color: #e0e0e0;
 }
-
+body.dark-mode .header {
+  background-color: var(--fuller-color);
+  color: #e0e0e0;
+  border-color: #000000;
+}
+body.dark-mode .description {
+  background-color: var(--fuller-color);
+  color: #e0e0e0;
+  border-color: #000000;
+}
 
 ul {
   -webkit-padding-start: 0px;
@@ -1396,7 +1406,11 @@ margin-bottom: 6px;
 
 .header {
   border-bottom: #ececec 1px solid;
-  position: relative;
+  position: fixed; /* Закріплює елемент */
+    top: 0; /* Розміщує його у верхній частині сторінки */
+    width: 100%; /* Розтягує на всю ширину */
+    background-color: #f5f4fa; /* Задає фон (можна змінити) */
+    z-index: 1000; /* Встановлює пріоритет показу над іншими елементами */
 }
 @media screen and (max-width: 767px) {
   .header {
