@@ -15,8 +15,7 @@
 }
 
 .menu {
-            display: none;
-            position: absolute;
+                        position: absolute;
             top: 100%;
             left: 0;
             background-color: white;
@@ -25,8 +24,9 @@
             overflow: hidden;
             z-index: 10;
             opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 1.3s ease, vmax-height 1.3s ease;
         }
 
         .menu a {
@@ -50,9 +50,9 @@
         }
 
         .button-section:hover .menu {
-            display: block;
+            
             opacity: 1;
-            visibility: visible;
+            max-height: 500px;
             border: #aaaaaa 1px solid;
             border-radius: 20px;
         }
@@ -123,22 +123,41 @@ background-color: white;
 body.dark-mode {
   background-color: #000000;
   color: #e0e0e0;
+  transition: all 1s ease;
 }
 body.dark-mode .team {
   background-color: #707070;
   color: #e0e0e0;
+  transition: all 1s ease;
 }
 body.dark-mode .header {
   background-color: var(--fuller-color);
   color: #e0e0e0;
   border-color: #000000;
+  transition: all 1s ease;
 }
 body.dark-mode .description {
   background-color: var(--fuller-color);
   color: #e0e0e0;
   border-color: #000000;
+  transition: all 1s ease;
 }
 
+body.dark-mode .text__work { 
+  color: #455561;
+  transition: all 1s ease;
+}
+body.dark-mode .text__sub {
+  color: #fff;
+  transition: all 1s ease;
+}
+body.dark-mode .modal {
+  background-color: var(--fuller-color);
+transition: all 1s ease;}
+body.dark-mode .modal__title   {
+  color: #fff;
+  transition: all 1s ease;
+}
 ul {
   -webkit-padding-start: 0px;
           padding-inline-start: 0px;
@@ -1843,6 +1862,7 @@ margin-bottom: 6px;
 .backdrop.is-hidden {
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.7s ease;
 }
 
 .modal {
@@ -1856,6 +1876,8 @@ margin-bottom: 6px;
   background-color: #fff;
   position: relative;
   padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(0, 0, 0, 0.2);
 }
 .modal__title {
   font-family: "Roboto";
@@ -1868,4 +1890,7 @@ margin-bottom: 6px;
   color: #212121;
   margin-bottom: 12px;
 
-}/*# sourceMappingURL=main.css.map */
+}
+
+
+/*# sourceMappingURL=main.css.map */
