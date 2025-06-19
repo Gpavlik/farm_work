@@ -1,31 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
   const email = localStorage.getItem("allowedEmail");
+  const GA_MEASUREMENT_ID = "G-XXXXXXXXXX"; // Замінити на свій
 
   if (email) {
-    // Завантажуємо словник користувачів з users.json
     fetch("./users.json")
-      .then(response => response.json())
+      .then(res => res.json())
       .then(userDirectory => {
-        const name = userDirectory[email] || email; // fallback, якщо немає в списку
-        const footer = document.getElementById("currentUser");
-        
-        // Показуємо в інтерфейсі
-        if (footer) {
-          footer.textContent = "Ви увійшли як: " + name;
+        const name = userDirectory[email] || email;
+
+        // Показуємо ім’я у футері
+        const el = document.getElementById("currentUser");
+        if (el) {
+          el.textContent = "Ви увійшли як: " + name;
         }
 
-        // Передаємо ім’я як user_id
+        // Перезапускаємо конфігурацію GA з user_id
+        gtag("config", GA_MEASUREMENT_ID, {
+          user_id: name
+        });
+
+        // Додатково передаємо user_properties (опціонально)
         gtag("set", "user_properties", { user_id: name });
       })
       .catch(err => {
-        console.warn("Не вдалося завантажити users.json:", err);
+        console.warn("Помилка при завантаженні users.json:", err);
         
-        // Якщо файл не завантажився — fallback до email
+        // Fallback на email, якщо щось пішло не так
+        gtag("config", GA_MEASUREMENT_ID, {
+          user_id: email
+        });
+
         gtag("set", "user_properties", { user_id: email });
 
-        const footer = document.getElementById("currentUser");
-        if (footer) {
-          footer.textContent = "Ви увійшли як: " + email;
+        const el = document.getElementById("currentUser");
+        if (el) {
+          el.textContent = "Ви увійшли як: " + email;
         }
       });
   }
@@ -40,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 📎 Трекінг усіх <a> посилань
+  // 📎 Трекінг посилань
   document.querySelectorAll("a").forEach(link => {
     const href = link.getAttribute("href");
     if (!href) return;
