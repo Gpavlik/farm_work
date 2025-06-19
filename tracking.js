@@ -1,34 +1,46 @@
-// Ідентифікація користувача
-const email = localStorage.getItem("allowedEmail");
-if (email) {
-  gtag("set", "user_properties", { user_id: email });
-}
-
-// Вимірювання часу на сторінці
-const entryTime = Date.now();
-window.addEventListener("beforeunload", function () {
-  const timeSpent = Math.round((Date.now() - entryTime) / 1000);
-  gtag("event", "time_on_page", {
-    page_path: window.location.pathname,
-    duration_sec: timeSpent
-  });
-});
-
-// Автоматичне відстеження посилань
 document.addEventListener("DOMContentLoaded", function () {
-  // Обробка data-track атрибутів (опціонально)
-  document.querySelectorAll("[data-track]").forEach(element => {
-    element.addEventListener("click", function () {
-      const eventType = element.getAttribute("data-event") || "click";
-      gtag("event", eventType, {
-        label: element.textContent.trim(),
-        href: element.getAttribute("href") || null,
-        page: window.location.pathname
+  const email = localStorage.getItem("allowedEmail");
+
+  if (email) {
+    // Завантажуємо словник користувачів з users.json
+    fetch("./users.json")
+      .then(response => response.json())
+      .then(userDirectory => {
+        const name = userDirectory[email] || email; // fallback, якщо немає в списку
+        const footer = document.getElementById("currentUser");
+        
+        // Показуємо в інтерфейсі
+        if (footer) {
+          footer.textContent = "Ви увійшли як: " + name;
+        }
+
+        // Передаємо ім’я як user_id
+        gtag("set", "user_properties", { user_id: name });
+      })
+      .catch(err => {
+        console.warn("Не вдалося завантажити users.json:", err);
+        
+        // Якщо файл не завантажився — fallback до email
+        gtag("set", "user_properties", { user_id: email });
+
+        const footer = document.getElementById("currentUser");
+        if (footer) {
+          footer.textContent = "Ви увійшли як: " + email;
+        }
       });
+  }
+
+  // ⏱ Час перебування на сторінці
+  const entryTime = Date.now();
+  window.addEventListener("beforeunload", function () {
+    const timeSpent = Math.round((Date.now() - entryTime) / 1000);
+    gtag("event", "time_on_page", {
+      page_path: window.location.pathname,
+      duration_sec: timeSpent
     });
   });
 
-  // "Розумний" трекінг всіх <a>
+  // 📎 Трекінг усіх <a> посилань
   document.querySelectorAll("a").forEach(link => {
     const href = link.getAttribute("href");
     if (!href) return;
