@@ -82,3 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+const greeting = document.getElementById("greetingMessage");
+if (greeting) {
+  greeting.textContent = "Вітаємо, " + nameOrEmail + "! Сьогодні доступні нові курси 👇";
+}

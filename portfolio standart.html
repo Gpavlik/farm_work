@@ -520,6 +520,7 @@
       </div>
     </div>
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+        <button id="scrollTopBtn" title="До гори">⬆</button>
   </footer>
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
@@ -549,6 +550,22 @@ function handleProtectedLink(event, url) {
 }
 </script>
 <script src="tracking.js"></script>
+<script>
+  // Кнопка "До гори"
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+  window.onscroll = function() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      scrollTopBtn.style.display = "block";
+    } else {
+      scrollTopBtn.style.display = "none";
+    }
+  };
+
+  scrollTopBtn.onclick = function() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  };
+</script>
 </body>
 
 </html>

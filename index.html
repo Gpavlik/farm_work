@@ -51,7 +51,7 @@
   <header class="header">
     
     <div class="container header__container">
-      
+      <h2 id="greetingMessage"></h2>
       <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
       <!--<ul class="nav">
         <li class="nav__referent"><a class="nav__link nav__link--active" href="./index.html">Головна</a></li>
@@ -623,6 +623,7 @@
       </div>
     </div>
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+        <button id="scrollTopBtn" title="До гори">⬆</button>
   </footer>
   <div class="backdrop is-hidden" data-modal>
     <div class="modal">
@@ -668,6 +669,7 @@
           <span class="check__name" style="text-align: center;">Підтвердіть, що Ви не розголошуватимете отриману інформацію</span>
         </label>
         <button type="submit" class="submit-btn">Навчатися!</button>
+        
       </form>
       </div>
     <script src="./js/modal.js"></script>
@@ -691,5 +693,21 @@
 </script>
 <script src="theme-toggle.js"></script>
 <script src="tracking.js"></script>
+<script>
+  // Кнопка "До гори"
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+  window.onscroll = function() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      scrollTopBtn.style.display = "block";
+    } else {
+      scrollTopBtn.style.display = "none";
+    }
+  };
+
+  scrollTopBtn.onclick = function() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  };
+</script>
 </body>
 </html>

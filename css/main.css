@@ -1892,5 +1892,24 @@ margin-bottom: 6px;
 
 }
 
-
+#scrollTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 50px;
+  z-index: 999;
+  background-color: #069606;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+  opacity: 0.8;
+}
+#scrollTopBtn:hover {
+  background-color: #222;
+  opacity: 1;
+  transition: background-color 0.7s ease;
+}
 /*# sourceMappingURL=main.css.map */
