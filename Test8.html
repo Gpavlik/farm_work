@@ -17,13 +17,30 @@
   <link rel="stylesheet" href="./css/styles.css">
 
 <!-- Google tag (gtag.js) -->
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5BZZCV5DRK"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-5BZZCV5DRK');
+  gtag("js", new Date());
+  gtag("config", "G-5BZZCV5DRK");
+</script>
+<script>
+  const email = localStorage.getItem("allowedEmail");
+  if (email) {
+    gtag("set", "user_properties", {
+      user_id: email
+    });
+  }
+</script>
+<script>
+  function sha256(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    return crypto.subtle.digest("SHA-256", data).then(hash => {
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    });
+  }
 </script>
 </head>
 <body>
@@ -189,6 +206,7 @@
   </footer>
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
+  <script src="tracking.js"></script>
 </body>
 
 </html>

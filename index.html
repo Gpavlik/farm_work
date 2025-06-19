@@ -27,6 +27,14 @@
   gtag("config", "G-5BZZCV5DRK");
 </script>
 <script>
+  const email = localStorage.getItem("allowedEmail");
+  if (email) {
+    gtag("set", "user_properties", {
+      user_id: email
+    });
+  }
+</script>
+<script>
   function sha256(input) {
     const encoder = new TextEncoder();
     const data = encoder.encode(input);
@@ -35,7 +43,6 @@
     });
   }
 </script>
-
 </head>
 <body>
   
@@ -681,5 +688,6 @@
   }
 </script>
 <script src="theme-toggle.js"></script>
+<script src="tracking.js"></script>
 </body>
 </html>
