@@ -128,6 +128,7 @@
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio trenings.html">Тренінги</a></button></li>
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio standart.html">Стандарти</a></button></li>
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio news.html">Новини</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a onclick="showPasswordPrompt(event, './portfolio PV.html')" style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio PV.html">ПВ</a></button></li>
         </ul>
         <ul class="works-cards">
           <li class="description">
@@ -795,6 +796,26 @@
     document.documentElement.scrollTop = 0;
   };
 </script>
+<script>
+        function showPasswordPrompt(event, url) {
+            event.preventDefault(); // Зупиняємо стандартне відкриття посилання
+            
+            if (localStorage.getItem("accessGranted") === "true") {
+                window.location.href = url; // Якщо пароль вже введено раніше, переходимо автоматично
+                return;
+            }
+
+            const password = prompt("Введіть пароль:");
+            const correctPassword = "12345"; // Замініть на реальний пароль
+
+            if (password === correctPassword) {
+                localStorage.setItem("accessGranted", "true"); // Зберігаємо статус входу
+                window.location.href = url; // Переходимо до захищеного контенту
+            } else {
+                alert("Неправильний пароль!");
+            }
+        }
+    </script>
 </body>
 
 </html>

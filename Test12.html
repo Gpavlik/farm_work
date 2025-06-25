@@ -123,19 +123,26 @@
       <div class="container">
         <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Гепатит В та С</h2>
         <ul class="button">
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./KB/KT.pdf#page=36" target="_blank" rel="noopener noreferrer">Кампейн</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a id="campaign" style="text-decoration: none; font-size: smaller;" class="text__work" href="./KB/KT.pdf#page=36" target="_blank" rel="noopener noreferrer">Кампейн</a></button></li>
           <li class="button-section"><button class="btn" type="button">Візит</button>
           <div class="menu">
-            <a href="./KB/KT.pdf#page=134" target="_blank" rel="noopener noreferrer">До гастроентерологів</a>
+            <a id="video" href="./KB/KT.pdf#page=134" target="_blank" rel="noopener noreferrer">До гастроентерологів</a>
         </div>
         </li>
           <li class="button-section"><button class="btn" type="button">Презентації</button>
           <div class="menu">
-            <a href="./PRT/edu/3626Гепатити_укр_.pdf" target="_blank" rel="noopener noreferrer">Продуктова</a>
+            <a id="presentation" href="./PRT/edu/3626Гепатити_укр_.pdf" target="_blank" rel="noopener noreferrer">Продуктова</a>
             <a href="./PRT/3704Гепатити лікарі.pdf" target="_blank" rel="noopener noreferrer">На візит до лікаря</a>
         </div>
           </li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/forms/d/e/1FAIpQLSfJuDwNra7w3rlEBta0wwVR-O0D1adRnOOqtTglAMwxRL3Baw/viewform?usp=sharing&ouid=101432890503359327647" target="_blank" rel="noopener noreferrer">Тестування</a></button></li>
+          <li class="button-section">
+            <div class="test-wrapper">
+              <button class="btn" type="button">
+                <a id="test" style="text-decoration: none; font-size: smaller; opacity: 0.5; pointer-events: none;" class="text__work" href="https://docs.google.com/forms/d/e/1FAIpQLSfJuDwNra7w3rlEBta0wwVR-O0D1adRnOOqtTglAMwxRL3Baw/viewform?usp=sharing&ouid=101432890503359327647" target="_blank" rel="noopener noreferrer">Тестування</a>
+              </button>
+              <span id="tooltip">📌 Спочатку переглянь усі матеріали!</span>
+            </div>
+          </li>
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/document/d/1ruBzjPPKfBP-wAJfipga7ZUnMMkgpbO4cI98sG6XtZw/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Запитання</a></button></li>
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio testy.html">Назад</a></button></li>
         </ul>
@@ -207,6 +214,6 @@
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
   <script src="tracking.js"></script>
+<script src="ref.js"></script>
 </body>
-
 </html>

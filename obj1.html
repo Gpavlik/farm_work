@@ -122,14 +122,21 @@
       <div class="container">
         <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Biossays 240</h2>
         <ul class="button">
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./KB/KD.pdf#page=190" target="_blank" rel="noopener noreferrer">Кампейн</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a id="campaign" style="text-decoration: none; font-size: smaller;" class="text__work" href="./KB/KD.pdf#page=190" target="_blank" rel="noopener noreferrer">Кампейн</a></button></li>
           <li class="button-section"><button class="btn" type="button" style="text-decoration: none; font-size: smaller;">Відео</button>
           <div class="menu">
-            <a href="https://www.youtube.com/watch?v=mReidW8MogA" target="_blank" rel="noopener noreferrer">Огляд</a>
+            <a id="video" href="https://www.youtube.com/watch?v=mReidW8MogA" target="_blank" rel="noopener noreferrer">Огляд</a>
         </div>
         </li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/edu/3079Biossays 240.pdf" target="_blank" rel="noopener noreferrer">Презентації</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/forms/d/e/1FAIpQLSdi45PFQLQDhjeK1y-UX8O8xPKR00tzKfAL7qCiqh-wbbkyHQ/viewform?usp=sharing&ouid=101432890503359327647" target="_blank" rel="noopener noreferrer">Тестування</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a id="presentation" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/edu/3079Biossays 240.pdf" target="_blank" rel="noopener noreferrer">Презентації</a></button></li>
+          <li class="button-section">
+  <div class="test-wrapper">
+    <button class="btn" type="button">
+      <a id="test" style="text-decoration: none; font-size: smaller; opacity: 0.5; pointer-events: none;" class="text__work" href="https://docs.google.com/forms/d/e/1FAIpQLSdi45PFQLQDhjeK1y-UX8O8xPKR00tzKfAL7qCiqh-wbbkyHQ/viewform?usp=sharing&ouid=101432890503359327647" target="_blank" rel="noopener noreferrer">Тестування</a>
+    </button>
+    <span id="tooltip">📌 Спочатку переглянь усі матеріали!</span>
+  </div>
+</li>
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/document/d/1LoBP3oTXDc-Qsv3pq9lYsBYNnx6qdLrlonlVv-HPQvc/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Запитання</a></button></li>
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio.html">Назад</a></button></li>
         </ul>
@@ -201,6 +208,7 @@
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
   <script src="tracking.js"></script>
+  <script src="ref.js"></script>
 </body>
 
 </html>

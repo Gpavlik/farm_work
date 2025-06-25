@@ -123,8 +123,16 @@
       <div class="container">
         <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Hospital</h2>
         <ul class="button">
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./KB/KT.pdf#page=93" target="_blank" rel="noopener noreferrer">Кампейн</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/forms/d/e/1FAIpQLSdv_a4r8HeyKtaJyeEW2WvKwG4xEWSpdXK8zN0kklXV8usuIA/viewform?usp=sharing&ouid=101432890503359327647" target="_blank" rel="noopener noreferrer">Тестування</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a id="campaign" style="text-decoration: none; font-size: smaller;" class="text__work" href="./KB/KT.pdf#page=93" target="_blank" rel="noopener noreferrer">Кампейн</a></button></li>
+          <li class="button-section">
+            <div class="test-wrapper">
+              <button class="btn" type="button">
+                <a id="test" style="text-decoration: none; font-size: smaller; opacity: 0.5; pointer-events: none;" class="text__work" href="https://docs.google.com/forms/d/e/1FAIpQLSdv_a4r8HeyKtaJyeEW2WvKwG4xEWSpdXK8zN0kklXV8usuIA/viewform?usp=sharing&ouid=101432890503359327647" target="_blank" rel="noopener noreferrer">Тестування</a>
+              </button>
+              <span id="tooltip">📌 Спочатку переглянь Кампейн бук!</span>
+            </div>
+          </li>
+          
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/document/d/1ruBzjPPKfBP-wAJfipga7ZUnMMkgpbO4cI98sG6XtZw/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Запитання</a></button></li>
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio testy.html">Назад</a></button></li>
         </ul>
@@ -195,6 +203,52 @@
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
   <script src="tracking.js"></script>
+  <script >
+    const requiredLinks = [
+    "campaign",
+  ]
+
+  const visited = new Set();
+
+  // Перевірка, чи всі вже натиснуті
+  function checkAllVisited() {
+    if (visited.size === requiredLinks.length) {
+      document.getElementById("test").classList.remove("disabled");
+      document.getElementById("test").style.pointerEvents = "auto";
+      document.getElementById("test").style.opacity = "1";
+    }
+  }
+
+  // Додаємо слухачі подій
+  requiredLinks.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", () => {
+        visited.add(id);
+        checkAllVisited();
+      });
+    }
+  });
+
+  // Початково блокуємо "Тестування"
+  document.addEventListener("DOMContentLoaded", () => {
+    const testLink = document.getElementById("test");
+    testLink.classList.add("disabled");
+    testLink.style.pointerEvents = "none";
+    testLink.style.opacity = "0.5";
+  });
+
+  function checkAllVisited() {
+  if (visited.size === requiredLinks.length) {
+    const testLink = document.getElementById("test");
+    const tooltip = document.getElementById("tooltip");
+    testLink.style.pointerEvents = "auto";
+    testLink.style.opacity = "1";
+    if (tooltip) tooltip.style.display = "none"; // Сховаємо підказку
+  }
+}
+</script>
+</main>
 </body>
 
 </html>
