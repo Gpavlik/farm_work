@@ -1951,4 +1951,36 @@ margin-bottom: 6px;
     letter-spacing: 0.03em;
     color: #757575;
   }
+  .custom-dropdown {
+  position: relative;
+  width: 260px;
+  user-select: none;
+}
+.dropdown-toggle {
+  padding: 3px;
+  border: 1px solid #000000;
+  cursor: pointer;
+  background: #ffffff;
+  border-radius: 3px;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #000000;
+  background: white;
+  z-index: 1000;
+border-radius: 3px;
+}
+.hidden {
+  display: none;
+}
+.dropdown-menu label {
+  display: block;
+  padding: 5px 10px;
+}
+
 /*# sourceMappingURL=main.css.map */
