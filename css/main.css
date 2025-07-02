@@ -1651,8 +1651,8 @@ margin-bottom: 6px;
 }
 @media screen and (min-width: 1200px) {
   .team-cards {
-    -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
   }
 }
 

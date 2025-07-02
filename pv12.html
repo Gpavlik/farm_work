@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Форма навчального завдання</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f9f9f9; }
+    label, select, input, button { display: block; margin: 10px 0; width: 300px; }
+    #productDropdown { border: 1px solid #ccc; padding: 10px; max-height: 200px; overflow-y: auto; background: #fff; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<h2>Форма навчального завдання</h2>
+
+<div id="currentUser" style="display:none">Антоніна Онищук</div>
+
+<form id="trainingForm">
+  <label for="managerSelect">Менеджер:</label>
+  <select id="managerSelect"></select>
+
+  <label for="employeeSelect">Співробітник:</label>
+  <select id="employeeSelect"></select>
+
+  <label for="skill">Навик:</label>
+  <input id="skill" value="Постановка мети по SMART" required />
+
+  <label>Продукти:</label>
+  <button type="button" id="dropdownToggle">Оберіть продукти ▼</button>
+  <div id="productDropdown" class="hidden"></div>
+  <input type="hidden" id="selectedProducts" />
+
+  <label>Дедлайн:</label>
+  <input type="date" id="deadline" readonly />
+
+  <button type="submit">Надіслати завдання</button>
+</form>
+
+<script>
+const users = {
+  "a.onischuk@pharmasco.com": "Антоніна Онищук",
+  "m.pohribna@pharmasco.com": "Марина Погрібна",
+  "s.kucherenko@pharmasco.com": "Сніжана Кучеренко"
+};
+const managerToEmployees = {
+  "a.onischuk@pharmasco.com": ["m.pohribna@pharmasco.com", "s.kucherenko@pharmasco.com"]
+};
+const productList = [
+  { code: "obj1", name: "Biossays 240 Plus" },
+  { code: "obj2", name: "DH36" },
+  { code: "obj3", name: "DF50" }
+];
+
+window.addEventListener("DOMContentLoaded", () => {
+  const managerSelect = document.getElementById("managerSelect");
+  const employeeSelect = document.getElementById("employeeSelect");
+  const currentUser = document.getElementById("currentUser").textContent.trim();
+  const dropdown = document.getElementById("productDropdown");
+  const toggle = document.getElementById("dropdownToggle");
+  const hiddenInput = document.getElementById("selectedProducts");
+  const deadlineInput = document.getElementById("deadline");
+
+  const currentManager = Object.keys(users).find(email => users[email] === currentUser);
+
+  for (const [email, name] of Object.entries(users)) {
+    if (managerToEmployees[email]) {
+      const opt = new Option(name, email);
+      managerSelect.add(opt);
+    }
+  }
+
+  if (currentManager) {
+    managerSelect.value = currentManager;
+    managerSelect.disabled = true;
+    const employees = managerToEmployees[currentManager];
+    employeeSelect.innerHTML = '';
+    employees.forEach(email => {
+      const opt = new Option(users[email], email);
+      employeeSelect.add(opt);
+    });
+  }
+
+  managerSelect.addEventListener("change", () => {
+    const selected = managerSelect.value;
+    const employees = managerToEmployees[selected] || [];
+    employeeSelect.innerHTML = '';
+    employees.forEach(email => {
+      const opt = new Option(users[email], email);
+      employeeSelect.add(opt);
+    });
+  });
+
+  productList.forEach(p => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.value = p.code;
+    input.dataset.name = p.name;
+    label.appendChild(input);
+    label.append(" " + p.name);
+    dropdown.appendChild(label);
+  });
+
+  toggle.onclick = () => dropdown.classList.toggle("hidden");
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target) && e.target !== toggle) {
+      dropdown.classList.add("hidden");
+    }
+  });
+
+  dropdown.addEventListener("change", () => {
+    const selected = [...dropdown.querySelectorAll("input:checked")];
+    hiddenInput.value = selected.map(c => c.value).join(",");
+    toggle.textContent = selected.length
+      ? "Обрано: " + selected.map(c => c.dataset.name).join(", ")
+      : "Оберіть продукти ▼";
+  });
+
+  const today = new Date();
+  const deadline = new Date(today);
+  deadline.setDate(deadline.getDate() + 14);
+  deadlineInput.value = deadline.toISOString().split("T")[0];
+});
+
+document.getElementById("trainingForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const skill = document.getElementById("skill").value;
+  const managerEmail = document.getElementById("managerSelect").value;
+  const employeeEmail = document.getElementById("employeeSelect").value;
+  const managerName = users[managerEmail];
+  const employeeName = users[employeeEmail];
+
+  const today = new Date();
+  const deadline = new Date(today); deadline.setDate(today.getDate() + 7);
+  const dateStr = today.toLocaleDateString("uk-UA");
+  const deadlineStr = deadline.toLocaleDateString("uk-UA");
+
+  const selectedCodes = document.getElementById("selectedProducts").value.split(",").filter(Boolean);
+  if (selectedCodes.length > 10) {
+    alert("Максимум 10 продуктів!");
+    return;
+  }
+
+  const links = selectedCodes.map(code => {
+    const name = productList.find(p => p.code === code)?.name || code;
+    return `🔹 https://gpavlik.github.io/farm_work/${code} (${name})`;
+  }).join("\n");
+
+  const subject = `Навчальне завдання ${employeeName} по ПВ від ${dateStr}`;
+  const body = `Шановна(ий) ${employeeName},
+
+Прошу виконати домашнє завдання з навику "${skill}" до ${deadlineStr}.
+
+Матеріали:
+https://gpavlik.github.io/farm_work/tr/Тренінг%20для%20нових%20співробітників.pdf#page=11
+
+Ознайомся та підготуй 2 цілі по SMART на продукти:
+${links}
+
+Надішли до ${deadlineStr} мені та у копію — керівнику та тренеру.
+
+З повагою,
+${managerName}`;
+
+  window.location.href =
+    `mailto:${employeeEmail}?cc=${managerEmail},trainer@pharmasco.com,head@pharmasco.com`
+    + `&subject=${encodeURIComponent(subject)}`
+    + `&body=${encodeURIComponent(body)}`;
+});
+</script>
+</body>
+</html>

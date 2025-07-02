@@ -121,9 +121,11 @@
   <main>
     <section class="works">
       <div class="container">
-      <h2 style="margin-bottom: 20px ;">Форма навчального завдання</h2>
-
-  <form id="trainingForm">
+      <h2 style="margin-bottom: 20px; text-align: center;">Форма навчального завдання постановка мети по SMART</h2>
+      <h2 style="margin-bottom: 20px; text-align: center;">Другий навик першого пріоритету</h2>
+      <h3 style="margin-bottom: 20px ; line-height: 1.5; color: #949494;">Для відпрацюванння навику постановки мети по SMART:<br>🟢1. Перевірте знання співробітника стосовно постановки мети по SMART<br>🟢2. Поставте мету по SMART на наступний візит РАЗОМ зі співробітником.<br>🟢3. Перевірте досягнення мети після візиту.<br>🟢4. Запропонуйте співробітнику поставити мету по SMART на наступний візит САМОСТІЙНО. <br>🟢5. Перевірте досягнення мети після візиту.<br>🟢6. Дайте зворотній зв'язок про правильність постановки мети по SMART.<br>🟢7. Повторюйте пункти 4-6 до кінця дня</h3>
+      <h3 style="margin-bottom: 20px ; line-height: 1.5; color: #949494;">При наданні ДЗ по навику постановки мети по SMART:<br>🟢 Оберіть продукти (не більше 5) по яким співробітник має написати мету по SMART.</h3>
+        <form id="trainingForm">
     <!--<label>Навик:
       <select id="skill">
         <option value="Мета по SMART">Мета по смарт</option>
@@ -229,10 +231,7 @@
   <script src="theme-toggle.js"></script>
   <script src="tracking.js"></script>
   <script src="validation.js"></script>
-  <script src="user.js"></script>
-  <script src="users.js"></script>
-
-
+ <script src="user.js"></script>
 <script>
   const productList = [
     { code: "obj1", name: "Biossays 240 Plus" },
@@ -267,47 +266,37 @@
     const managerSelect = document.getElementById('managerSelect');
     const employeeSelect = document.getElementById('employeeSelect');
     const currentUserElement = document.getElementById('currentUser');
-    const currentManagerName = currentUserElement.textContent.trim();
     const dropdown = document.getElementById('productDropdown');
     const toggle = document.getElementById('dropdownToggle');
     const hiddenInput = document.getElementById('selectedProducts');
-    const deadlineInput = document.getElementById('deadline');
 
+    const currentManagerName = currentUserElement?.textContent.trim();
     const currentManagerEmail = Object.keys(users).find(email => users[email] === currentManagerName);
 
     for (const [email, name] of Object.entries(users)) {
       if (managerToEmployees[email]) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = name;
+        const option = new Option(name, email);
         managerSelect.appendChild(option);
       }
     }
 
+    const fillEmployees = (managerEmail) => {
+      const employees = managerToEmployees[managerEmail] || [];
+      employeeSelect.innerHTML = '';
+      employees.forEach(email => {
+        const option = new Option(users[email], email);
+        employeeSelect.appendChild(option);
+      });
+    };
+
     if (currentManagerEmail && managerToEmployees[currentManagerEmail]) {
       managerSelect.value = currentManagerEmail;
       managerSelect.disabled = true;
-
-      const employees = managerToEmployees[currentManagerEmail];
-      employeeSelect.innerHTML = '';
-      for (const email of employees) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = users[email];
-        employeeSelect.appendChild(option);
-      }
+      fillEmployees(currentManagerEmail);
     }
 
     managerSelect.addEventListener('change', () => {
-      const selectedManager = managerSelect.value;
-      const employees = managerToEmployees[selectedManager] || [];
-      employeeSelect.innerHTML = '';
-      for (const email of employees) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = users[email];
-        employeeSelect.appendChild(option);
-      }
+      fillEmployees(managerSelect.value);
     });
 
     productList.forEach(product => {
@@ -317,7 +306,7 @@
       checkbox.value = product.code;
       checkbox.dataset.name = product.name;
       label.appendChild(checkbox);
-      label.appendChild(document.createTextNode(' ' + product.name));
+      label.append(' ' + product.name);
       dropdown.appendChild(label);
     });
 
@@ -334,36 +323,25 @@
     dropdown.addEventListener('change', () => {
       const selected = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked'));
       hiddenInput.value = selected.map(cb => cb.value).join(',');
-      toggle.textContent = selected.length > 0
+      toggle.textContent = selected.length
         ? `Обрано: ${selected.map(cb => cb.dataset.name).join(', ')}`
         : 'Оберіть продукти ▼';
     });
-
-    // Автоматичний дедлайн
-    const today = new Date();
-    const deadline = new Date(today);
-    deadline.setDate(today.getDate() + 14);
-    deadlineInput.value = deadline.toISOString().split('T')[0];
   });
 
   document.getElementById('trainingForm').addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const skill = document.getElementById('skill').value;
     const managerEmail = document.getElementById('managerSelect').value;
     const employeeEmail = document.getElementById('employeeSelect').value;
     const managerName = users[managerEmail];
     const employeeName = users[employeeEmail];
 
     const today = new Date();
-    const deadlineDate = new Date(today);
-    deadlineDate.setDate(today.getDate() + 14);
-    const deadlineMinusOne = new Date(today);
-    deadlineMinusOne.setDate(today.getDate() + 7);
-
-    const deadlineStr = deadlineDate.toLocaleDateString('uk-UA');
-    const deadlineMinusOneStr = deadlineMinusOne.toLocaleDateString('uk-UA');
     const todayStr = today.toLocaleDateString('uk-UA');
+    const deadline = new Date(today);
+    deadline.setDate(deadline.getDate() + 7);
+    const deadlineStr = deadline.toLocaleDateString('uk-UA');
 
     const codes = document.getElementById('selectedProducts').value.split(',').filter(Boolean);
     const names = codes.map(code => {
@@ -371,36 +349,55 @@
       return p ? p.name : code;
     });
 
-    if (codes.length > 10) {
-      alert(`Забагато продуктів (${codes.length}). Максимум 10.`);
+    if (codes.length > 5) {
+      alert(`Забагато продуктів (${codes.length}). Максимум 5.`);
+      return;
+    }
+    if (codes.length === 0) {
+      alert("Будь ласка, оберіть хоча б один продукт.");
       return;
     }
 
-    const productLinks = codes.map((code, i) =>
-      `🔹 https://gpavlik.github.io/farm_work/${code} (${names[i]})`
-    ).join('\n');
+    const productLinks = names.map(name => `🔹 ${name}`).join('\n');
 
-    const subject = `Навчальне завдання ${employeeName} з навику ${skill} ${todayStr}`;
+    const subject = `Навчальне завдання ${employeeName} по ПВ від ${todayStr}`;
     const body = `Шановна(ий) ${employeeName},
 
-Прошу виконати домашнє завдання з навику "${skill}" до ${deadlineMinusOneStr}
-🔹 https://mysite.ua/skills/${skill}
-
-Також завдання зі знання наступних продуктів:
+Ознайомся з матеріалами тренінгу по структурі візиту:
+https://gpavlik.github.io/farm_work/trening1.html сторінка 11
+та напиши по 2 SMART-мети по продуктах:
 ${productLinks}
-Дедлайн: ${deadlineStr}
 
-З повагою,
+Надішли їх на мій е-мейл з копією керівнику відділу продажів та тренеру.
+Прошу виконати домашнє завдання до ${deadlineStr}.
+
+З повагою,  
 ${managerName}`;
 
-    const mailtoLink = `mailto:${employeeEmail}?cc=${managerEmail},trainer@pharmasco.com,head@pharmasco.com`
+    const mailtoLink = `mailto:${employeeEmail}?cc=${managerEmail},y.holovan@pharmasco.com,p.hrytsenko@pharmasco.com`
       + `&subject=${encodeURIComponent(subject)}`
       + `&body=${encodeURIComponent(body)}`;
 
-    console.log("MAILTO:", mailtoLink);
-    window.location.href = mailtoLink;
+    const triggerLink = document.createElement("a");
+    triggerLink.href = mailtoLink;
+    triggerLink.style.display = "none";
+    document.body.appendChild(triggerLink);
+    triggerLink.click();
+
+    setTimeout(() => {
+      const openWeb = confirm("Outlook не відкрився. Відкрити пошту в браузері?");
+      if (openWeb) {
+        const owaLink = `https://outlook.office.com/mail/deeplink/compose?to=${employeeEmail}&cc=${managerEmail},y.holovan@pharmasco.com,p.hrytsenko@pharmasco.com&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const a = document.createElement("a");
+        a.href = owaLink;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.click();
+      }
+    }, 30000);
   });
 </script>
+
 </body>
 
-</html>
+</html> 
