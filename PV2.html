@@ -121,7 +121,7 @@
   <main>
     <section class="works">
       <div class="container">
-      <h2 style="margin-bottom: 20px; text-align: center;">Форма навчального завдання постановка мети по SMART</h2>
+      <h2 style="margin-bottom: 20px; text-align: center;">Форма навчального завдання: "Постановка мети по SMART"</h2>
       <h2 style="margin-bottom: 20px; text-align: center;">Другий навик першого пріоритету</h2>
       <h3 style="margin-bottom: 20px ; line-height: 1.5; color: #949494;">Для відпрацюванння навику постановки мети по SMART:<br>🟢1. Перевірте знання співробітника стосовно постановки мети по SMART<br>🟢2. Поставте мету по SMART на наступний візит РАЗОМ зі співробітником.<br>🟢3. Перевірте досягнення мети після візиту.<br>🟢4. Запропонуйте співробітнику поставити мету по SMART на наступний візит САМОСТІЙНО. <br>🟢5. Перевірте досягнення мети після візиту.<br>🟢6. Дайте зворотній зв'язок про правильність постановки мети по SMART.<br>🟢7. Повторюйте пункти 4-6 до кінця дня</h3>
       <h3 style="margin-bottom: 20px ; line-height: 1.5; color: #949494;">При наданні ДЗ по навику постановки мети по SMART:<br>🟢 Оберіть продукти (не більше 5) по яким співробітник має написати мету по SMART.</h3>
@@ -361,9 +361,11 @@
     const productLinks = names.map(name => `🔹 ${name}`).join('\n');
 
     const subject = `Навчальне завдання ${employeeName} по ПВ від ${todayStr}`;
-    const body = `Шановна(ий) ${employeeName},
+    const body = `Добрий день, ${employeeName}!
 
-Ознайомся з матеріалами тренінгу по структурі візиту:
+Надсилаю домашнє завдання по ПВ від ${todayStr}
+
+Ознайомся, будь ласка, з матеріалами тренінгу по структурі візиту розділ "постановка мети по SMART":
 https://gpavlik.github.io/farm_work/trening1.html сторінка 11
 та напиши по 2 SMART-мети по продуктах:
 ${productLinks}
@@ -371,30 +373,28 @@ ${productLinks}
 Надішли їх на мій е-мейл з копією керівнику відділу продажів та тренеру.
 Прошу виконати домашнє завдання до ${deadlineStr}.
 
+В разі виникнення питань по завданню, звертайся до мене або до тренера.
+
+Бажаю успіху в навчанні і продажах!
+
 З повагою,  
 ${managerName}`;
 
-    const mailtoLink = `mailto:${employeeEmail}?cc=${managerEmail},y.holovan@pharmasco.com,p.hrytsenko@pharmasco.com`
-      + `&subject=${encodeURIComponent(subject)}`
-      + `&body=${encodeURIComponent(body)}`;
+     const emlContent =
+      "data:message/rfc822 eml;charset=utf-8," +
+      `To: ${employeeEmail}\n` +
+      `Cc: ${managerEmail}, y.holovan@pharmasco.com, p.hrytsenko@pharmasco.com\n` +
+      `Subject: ${subject}\n` +
+      `X-Unsent: 1\n` +
+      `Content-Type: text/plain; charset=utf-8\n\n` +
+      body;
 
-    const triggerLink = document.createElement("a");
-    triggerLink.href = mailtoLink;
-    triggerLink.style.display = "none";
-    document.body.appendChild(triggerLink);
-    triggerLink.click();
-
-    setTimeout(() => {
-      const openWeb = confirm("Outlook не відкрився. Відкрити пошту в браузері?");
-      if (openWeb) {
-        const owaLink = `https://outlook.office.com/mail/deeplink/compose?to=${employeeEmail}&cc=${managerEmail},y.holovan@pharmasco.com,p.hrytsenko@pharmasco.com&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        const a = document.createElement("a");
-        a.href = owaLink;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.click();
-      }
-    }, 30000);
+    const encodedUri = encodeURI(emlContent);
+    const link = document.createElement("a");
+    link.href = encodedUri;
+    link.download = `${employeeName}_завдання.eml`;
+    document.body.appendChild(link);
+    link.click();
   });
 </script>
 

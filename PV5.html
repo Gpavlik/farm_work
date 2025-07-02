@@ -159,6 +159,14 @@
     <li class="button-section"></li><button class="btn" type="submit">Надіслати завдання</button></li>
     <li class="button-section"></li><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio PV.html">Назад</a></button>
 </ul>
+<div id="emailPreview" style="display: none; margin-top: 1em;">
+  <h3>📋 Тіло листа (для копіювання):</h3>
+  <textarea id="emailBody" rows="14" style="width:100%; font-family:monospace;"></textarea>
+  <div style="margin-top: 0.5em;">
+    <button id="copyButton">📋 Скопіювати текст</button>
+    <button id="emlDownload">📩 Завантажити .eml</button>
+  </div>
+</div>
   </form>
   </div>
 </section>
@@ -230,8 +238,7 @@
   <script src="tracking.js"></script>
   <script src="validation.js"></script>
   <script src="user.js"></script>
-  <script src="users.js"></script>
-
+  
 <script>
   const productList = [
     { code: "obj1", name: "Biossays 240 Plus" },
