@@ -121,18 +121,25 @@
   <main>
     <section class="works">
       <div class="container">
-      <h2 style="margin-bottom: 20px; text-align: center;"> Форма навчального завдання з виявлення потреб партнера</h2>
-      <h2 style="margin-bottom: 20px; text-align: center;">Перший навик другого пріоритету</h2>
-        <h3 style="margin-bottom: 20px ; line-height: 1.5; color: #949494;">Для відпрацювання навику виявлення потреби:<br>🟢1. Перевірте знання співробітника стосовно того що таке потреба і група потреб, як їх можна виявляти<br>🟢2. Після цього перейдіть до відпрацювання відкритих, чи уточнюючих і закритих запитань для виявлення потреб</h3>
-        <ul class="button">
-          <li class="button-section" style="margin-bottom: 2px;"><button class="btn" type="button"><a href="./PV5a.html" style="text-decoration: none; font-size: smaller;" class="text__work">Відкриті запитання</a></button></li>
-          <li class="button-section" style="margin-bottom: 2px;"><button class="btn" type="button"><a href="./PV5b.html" style="text-decoration: none; font-size: smaller;" class="text__work">Уточнюючі та закриті запитання</a></button></li>
-          <li class="button-section" style="margin-bottom: 2px;"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio PV.html" target="_blank" rel="noopener noreferrer">Назад</a></button></li>
-        </ul>
-      </div>
-  </div>
-</section>
-</main>
+        <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Виявлення потреб</h2>
+        <p class="ttx">🟢 По кожному поведінковому типу пропишіть по 3 відкритих запитання для виявлення груп потреб</p>
+<p class="ttx">🟢 Для груп потреб "Швидкість, Точність, Ціна, Якість" пропишіть по 1 уточнюючому запитанню до кожного поведінкового типу</p>
+<p class="ttx">🟢 Пропишіть по 5 вигід до кожного поведінкового типу</p>
+
+<form action="https://formspree.io/f/mnnvzeyl" method="POST">
+  <label for="task visit">Відповідь на завдання </label><br>
+  <textarea class="form" name="task visit" rows="20" cols="150" required></textarea><br><br>
+  <input type="email" name="_replyto" autofocus placeholder="Ваш email" required><br><br>
+  <input type="text" name="name" autofocus placeholder="Ваше ім'я" required><br><br>
+  <ul class="button">
+    <li class="button-section"><input type="submit" class="btn" value="Відправити"></li>
+    <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening18.html">Назад</a></button></li>
+  </ul>
+</form>
+</div>
+  </section>
+
+  </main>
   <footer class="footer">
     <div class="container">
       <div class="find-us">
@@ -198,177 +205,6 @@
   <script src="./js/menu.js"></script>
   <script src="theme-toggle.js"></script>
   <script src="tracking.js"></script>
-  <script src="validation.js"></script>
-  <script src="user.js"></script>
-  
-<script>
-  const productList = [
-    { code: "obj1", name: "Biossays 240 Plus" },
-    { code: "obj2", name: "DH36" },
-    { code: "obj3", name: "DF50" },
-    { code: "obj4", name: "UN73" },
-    { code: "obj5", name: "VISION Pro" },
-    { code: "obj6", name: "LS1100" },
-    { code: "obj7", name: "CITOLAB Reader 300" },
-    { code: "obj8", name: "MINI ISE" },
-    { code: "obj9", name: "AFT-800G, AFT-800H" },
-    { code: "obj10", name: "GCRYO-S® Painless" },
-    { code: "Test1", name: "ULTRA®" },
-    { code: "Test2", name: "DUET®" },
-    { code: "Test3", name: "SECRET®" },
-    { code: "Test4", name: "SOLO mini®" },
-    { code: "Test5", name: "CITOLAB™ pH" },
-    { code: "Test6", name: "Actim® PROM" },
-    { code: "Test7", name: "CITO TEST® COVID-19 Ag" },
-    { code: "Test8", name: "CITO TEST® ГРИП" },
-    { code: "Test9", name: "CITO TEST® COMBO" },
-    { code: "Test10", name: "CITO TEST® Strep А" },
-    { code: "Test11", name: "Hospital group" },
-    { code: "Test12", name: "CITO TEST® Гепатит В та С" },
-    { code: "Test13", name: "CITO TEST® ROTA" },
-    { code: "Test14", name: "CITO TEST® ХЕЛІКОБАКТЕР" },
-    { code: "Test15", name: "SNIPER®" },
-    { code: "Test16", name: "CITOLAB™ K" }
-  ];
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const managerSelect = document.getElementById('managerSelect');
-    const employeeSelect = document.getElementById('employeeSelect');
-    const currentUserElement = document.getElementById('currentUser');
-    const currentManagerName = currentUserElement.textContent.trim();
-    const dropdown = document.getElementById('productDropdown');
-    const toggle = document.getElementById('dropdownToggle');
-    const hiddenInput = document.getElementById('selectedProducts');
-    const deadlineInput = document.getElementById('deadline');
-
-    const currentManagerEmail = Object.keys(users).find(email => users[email] === currentManagerName);
-
-    for (const [email, name] of Object.entries(users)) {
-      if (managerToEmployees[email]) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = name;
-        managerSelect.appendChild(option);
-      }
-    }
-
-    if (currentManagerEmail && managerToEmployees[currentManagerEmail]) {
-      managerSelect.value = currentManagerEmail;
-      managerSelect.disabled = true;
-
-      const employees = managerToEmployees[currentManagerEmail];
-      employeeSelect.innerHTML = '';
-      for (const email of employees) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = users[email];
-        employeeSelect.appendChild(option);
-      }
-    }
-
-    managerSelect.addEventListener('change', () => {
-      const selectedManager = managerSelect.value;
-      const employees = managerToEmployees[selectedManager] || [];
-      employeeSelect.innerHTML = '';
-      for (const email of employees) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = users[email];
-        employeeSelect.appendChild(option);
-      }
-    });
-
-    productList.forEach(product => {
-      const label = document.createElement('label');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.value = product.code;
-      checkbox.dataset.name = product.name;
-      label.appendChild(checkbox);
-      label.appendChild(document.createTextNode(' ' + product.name));
-      dropdown.appendChild(label);
-    });
-
-    toggle.addEventListener('click', () => {
-      dropdown.classList.toggle('hidden');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target) && e.target !== toggle) {
-        dropdown.classList.add('hidden');
-      }
-    });
-
-    dropdown.addEventListener('change', () => {
-      const selected = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked'));
-      hiddenInput.value = selected.map(cb => cb.value).join(',');
-      toggle.textContent = selected.length > 0
-        ? `Обрано: ${selected.map(cb => cb.dataset.name).join(', ')}`
-        : 'Оберіть продукти ▼';
-    });
-
-    // Автоматичний дедлайн
-    const today = new Date();
-    const deadline = new Date(today);
-    deadline.setDate(today.getDate() + 14);
-    deadlineInput.value = deadline.toISOString().split('T')[0];
-  });
-
-  document.getElementById('trainingForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const skill = document.getElementById('skill').value;
-    const managerEmail = document.getElementById('managerSelect').value;
-    const employeeEmail = document.getElementById('employeeSelect').value;
-    const managerName = users[managerEmail];
-    const employeeName = users[employeeEmail];
-
-    const today = new Date();
-    const deadlineDate = new Date(today);
-    deadlineDate.setDate(today.getDate() + 14);
-    const deadlineMinusOne = new Date(today);
-    deadlineMinusOne.setDate(today.getDate() + 7);
-
-    const deadlineStr = deadlineDate.toLocaleDateString('uk-UA');
-    const deadlineMinusOneStr = deadlineMinusOne.toLocaleDateString('uk-UA');
-    const todayStr = today.toLocaleDateString('uk-UA');
-
-    const codes = document.getElementById('selectedProducts').value.split(',').filter(Boolean);
-    const names = codes.map(code => {
-      const p = productList.find(p => p.code === code);
-      return p ? p.name : code;
-    });
-
-    if (codes.length > 10) {
-      alert(`Забагато продуктів (${codes.length}). Максимум 10.`);
-      return;
-    }
-
-    const productLinks = codes.map((code, i) =>
-      `🔹 https://gpavlik.github.io/farm_work/${code} (${names[i]})`
-    ).join('\n');
-
-    const subject = `Навчальне завдання ${employeeName} з навику ${skill} ${todayStr}`;
-    const body = `Шановна(ий) ${employeeName},
-
-Прошу виконати домашнє завдання з навику "${skill}" до ${deadlineMinusOneStr}
-🔹 https://mysite.ua/skills/${skill}
-
-Також завдання зі знання наступних продуктів:
-${productLinks}
-Дедлайн: ${deadlineStr}
-
-З повагою,
-${managerName}`;
-
-    const mailtoLink = `mailto:${employeeEmail}?cc=${managerEmail},trainer@pharmasco.com,head@pharmasco.com`
-      + `&subject=${encodeURIComponent(subject)}`
-      + `&body=${encodeURIComponent(body)}`;
-
-    console.log("MAILTO:", mailtoLink);
-    window.location.href = mailtoLink;
-  });
-</script>
 </body>
 
 </html>
