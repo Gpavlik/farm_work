@@ -121,9 +121,11 @@
   <main>
     <section class="works">
       <div class="container">
-      <h2 style="margin-bottom: 20px ;">Форма навчального завдання</h2>
-
-  <form id="trainingForm">
+      <h2 style="margin-bottom: 20px; text-align: center;">Форма навчального завдання: "Декларація мети візиту"</h2>
+      <h2 style="margin-bottom: 20px; text-align: center;">Другий навик третього пріоритету</h2>
+      <h3 style="margin-bottom: 20px ; line-height: 1.5; color: #949494;">Для відпрацювання навику декларація мети візиту:<br>🟢1. Перевірте знання співробітника стосовно моделі створення декларованої мети візиту<br>🟢2. Пропишіть 1-2 декларовану мету по на наступний візит РАЗОМ зі співробітником. Перевірте, щоб мета була короткою, цікавою, не містила назви продукту, чи інших маркерів продавця, та не зенцінювала партнера<br>🟢3. Перевірте чи вдалося проговорити декларовану мету на візиті.<br>🟢4. Запропонуйте співробітнику підготовити декларовану мету на наступний візит САМОСТІЙНО. <br>🟢5. Перевірте проговорення декларованої мети після візиту.<br>🟢6. Дайте зворотній зв'язок про правильність декларації мети.<br>🟢7. Повторюйте пункти 4-6 до кінця дня.</h3>
+      <h3 style="margin-bottom: 20px ; line-height: 1.5; color: #949494;">При наданні ДЗ по навику декларація мети візиту:<br>🟢 Оберіть продукти (не більше 5) по яким співробітник має написати і проговорювати декларацію мети візиту з партнерами на візитах.</h3>
+        <form id="trainingForm">
     <!--<label>Навик:
       <select id="skill">
         <option value="Мета по SMART">Мета по смарт</option>
@@ -159,7 +161,7 @@
     <li class="button-section"></li><button class="btn" type="submit">Надіслати завдання</button></li>
     <li class="button-section"></li><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio PV.html">Назад</a></button>
 </ul>
-  </form>
+</form>
   </div>
 </section>
 </main>
@@ -229,10 +231,7 @@
   <script src="theme-toggle.js"></script>
   <script src="tracking.js"></script>
   <script src="validation.js"></script>
-  <script src="user.js"></script>
-  <script src="users.js"></script>
-
-
+ <script src="user.js"></script>
 <script>
   const productList = [
     { code: "obj1", name: "Biossays 240 Plus" },
@@ -267,47 +266,37 @@
     const managerSelect = document.getElementById('managerSelect');
     const employeeSelect = document.getElementById('employeeSelect');
     const currentUserElement = document.getElementById('currentUser');
-    const currentManagerName = currentUserElement.textContent.trim();
     const dropdown = document.getElementById('productDropdown');
     const toggle = document.getElementById('dropdownToggle');
     const hiddenInput = document.getElementById('selectedProducts');
-    const deadlineInput = document.getElementById('deadline');
 
+    const currentManagerName = currentUserElement?.textContent.trim();
     const currentManagerEmail = Object.keys(users).find(email => users[email] === currentManagerName);
 
     for (const [email, name] of Object.entries(users)) {
       if (managerToEmployees[email]) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = name;
+        const option = new Option(name, email);
         managerSelect.appendChild(option);
       }
     }
 
+    const fillEmployees = (managerEmail) => {
+      const employees = managerToEmployees[managerEmail] || [];
+      employeeSelect.innerHTML = '';
+      employees.forEach(email => {
+        const option = new Option(users[email], email);
+        employeeSelect.appendChild(option);
+      });
+    };
+
     if (currentManagerEmail && managerToEmployees[currentManagerEmail]) {
       managerSelect.value = currentManagerEmail;
       managerSelect.disabled = true;
-
-      const employees = managerToEmployees[currentManagerEmail];
-      employeeSelect.innerHTML = '';
-      for (const email of employees) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = users[email];
-        employeeSelect.appendChild(option);
-      }
+      fillEmployees(currentManagerEmail);
     }
 
     managerSelect.addEventListener('change', () => {
-      const selectedManager = managerSelect.value;
-      const employees = managerToEmployees[selectedManager] || [];
-      employeeSelect.innerHTML = '';
-      for (const email of employees) {
-        const option = document.createElement('option');
-        option.value = email;
-        option.textContent = users[email];
-        employeeSelect.appendChild(option);
-      }
+      fillEmployees(managerSelect.value);
     });
 
     productList.forEach(product => {
@@ -317,7 +306,7 @@
       checkbox.value = product.code;
       checkbox.dataset.name = product.name;
       label.appendChild(checkbox);
-      label.appendChild(document.createTextNode(' ' + product.name));
+      label.append(' ' + product.name);
       dropdown.appendChild(label);
     });
 
@@ -334,36 +323,29 @@
     dropdown.addEventListener('change', () => {
       const selected = Array.from(dropdown.querySelectorAll('input[type="checkbox"]:checked'));
       hiddenInput.value = selected.map(cb => cb.value).join(',');
-      toggle.textContent = selected.length > 0
+      toggle.textContent = selected.length
         ? `Обрано: ${selected.map(cb => cb.dataset.name).join(', ')}`
         : 'Оберіть продукти ▼';
     });
-
-    // Автоматичний дедлайн
-    const today = new Date();
-    const deadline = new Date(today);
-    deadline.setDate(today.getDate() + 14);
-    deadlineInput.value = deadline.toISOString().split('T')[0];
   });
 
   document.getElementById('trainingForm').addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const skill = document.getElementById('skill').value;
     const managerEmail = document.getElementById('managerSelect').value;
     const employeeEmail = document.getElementById('employeeSelect').value;
     const managerName = users[managerEmail];
     const employeeName = users[employeeEmail];
 
     const today = new Date();
-    const deadlineDate = new Date(today);
-    deadlineDate.setDate(today.getDate() + 14);
-    const deadlineMinusOne = new Date(today);
-    deadlineMinusOne.setDate(today.getDate() + 7);
-
-    const deadlineStr = deadlineDate.toLocaleDateString('uk-UA');
-    const deadlineMinusOneStr = deadlineMinusOne.toLocaleDateString('uk-UA');
     const todayStr = today.toLocaleDateString('uk-UA');
+    const deadline = new Date(today);
+    deadline.setDate(deadline.getDate() + 7);
+    const deadlineStr = deadline.toLocaleDateString('uk-UA');
+
+    const deadline14 = new Date(today);
+    deadline14.setDate(deadline14.getDate() + 14);
+    const deadline14Str = deadline14.toLocaleDateString('uk-UA');
 
     const codes = document.getElementById('selectedProducts').value.split(',').filter(Boolean);
     const names = codes.map(code => {
@@ -371,36 +353,54 @@
       return p ? p.name : code;
     });
 
-    if (codes.length > 10) {
-      alert(`Забагато продуктів (${codes.length}). Максимум 10.`);
+    if (codes.length > 5) {
+      alert(`Забагато продуктів (${codes.length}). Максимум 5.`);
       return;
     }
 
-    const productLinks = codes.map((code, i) =>
-      `🔹 https://gpavlik.github.io/farm_work/${code} (${names[i]})`
-    ).join('\n');
+    if (codes.length === 0) {
+      alert("Будь ласка, оберіть хоча б один продукт.");
+      return;
+    }
 
-    const subject = `Навчальне завдання ${employeeName} з навику ${skill} ${todayStr}`;
-    const body = `Шановна(ий) ${employeeName},
+    const productText = names.map(name => `🔹 ${name}`).join('\n');
 
-Прошу виконати домашнє завдання з навику "${skill}" до ${deadlineMinusOneStr}
-🔹 https://mysite.ua/skills/${skill}
+    const subject = `Навчальне завдання ${employeeName} по ПВ від ${todayStr}`;
+    const body = `Добрий день, ${employeeName}!
+Надсилаю завдання по ПВ від ${todayStr}:
 
-Також завдання зі знання наступних продуктів:
-${productLinks}
-Дедлайн: ${deadlineStr}
+1. Ознайомся, будь ласка, з матеріалами тренінгу по структурі візиту з розділу "Декларація мети візиту":
+https://gpavlik.github.io/farm_work/trening1.html презентація - сторінка 17
+2. Напиши по 2 різноманітні варіанти декларації мети по продуктах:
+${productText}
 
-З повагою,
+3. Надішли їх на мій е-мейл з копією керівнику відділу продажів та тренеру до ${deadlineStr}.
+4. Проговорюй декларацію мети по продуктах на всіх візитах до партнерів.
+5. Записуй всі домовленості, що вдалося досягти по кожному продукту на візиті в блокноті до ${deadline14Str}.
+6. Відзвонись мені ${deadline14Str} о 18:00 зі зворотнім зв'язком по декларації мети на візитах до партнерів.
+
+В разі виникнення питань по завданню, звертайся до мене або до тренера.
+
+Бажаю успіху в навчанні і продажах!
+
+З повагою,  
 ${managerName}`;
 
-    const mailtoLink = `mailto:${employeeEmail}?cc=${managerEmail},trainer@pharmasco.com,head@pharmasco.com`
-      + `&subject=${encodeURIComponent(subject)}`
-      + `&body=${encodeURIComponent(body)}`;
+    const emlContent = "data:message/rfc822 eml;charset=utf-8," +
+      `To: ${employeeEmail}\n` +
+      `Cc: ${managerEmail}, y.holovan@pharmasco.com, p.hrytsenko@pharmasco.com\n` +
+      `Subject: ${subject}\n` +
+      `X-Unsent: 1\n` +
+      `Content-Type: text/plain; charset=utf-8\n\n` +
+      body;
 
-    console.log("MAILTO:", mailtoLink);
-    window.location.href = mailtoLink;
+    const encodedUri = encodeURI(emlContent);
+    const link = document.createElement("a");
+    link.href = encodedUri;
+    link.download = `${employeeName}_завдання.eml`;
+    document.body.appendChild(link);
+    link.click();
   });
 </script>
 </body>
-
 </html>
