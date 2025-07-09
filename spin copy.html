@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>DISC колесо</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #7a7a7a;
+      font-family: sans-serif;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      margin-bottom: 20px;
+    }
+
+    .wheel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        red 0deg 90deg,
+        yellow 90deg 180deg,
+        green 180deg 270deg,
+        blue 270deg 360deg
+      );
+      transition: transform 5s ease-out;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+      border: 1px solid black;
+      overflow: hidden;
+    }
+
+    .wheel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at 30% 30%,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0) 60%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .wheel.spinning::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg at 50% 50%,
+        rgba(255, 255, 255, 0) 0deg,
+        rgba(255, 255, 255, 0.4) 45deg,
+        rgba(255, 255, 255, 0) 90deg,
+        rgba(255, 255, 255, 0) 360deg
+      );
+      animation: spin-glare-reverse 5s ease-out;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes spin-glare-reverse {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    .arrow {
+      position: absolute;
+      top: 480px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 30px solid white;
+      z-index: 10;
+    }
+/* Додай до стилів */
+.result-banner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 180px;
+  background-color: transparent;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 180px;
+  transform: translate(-50%, -50%);
+  border-radius: 20px;
+  border: #000000 1px solid;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  z-index: 20;
+  transition: all 0.6s ease-out;
+}
+.result-banner.show {
+  width: 700px;
+  opacity: 1;
+}
+
+    .label {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 32px;
+      color: white;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #069606;
+      border-radius: 20px;
+      color: white;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+    .sub-label {
+      font-size: 16px;
+      color: #949494;
+      text-align: center;
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+  <div class="wheel-container">
+    <div class="result-banner" id="result-banner"></div>
+    <div class="arrow"></div>
+    <div class="wheel" id="wheel">
+      <div class="label" id="label-d">D<br><span class="sub-label">Dominance</span></div>
+      <div class="label" id="label-i">I<br><span class="sub-label">Influence</span></div>
+      <div class="label" id="label-s">S<br><span class="sub-label">Steadiness</span></div>
+      <div class="label" id="label-c">C<br><span class="sub-label">Conscientiousness</span></div>
+    </div>
+  </div>
+  <button onclick="spinWheel()">Обертати</button>
+
+  <script>
+    let spinning = false;
+
+    function spinWheel() {
+  if (spinning) return;
+
+  spinning = true;
+  const wheel = document.getElementById('wheel');
+  const banner = document.getElementById('result-banner');
+  banner.classList.remove('show');
+
+  const randomTurns = Math.floor(Math.random() * 5) + 5;
+  const randomDegrees = Math.floor(Math.random() * 360);
+  const totalRotation = randomTurns * 360 + randomDegrees;
+
+  wheel.classList.add('spinning');
+  wheel.style.transition = 'transform 5s ease-out';
+  wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+  setTimeout(() => {
+    spinning = false;
+    wheel.classList.remove('spinning');
+
+    const finalAngle = totalRotation % 360;
+    let result = '';
+    let color = '';
+
+    if (finalAngle >= 90 && finalAngle < 180) {
+      result = 'D';
+      color = 'red';
+    } else if (finalAngle >= 0 && finalAngle < 90) {
+      result = 'I';
+      color = 'yellow';
+    } else if (finalAngle >= 270 && finalAngle < 360) {
+      result = 'S';
+      color = 'green';
+    } else {
+      result = 'C';
+      color = 'blue';
+    }
+
+    banner.textContent = result;
+    banner.style.backgroundColor = color;
+    banner.classList.add('show');
+  }, 5000);
+}
+
+    // Динамічне позиціонування літер по колу
+    function positionLabels() {
+      const centerX = 250;
+      const centerY = 250;
+      const radius = 150;
+
+      const sectors = [
+        { id: 'label-d', angle: 315 },
+        { id: 'label-i', angle: 45 },
+        { id: 'label-s', angle: 135 },
+        { id: 'label-c', angle: 225 }
+      ];
+
+      sectors.forEach(({ id, angle }) => {
+        const rad = angle * Math.PI / 180;
+        const x = centerX + radius * Math.cos(rad);
+        const y = centerY + radius * Math.sin(rad);
+        const label = document.getElementById(id);
+        label.style.left = `${x}px`;
+        label.style.top = `${y}px`;
+      });
+    }
+
+    positionLabels();
+    window.addEventListener('resize', positionLabels);
+  </script>
+</body>
+</html>
