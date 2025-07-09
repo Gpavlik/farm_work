@@ -48,9 +48,9 @@
       const email = encodeURIComponent(document.getElementById("email").value.trim());
       const message = encodeURIComponent(document.getElementById("message").value.trim());
 
-      const subject = encodeURIComponent("Відгук від " + decodeURIComponent(name));
-      const body = `Ім’я: ${name}%0D%0AEmail: ${email}%0D%0AВідгук: ${message}`;
-      const mailtoLink = `mailto:a.volaniuk@pharmasco.com?subject=${subject}&body=${body}`;
+      const subject = encodeURIComponent("Пропозиція від " + decodeURIComponent(name));
+      const body = `Ім’я: ${name}%0D%0AEmail: ${email}%0D%0AПропозиція: ${message}`;
+      const mailtoLink = `mailto:service@pharmasco.com?subject=${subject}&body=${body}`;
 
       window.location.href = mailtoLink;
     }
