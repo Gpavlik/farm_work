@@ -260,6 +260,11 @@ margin-bottom: 6px;
   overflow: hidden;
 }
 
+.btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
 @keyframes pulse {
   0% { transform: scale(0.9); }
   80% { transform: scale(1.1); }
@@ -308,6 +313,11 @@ margin-bottom: 6px;
   border: 0px;
 }
 
+.btn--spam:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
 .hero__btn--select {
   display: block;
   margin-left: auto;
@@ -323,6 +333,11 @@ margin-bottom: 6px;
   cursor: pointer;
   border: 0px;
   color: #ffffff;
+}
+
+.hero__btn--select:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .submit-btn {
@@ -353,6 +368,10 @@ margin-bottom: 6px;
   width: 200px;
 }
 
+.submit-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
 .close {
   display: -webkit-box;
   display: -ms-flexbox;
