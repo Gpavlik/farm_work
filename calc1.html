@@ -1,34 +1,74 @@
 <!DOCTYPE html>
-<html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <title>Калькулятор аналізу</title>
-  <style>
-    .reagent-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 12px;
-}
+<html lang="en">
 
-.reagent-row input {
-  width: 180px;
-  padding: 4px;
-}
-  </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cryo s painless</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.css"
     integrity="sha512-Y0MM+V6ymRKN2zStTqzQ227DWhhp4Mzdo6gnlRnuaNCbc+YN/ZH0sBCLTM4M0oSy9c9VKiCvd4Jk44aCLrNS5Q=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./css/main.css" />
-  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/styles.css">
+
+<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5BZZCV5DRK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-5BZZCV5DRK");
+</script>
+<script>
+  const email = localStorage.getItem("allowedEmail");
+  if (email) {
+    gtag("set", "user_properties", {
+      user_id: email
+    });
+  }
+</script>
+<script>
+  function sha256(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    return crypto.subtle.digest("SHA-256", data).then(hash => {
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    });
+  }
+</script>
+  <style>
+    body {
+      font-family: Roboto, sans-serif;
+      margin: 30px;
+      background-color: #f9f9f9;
+    }
+    label, select, input, button {
+      margin: 10px 0;
+      display: block;
+    }
+    .test-row {
+      margin-bottom: 10px;
+    }
+    #results {
+      background: #fff;
+      color: #000;
+      padding: 20px;
+      margin-top: 20px;
+      max-width: 800px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
- <header class="header">
+<header class="header">
     <div class="container header__container">
       <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
       <!--<ul class="nav">
@@ -103,23 +143,24 @@
     </div>
   </header>
   <main>
-    <section class="works">
+    <section class="works" style="margin-top: 150px;">
       <div class="container">
-        <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Biossays 240</h2>
-<div class="calculator">     
-<h2>🔬 Калькулятор собівартості та витрат реагентів</h2>
-<label>Кількість аналізів на день: <input type="number" id="testCount" value="10"></label><br><br>
-<div id="reagentContainer"></div>
-<ul class="button">
-  <li><button class="btn" onclick="addReagent()">➕ Додати реагент</button></li>
-  <li><button class="btn" onclick="calculate()">📊 Розрахувати</button></li>
-  <li><button class="btn" onclick="downloadPDF()">📥 Завантажити PDF</button></li>
-</ul>
-<div id="output" style="margin-top:20px;"></div>
-</div>
+        <h2 style="text-align: center;">🧪 Калькулятор витрат реагентів</h2>
+
+        <label>Оберіть прилад:
+          <select id="deviceSelect" onchange="renderTestInputs()"></select>
+        </label>
+
+        <div id="testList"></div>
+
+        <button  class="btn" onclick="calculate()">📊 Розрахувати</button>
+        <button class="btn" onclick="copyResults()">📋 Копіювати текст звіту</button>
+
+        <div id="results"></div>
+      </div>
     </section>
   </main>
-<footer class="footer">
+  <footer class="footer">
     <div class="container">
       <div class="find-us">
         <div class="find">
@@ -181,57 +222,199 @@
     </div>
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
   </footer>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-let reagents = [];
 
-function addReagent() {
-  const container = document.getElementById("reagentContainer");
-  const div = document.createElement("div");
-  div.className = "reagent-row";
-  div.innerHTML = `
-    Назва: <input type="text" class="name">
-    Вартість за одиницю (грн): <input type="number" class="cost">
-    Витрата на 1 аналіз (мл): <input type="number" class="usage">
-    Об'єм флакона (мл): <input type="number" class="volume">
-  `;
-  container.appendChild(div);
+  <script>
+let reagentsData = {
+  "devices": {
+    "Biossays 240": {
+      "Глюкоза": { "Реагент A": 0.3, "Реагент B": 0.2 },
+      "Холестерин": { "Реагент B": 0.1, "Реагент C": 0.4 }
+    }
+  },
+  "reagentsInfo": {
+    "Реагент A": { "cost": 250, "volume": 50 },
+    "Реагент B": { "cost": 180, "volume": 40 },
+    "Реагент C": { "cost": 220, "volume": 60 }
+  }
+};
+
+let selectedTests = {};
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderDeviceList();
+  renderTestInputs();
+  document.title = `Звіт від ${getTodayDate()}`;
+});
+
+function getTodayDate() {
+  const today = new Date();
+  return today.toLocaleDateString("uk-UA", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+function renderDeviceList() {
+  const select = document.getElementById("deviceSelect");
+  select.innerHTML = "";
+  for (const device in reagentsData.devices) {
+    const option = document.createElement("option");
+    option.value = device;
+    option.textContent = device;
+    select.appendChild(option);
+  }
+}
+
+function renderTestInputs() {
+  selectedTests = {};
+  const device = document.getElementById("deviceSelect").value;
+  const container = document.getElementById("testList");
+  container.innerHTML = "<h3>📋 Введіть кількість досліджень на день:</h3>";
+
+  const tests = reagentsData.devices[device];
+  for (const test in tests) {
+    selectedTests[test] = 0;
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.value = "0";
+    input.oninput = () => selectedTests[test] = parseInt(input.value) || 0;
+
+    const label = document.createElement("label");
+    label.textContent = `${test}: `;
+    label.appendChild(input);
+
+    const row = document.createElement("div");
+    row.className = "test-row";
+    row.appendChild(label);
+    container.appendChild(row);
+  }
 }
 
 function calculate() {
-  const rows = document.querySelectorAll(".reagent-row");
-  let totalCost = 0;
-  let results = "<h3>📄 Результати:</h3><ul>";
-  const testCount = parseInt(document.getElementById("testCount").value);
+  const device = document.getElementById("deviceSelect").value;
+  const tests = reagentsData.devices[device];
+  const reagentsInfo = reagentsData.reagentsInfo;
+  const currentDate = getTodayDate();
 
-  rows.forEach(row => {
-    const name = row.querySelector(".name").value;
-    const cost = parseFloat(row.querySelector(".cost").value);
-    const usage = parseFloat(row.querySelector(".usage").value);
-    const volume = parseFloat(row.querySelector(".volume").value);
+  const workingDays = { month: 21, quarter: 63, year: 252 };
+  const usageSummary = {};
+  const testSummary = {};
+  let totalMonth = 0, totalQuarter = 0, totalYear = 0;
 
-    const costPerTest = cost * (usage / volume);
-    const testsPerBottle = Math.floor(volume / usage);
-    totalCost += costPerTest;
+  for (const test in selectedTests) {
+    const count = selectedTests[test];
+    if (count <= 0) continue;
 
-    results += `<li><strong>${name}</strong>: ${costPerTest.toFixed(2)} грн/аналіз; Залишок: ${testsPerBottle} тестів/флакон</li>`;
-  });
+    const reagents = tests[test];
+    let testCost = 0;
 
-  results += `</ul><p><strong>💰 Загальна собівартість:</strong> ${totalCost.toFixed(2)} грн/аналіз</p>`;
-  document.getElementById("output").innerHTML = results;
+    for (const reagent in reagents) {
+      const usage = reagents[reagent];
+      const { cost, volume } = reagentsInfo[reagent];
+      const pricePerMl = cost / volume;
+
+      testCost += usage * pricePerMl;
+      usageSummary[reagent] = (usageSummary[reagent] || 0) + usage * count;
+    }
+
+    testSummary[test] = { count, cost: testCost };
+  }
+
+  let html = `<h3>📊 Результати для приладу "${device}"</h3>`;
+  html += `<p><strong>Дата розрахунку:</strong> ${currentDate}</p><ul>`;
+
+  for (const reagent in usageSummary) {
+    const usagePerDay = usageSummary[reagent];
+    const { cost, volume } = reagentsInfo[reagent];
+    const bottlePrice = cost;
+
+    const bottleCounts = {
+      month: Math.ceil((usagePerDay * workingDays.month) / volume),
+      quarter: Math.ceil((usagePerDay * workingDays.quarter) / volume),
+      year: Math.ceil((usagePerDay * workingDays.year) / volume)
+    };
+
+    const costs = {
+      month: bottleCounts.month * bottlePrice,
+      quarter: bottleCounts.quarter * bottlePrice,
+      year: bottleCounts.year * bottlePrice
+    };
+
+    totalMonth += costs.month;
+    totalQuarter += costs.quarter;
+    totalYear += costs.year;
+
+    const maxDays = Math.floor(volume / usagePerDay);
+
+    html += `
+      <li><strong>${reagent}</strong><br>
+      💧 Витрата на день: ${usagePerDay.toFixed(2)} мл<br>
+      📦 Пляшок: місяць – ${bottleCounts.month}, квартал – ${bottleCounts.quarter}, рік – ${bottleCounts.year}<br>
+      💵 Вартість: місяць – ${costs.month.toFixed(2)} грн, квартал – ${costs.quarter.toFixed(2)} грн, рік – ${costs.year.toFixed(2)} грн<br>
+      ⏳ Один флакон вистачає на: ${maxDays} робочих днів</li><br>`;
+  }
+
+  html += `<h3>💰 Собівартість досліджень:</h3><ul>`;
+  for (const test in testSummary) {
+    const { count, cost } = testSummary[test];
+    html += `<li>${test}: ${cost.toFixed(2)} грн/тест × ${count} на день</li>`;
+  }
+  html += `</ul>`;
+
+  html += `<h3>📈 Загальна вартість реагентів:</h3>
+    <p>
+      Місяць: <strong>${totalMonth.toFixed(2)} грн</strong><br>
+      Квартал: <strong>${totalQuarter.toFixed(2)} грн</strong><br>
+      Рік: <strong>${totalYear.toFixed(2)} грн</strong>
+    </p>`;
+
+  document.getElementById("results").innerHTML = html;
 }
 
 function downloadPDF() {
+  calculate();
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  doc.html(document.getElementById("output"), {
-    callback: function (doc) {
-      doc.save("sobivartist_analizu.pdf");
-    },
-    x: 10,
-    y: 10
-  });
+  const content = document.getElementById("results");
+
+  if (!content || content.innerText.trim() === "") {
+    alert("❗ Спочатку натисніть '📊 Розрахувати'");
+    return;
+  }
+
+  setTimeout(() => {
+    doc.html(content, {
+      x: 10,
+      y: 10,
+      width: 180,
+      windowWidth: 1000,
+      html2canvas: {
+        scale: 1.2,
+        useCORS: true,
+        backgroundColor: "#ffffff"
+      },
+      callback: function (doc) {
+        doc.save("Reagent_Cost_Report.pdf");
+      }
+    });
+  }, 150);
+}
+
+function copyResults() {
+  const results = document.getElementById("results");
+  if (!results || results.innerText.trim() === "") {
+    alert("Немає даних для копіювання.");
+    return;
+  }
+
+  navigator.clipboard.writeText(results.innerText)
+    .then(() => alert("✅ Звіт скопійовано в буфер обміну"))
+    .catch(() => alert("❌ Не вдалося скопіювати"));
 }
 </script>
 
