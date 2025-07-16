@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Діагностика роботи регіонального менеджера</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+    h1 { text-align: center; margin-bottom: 30px; }
+    .group-block { margin-bottom: 40px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .criterion { margin-bottom: 20px; }
+    .criterion label { font-weight: bold; display: block; margin-bottom: 5px; }
+    .criterion p { margin: 5px 0; font-size: 0.95em; color: #555; }
+    .criterion select { width: 100%; padding: 5px; }
+    #results, #styleBlock, #recommendationBlock {
+      margin-top: 30px;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    #results { background-color: #e0ffe0; border: 1px solid #0c0; }
+    #styleBlock { background-color: #eef; border: 1px solid #77c; }
+    #recommendationBlock { background-color: #fff8e1; border: 1px solid #ffc107; }
+    button { padding: 10px 20px; font-size: 16px; background-color: #007acc; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background-color: #005fa3; }
+  </style>
+</head>
+<body>
+
+  <h1>🧾 Оцінка та діагностика стилю РМ</h1>
+
+  <div id="formContainer">
+    <!-- Сюди JavaScript динамічно вставить всі критерії -->
+  </div>
+
+  <button onclick="calculateEvaluation()">🔍 Проаналізувати</button>
+
+  <div id="results"></div>
+  <div id="styleBlock"></div>
+  <div id="recommendationBlock"></div>
+  <div style="text-align: center; margin-top: 20px;">
+    <p>Після заповнення всіх критеріїв натисніть кнопку "🔍 Проаналізувати" для отримання результатів.</p>
+  </div>
+  <script src="criteria.js"></script>
+  <script>
+   document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("formContainer");
+
+  const grouped = {};
+  evaluationCriteria.forEach(item => {
+    if (!grouped[item.group]) grouped[item.group] = [];
+    grouped[item.group].push(item);
+  });
+
+  for (const groupName in grouped) {
+    const groupBlock = document.createElement("div");
+    groupBlock.className = "group-block";
+    const title = document.createElement("h2");
+    title.textContent = `🔹 ${groupName}`;
+    groupBlock.appendChild(title);
+
+    grouped[groupName].forEach(crit => {
+      const div = document.createElement("div");
+      div.className = "criterion";
+
+      const label = document.createElement("label");
+      label.htmlFor = crit.id;
+      label.textContent = crit.title;
+
+      const desc = document.createElement("p");
+      desc.textContent = crit.description;
+
+      const select = document.createElement("select");
+      select.id = crit.id;
+      select.innerHTML = `<option value="">Не оцінено</option>` +
+        Object.entries(crit.levels).map(
+          ([key, val]) => `<option value="${key}">${key} – ${val}</option>`
+        ).join("");
+
+      div.appendChild(label);
+      div.appendChild(desc);
+      div.appendChild(select);
+      groupBlock.appendChild(div);
+    });
+
+    container.appendChild(groupBlock);
+  }
+
+  // Створюємо кнопку копіювання
+  const copyBtn = document.createElement("button");
+  copyBtn.textContent = "📋 Скопіювати рекомендації";
+  copyBtn.onclick = copyRecommendations;
+  document.body.appendChild(copyBtn);
+});
+
+function determineStyle() {
+  const avg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+  const getScores = ids => ids.map(id => parseInt(document.getElementById(id)?.value) || 0);
+
+  const groups = {
+    control: ['prep_1', 'prep_2', 'correction_1', 'visit_1'],
+    coaching: ['prep_3', 'trust_1', 'correction_2', 'practice_1'],
+    support: ['trust_1', 'trust_2', 'practice_2'],
+    delegation: ['prep_4', 'correction_3', 'post_2']
+  };
+
+  const averages = {};
+  for (const key in groups) {
+    averages[key] = avg(getScores(groups[key]));
+  }
+
+  const maxKey = Object.entries(averages).sort((a, b) => b[1] - a[1])[0][0];
+  const styleMap = {
+    control: "Директивний",
+    coaching: "Розвиваючий",
+    support: "Підтримуючий",
+    delegation: "Делегуючий"
+  };
+
+  return styleMap[maxKey] || "Невизначено";
+}
+
+function calculateEvaluation() {
+  let total = 0, count = 0;
+  const lowCriteria = [];
+
+  evaluationCriteria.forEach(crit => {
+    const val = parseInt(document.getElementById(crit.id).value);
+    if (!isNaN(val)) {
+      total += val;
+      count++;
+      if (val > 0 && val < 3) lowCriteria.push(crit);
+    }
+  });
+
+  const avg = count ? (total / count).toFixed(2) : "—";
+  document.getElementById("results").innerHTML = `📊 Загальна оцінка: <strong>${avg} / 5</strong>`;
+
+  const style = determineStyle();
+  document.getElementById("styleBlock").innerHTML = `🧭 Стиль управління: <strong>${style}</strong>`;
+
+  const recMap = {
+    "Директивний": "Зверни увагу на розвиток самостійності у ТПРК та м'якший емоційний контакт.",
+    "Розвиваючий": "Сильна сторона — навчання. Важливо не забувати про контроль і результат.",
+    "Підтримуючий": "Добре працюєш з довірою. Додай більше структури для оцінки навичок.",
+    "Делегуючий": "Високий рівень автономії. Перевіряй, чи достатньо зворотного зв’язку.",
+    "Невизначено": "Оцінка змішана — рекомендується пройти детальну діагностику або спостереження."
+  };
+
+  let output = `<p><strong>📌 Загальна рекомендація:</strong> ${recMap[style] || "—"}</p>`;
+
+  if (lowCriteria.length) {
+    output += `<strong>🔧 Критерії з низькою оцінкою (менше 3):</strong><ul>`;
+    lowCriteria.forEach(item => {
+      const lvl = item.levels["1"] || item.levels["2"];
+      output += `<li><strong>${item.title}</strong> — ${lvl}</li>`;
+    });
+    output += `</ul>`;
+  } else {
+    output += `<p>✅ Усі критерії оцінені на рівні 3 і вище.</p>`;
+  }
+
+  document.getElementById("recommendationBlock").innerHTML = output;
+}
+
+// 📋 Копіювання тексту рекомендацій
+function copyRecommendations() {
+  const output = document.getElementById("recommendationBlock").innerText;
+  navigator.clipboard.writeText(output).then(() => {
+    alert("Рекомендації скопійовано до буфера 📝");
+  }).catch(() => {
+    alert("Не вдалося скопіювати текст 😔");
+  });
+}
+
+</script>
+
+</body>
+</html>
