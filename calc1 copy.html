@@ -148,7 +148,7 @@ function calculateEvaluation() {
   let output = `<p><strong>📌 Загальна рекомендація:</strong> ${recMap[style] || "—"}</p>`;
 
   if (lowCriteria.length) {
-    output += `<strong>🔧 Критерії з низькою оцінкою (менше 3):</strong><ul>`;
+    output += `<strong>🔧 Критерії з низькою оцінкою (менше-3):</strong><ul>`;
     lowCriteria.forEach(item => {
       const lvl = item.levels["1"] || item.levels["2"];
       output += `<li><strong>${item.title}</strong> — ${lvl}</li>`;
