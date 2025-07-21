@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Калькулятор аналізів</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2a6bbf;
+    }
+    section {
+      background-color: #fff;
+      border: 1px solid #ccddee;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    h2 {
+      color: #1763aa;
+    }
+    label {
+      display: block;
+      margin: 8px 0;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #bbcce0;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 16px;
+      margin-top: 10px;
+      margin-right: 10px;
+      background-color: #2a6bbf;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #1f4e8c;
+    }
+    #results {
+      padding: 10px;
+      background-color: #eef3fa;
+      border-radius: 20px;
+      border: 1px dashed #a3bcd6;
+      white-space: pre-wrap;
+      font-family: "Courier New", monospace;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📊 Калькулятор вартості аналізів</h1>
+
+<section>
+  <h2>🔬 Дані по аналізах</h2>
+  <label>Глюкоза — кількість/день: <input type="number" id="glucoseVolume"></label>
+  <label>Глюкоза — ціна (грн)/Компенсація НЦЗУ: <input type="number" id="glucosePrice"></label>
+  <label>Холестерин — кількість/день: <input type="number" id="cholesterolVolume"></label>
+  <label>Холестерин — ціна (грн)/Компенсація НЦЗУ: <input type="number" id="cholesterolPrice"></label>
+</section>
+
+<section>
+  <h2>⚙️ Вартість обладнання</h2>
+  <label>Вартість приладу (грн): <input type="number" id="deviceCost"></label>
+</section>
+
+<button id="calculateBtn">🔢 Розрахувати</button>
+
+<section>
+  <h2>📄 Результати</h2>
+  <div id="results"></div>
+  <!--<input type="email" id="emailAddress" placeholder="Email для надсилання">-->
+  <button id="copyBtn">📋 Копіювати</button>
+  <!--<button id="emailBtn">📧 Надіслати</button>-->
+</section>
+ ,,,,,,,,,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+<script>
+  const reagents = {
+    'R1': { name: 'Реагент A', cost: 1200, volume: 5000 },
+    'R2': { name: 'Реагент B', cost: 800, volume: 3000 },
+  };
+
+  const analyses = {
+    'glucose': {
+      name: 'Глюкоза',
+      reagentsUsed: { 'R1': 5, 'R2': 2 },
+      priceId: 'glucosePrice',
+      volumeId: 'glucoseVolume',
+    },
+    'cholesterol': {
+      name: 'Холестерин',
+      reagentsUsed: { 'R2': 4 },
+      priceId: 'cholesterolPrice',
+      volumeId: 'cholesterolVolume',
+    }
+  };
+
+  document.getElementById("calculateBtn").addEventListener("click", () => {
+    const deviceCost = parseFloat(document.getElementById("deviceCost").value) || 0;
+    const workingDays = 21;
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('uk-UA');
+    let resultLines = [];
+    let totalMonthlyProfit = 0;
+    let totalMonthlyReagents = 0;
+    let reagentUsage = {};
+    for (let id in reagents) reagentUsage[id] = 0;
+
+    for (let key in analyses) {
+      const a = analyses[key];
+      const price = parseFloat(document.getElementById(a.priceId).value) || 0;
+      const dailyVolume = parseInt(document.getElementById(a.volumeId).value) || 0;
+      if (!price || !dailyVolume) continue;
+
+      const monthlyVolume = dailyVolume * workingDays;
+      let costPerAnalysis = 0;
+
+      for (let r in a.reagentsUsed) {
+        const ml = a.reagentsUsed[r];
+        costPerAnalysis += ml * (reagents[r].cost / reagents[r].volume);
+        reagentUsage[r] += ml * monthlyVolume;
+      }
+
+      const profitPerAnalysis = price - costPerAnalysis;
+      const reagentCostMonth = Object.entries(a.reagentsUsed).reduce((sum, [r, ml]) => {
+        return sum + Math.ceil((ml * monthlyVolume) / reagents[r].volume) * reagents[r].cost;
+      }, 0);
+
+      const profitMonth = profitPerAnalysis * monthlyVolume;
+      totalMonthlyProfit += profitMonth;
+      totalMonthlyReagents += reagentCostMonth;
+
+      resultLines.push(`
+🔬 ${a.name}:
+• Кількість/день: ${dailyVolume}
+• Ціна: ${price.toFixed(2)} грн
+• Собівартість реагентів: ${costPerAnalysis.toFixed(2)} грн
+• Прибуток з одного: ${profitPerAnalysis.toFixed(2)} грн
+• Витрати на реагенти/міс: ${reagentCostMonth.toFixed(2)} грн
+• Прибуток/міс: ${profitMonth.toFixed(2)} грн
+      `);
+    }
+
+    const reagentBreakdown = Object.entries(reagentUsage).map(([rId, mlMonth]) => {
+      const reagent = reagents[rId];
+      const mlQuarter = mlMonth * 3;
+      const mlYear = mlMonth * 12;
+
+      const bottlesMonth = Math.ceil(mlMonth / reagent.volume);
+      const bottlesQuarter = Math.ceil(mlQuarter / reagent.volume);
+      const bottlesYear = Math.ceil(mlYear / reagent.volume);
+
+      const costMonth = bottlesMonth * reagent.cost;
+      const costQuarter = bottlesQuarter * reagent.cost;
+      const costYear = bottlesYear * reagent.cost;
+
+      const dailyML = mlMonth / workingDays;
+      const daysPerBottle = dailyML > 0 ? Math.floor(reagent.volume / dailyML) : '–';
+
+      return `💉 ${reagent.name}:
+• На місяць: ${mlMonth.toFixed(2)} мл → ${bottlesMonth} флаконів → ${costMonth.toFixed(2)} грн
+• На квартал: ${mlQuarter.toFixed(2)} мл → ${bottlesQuarter} флаконів → ${costQuarter.toFixed(2)} грн
+• На рік: ${mlYear.toFixed(2)} мл → ${bottlesYear} флаконів → ${costYear.toFixed(2)} грн
+• 1 флакон вистачить приблизно на: ${daysPerBottle} роб. днів`;
+    }).join('\n');
+
+    const quarterlyProfit = totalMonthlyProfit * 3;
+    const yearlyProfit = totalMonthlyProfit * 12;
+    const quarterlyReagent = totalMonthlyReagents * 3;
+    const yearlyReagent = totalMonthlyReagents * 12;
+    const payback = totalMonthlyProfit > 0 ? Math.ceil(deviceCost / totalMonthlyProfit) : '∞';
+
+    const summary = `
+📅 Дата розрахунку: ${dateStr}
+📆 Робочих днів: ${workingDays}
+💰 Загальний прибуток/міс: ${totalMonthlyProfit.toFixed(2)} грн
+🧪 Загальні витрати на реагенти/міс: ${totalMonthlyReagents.toFixed(2)} грн
+
+📊 Квартал:
+• Прибуток: ${quarterlyProfit.toFixed(2)} грн
+• Витрати: ${quarterlyReagent.toFixed(2)} грн
+
+📈 Рік:
+• Прибуток: ${yearlyProfit.toFixed(2)} грн
+• Витрати: ${yearlyReagent.toFixed(2)} грн
+📦 Вартість приладу: ${deviceCost.toFixed(2)} грн
+
+⏳ Самоокупність приладу: ${payback} міс.
+
+📦 Детальний розрахунок по реагентах:
+${reagentBreakdown}
+
+(Дані приблизні, без урахування сервісу, персоналу тощо)
+    `;
+
+    document.getElementById("results").textContent = resultLines.join('\n') + summary;
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", () => {
+    navigator.clipboard.writeText(document.getElementById("results").textContent);
+    alert("Результати скопійовано!");
+  });
+
+  document.getElementById("emailBtn").addEventListener("click", () => {
+    const email = document.getElementById("emailAddress").value;
+    if (!email) return alert("Введіть e-mail.");
+    const body = encodeURIComponent(document.getElementById("results").textContent);
+    window.location.href = `mailto:${email}?subject=Розрахунок аналізів&body=${body}`;
+  });
+</script>
+</body>
+</html>
