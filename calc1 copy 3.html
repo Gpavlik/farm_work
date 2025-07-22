@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Розрахунок потреби реагентів</title>
+  <style>
+    main { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto;  margin-top: 150px;}
+    .anBlock { margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+    label { display: block; margin-top: 8px; }
+    button { margin-top: 10px; padding: 6px 12px; }
+    #results { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 6px; }
+    input{ width: 20%; padding: 5px; margin-top: 5px; border: 1px solid #ccc; border-radius: 10px; }
+  </style>
+   <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <header class="header">
+        <div class="container header__container">
+      <h2 id="greetingMessage"></h2>
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
+      <!--<ul class="nav">
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts" target="_blank" rel="noopener noreferrer">Контакти</a></li>
+      </ul>-->
+      <ul class="contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-envelope"></use>
+            </svg>contact@pharmasco.com</a>
+          </a>
+        </li>
+    <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+      </ul>
+      
+    </div>
+    <button class="mobile-menu-btn" type="button" data-menu-button>
+      <svg class="mobile-menu-icon" width="24" height="16">
+        <use class="mobile-menu-burger" href="./images/sprite.svg#24-menu"></use>
+        <use class="mobile-menu-close" href="./images/sprite.svg#icon-X"></use>
+      </svg>
+    </button>
+    <div class="mobile-menu" data-menu>
+      <ul class="mobile-menu-nav">
+        <li class="mobile-menu-nav-item">
+          <a class="link current" href="./index.html">Головна</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="./portfolio.html">Курси</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="/contact">Контакти</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+        <li class="mobile-menu-contacts-item">
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-socials">
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer">Youtube</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </li>
+        
+      </ul>
+      
+    </div>
+    </header>
+    <main>
+  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості</h2>
+<label>💰 Ціна приладу (грн):</label><br>
+<input type="number" id="deviceCost"><br>
+
+<h3 style="margin-top: 20px;">📋 Оберіть аналізи:</h3>
+<div id="checkboxList"></div>
+
+<h3>🧪 Щоденні реагенти — оберіть потрібні:</h3>
+<div id="dailyGroups"></div>
+<button class="btn" onclick="toggleAllDaily(true)">✅ Активувати всі</button>
+<button class="btn" onclick="toggleAllDaily(false)">❌ Очистити</button>
+<div id="dailyReagentSelector"></div>
+
+<button class="btn" onclick="calculate()">Розрахувати</button>
+<button class="btn" onclick="copyReport()">📋 Скопіювати звіт</button>
+
+<div id="results"></div>
+</main>
+  <footer class="footer">
+    <div class="container">
+      <div class="find-us">
+        <div class="find">
+          <a class="logo footer__logo" href="index.html"><img src="./images/logo.svg" alt="logo" width="200"></a>
+          <ul class="contacts contacts--footer">
+            <li class="contacts__contact contacts__contact--footer">
+              <address class="contacts__post"><p>Україна, Київська обл.,</p> <p>м. Вишгород,</p> <p>вул. Шолуденка, 15г</p></address>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-mail contacts__contact-mail--footer"
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
+            </li>
+          </ul>
+        </div>
+        <div class="social social--footer">
+          <h2 class="social__title">приєднуйтесь</h2>
+          <ul class="social__list social__list--footer">
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer"
+                aria-label="инстаграм иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-instagram"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer"
+                aria-label="твиттер иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/uoytube.svg"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer"
+                aria-label="фейсбук иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-facebook"></use>
+                </svg></a> 
+            </li>           
+          </ul>
+        </div>
+        <div class="spam">
+          <h2 class="spam__title" style="line-height: 2;">ТОВ «НВК «Фармаско» – провідний постачальник засобів діагностики для українських закладів охорони здоров’я, лікарів та пацієнтів.</h2>
+          <!--<form class="spam__form">
+            <label class="spam__label">
+              <input class="spam__input" type="email" name="email" placeholder="E-mail" />
+            </label>
+            <button class="btn btn--spam" type="submit">Підписатися<a class="spam-link link" href="" target="_blank"
+                rel="noopener noreferrer" aria-label="инстаграм иконка">
+                <svg class="spam__icon" width="24px" height="24px">
+                  <use href="./images/sprite.svg#icon-send"></use>
+                </svg></a></button>
+          </form>-->
+        </div>
+      </div>
+    </div>
+        <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+        <button id="scrollTopBtn" title="До гори">⬆</button>
+  </footer>
+
+<script>
+// Реагенти (приклад із 3-х, можеш вставити повний список)
+const reagents = [
+  { name: "АЛТ", volume: 70, price: 531, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "Альбумін", volume: 60, price: 294, testsPerSet: 200, usagePerTest: 0.3 },
+  { name: "Амілаза", volume: 70, price: 4005, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "АСТ", volume: 70, price: 532, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "Білірубін загальний", volume: 70, price: 773, testsPerSet: 200, usagePerTest: 0.35 },
+  { name: "Білірубін прямий", volume: 70, price: 773, testsPerSet: 200, usagePerTest: 0.35 },
+  { name: "Загальний білок", volume: 60, price: 270, testsPerSet: 200, usagePerTest: 0.3 },
+  { name: "ГГТ", volume: 70, price: 880, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "Глюкоза", volume: 70, price: 419, testsPerSet: 233, usagePerTest: 0.3004 },
+  { name: "Залізо", volume: 72, price: 2038, testsPerSet: 280, usagePerTest: 0.2571 },
+  { name: "Кальцій", volume: 82, price: 523, testsPerSet: 250, usagePerTest: 0.328 },
+  { name: "Креатинін", volume: 80, price: 4882, testsPerSet: 267, usagePerTest: 0.2996 },
+  { name: "Креатинкіназа загальна (NAC)", volume: 70, price: 2670, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "Креатинкіназа серцева фракція (МВ)", volume: 70, price: 6676, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "a-HBDH", volume: 70, price: 1175, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "ЛДГ", volume: 70, price: 1175, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "Лактат", volume: 82, price: 5332, testsPerSet: 286, usagePerTest: 0.2867 },
+  { name: "Сечова кислота", volume: 70, price: 839, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "Сечовина", volume: 70, price: 668, testsPerSet: 233, usagePerTest: 0.3004 },
+  { name: "Фосфатаза лужна", volume: 70, price: 381, testsPerSet: 280, usagePerTest: 0.25 },
+  { name: "Фосфор", volume: 72, price: 824, testsPerSet: 240, usagePerTest: 0.3 },
+  { name: "ХЛПВЩ", volume: 80, price: 3631, testsPerSet: 250, usagePerTest: 0.32 },
+  { name: "ХЛПНЩ", volume: 80, price: 4410, testsPerSet: 250, usagePerTest: 0.32 },
+  { name: "Холестерин", volume: 70, price: 762, testsPerSet: 233, usagePerTest: 0.3004 },
+  { name: "Тригліцериди", volume: 70, price: 1735, testsPerSet: 233, usagePerTest: 0.3004 },
+  { name: "Аполіпопротеїн Е", volume: 80, price: 9918, testsPerSet: 250, usagePerTest: 0.32 },
+  { name: "Ліпопротеїн (а)", volume: 70, price: 11750, testsPerSet: 200, usagePerTest: 0.35 },
+  { name: "Гомоцистеїн", volume: 35, price: 28810, testsPerSet: 117, usagePerTest: 0.2991 },
+  { name: "АпоА1", volume: 71, price: 8504, testsPerSet: 215, usagePerTest: 0.3302 },
+  { name: "Апо В", volume: 73, price: 10261, testsPerSet: 215, usagePerTest: 0.3395 },
+  { name: "Жовчні кислоти", volume: 80, price: 6104, testsPerSet: 222, usagePerTest: 0.3604 },
+  { name: "Трансферин", volume: 83, price: 14818, testsPerSet: 250, usagePerTest: 0.3327 },
+  { name: "Ig А", volume: 73, price: 7649, testsPerSet: 240, usagePerTest: 0.3042 },
+  { name: "Ig G", volume: 71, price: 7489, testsPerSet: 233, usagePerTest: 0.3047 },
+  { name: "Ig М", volume: 73, price: 7649, testsPerSet: 240, usagePerTest: 0.3042 },
+  { name: "Лужна промивка", volume: 2000, price: 2670, testsPerSet: 11764.7059, usagePerTest: 0.1700 },
+  { name: "Кисла промивка", volume: 500, price: 4769, testsPerSet: 8333.3333, usagePerTest: 0.06 },
+  { name: "С-реактивний білок", volume: 80, price: 18208, testsPerSet: 400, usagePerTest: 0.2 },
+  { name: "Глікогемоглобін", volume: 40, price: 26339, testsPerSet: 143, usagePerTest: 0.2797 },
+  { name: "Цистатін С", volume: 36, price: 30987, testsPerSet: 144, usagePerTest: 0.25 },
+  { name: "Магній", volume: 80, price: 1213, testsPerSet: 320, usagePerTest: 0.25 },
+  { name: "Ревматоїдний фактор", volume: 80, price: 15888, testsPerSet: 340, usagePerTest: 0.2353 },
+  { name: "АСО", volume: 60, price: 15469, testsPerSet: 210, usagePerTest: 0.2857 }
+];
+
+// Щоденні реагенти — тепер з чекбоксами
+const dailyReagents = [
+  { name: "Калібратори біохім. тестів Рівень 2", volume: 5, dailyUsage: 0.5, price: 3795 },
+  { name: "Контролі біохім. тестів Рівень 2/3", volume: 30, dailyUsage: 0.5, price: 12432 },
+  { name: "Калібратори ліпідів", volume: 3, dailyUsage: 0.5, price: 6325 },
+  { name: "Контролі ліпідів", volume: 6, dailyUsage: 0.5, price: 8464 },
+  { name: "Контролі специфічних білків", volume: 6, dailyUsage: 0.5, price: 4226 },
+  { name: "Контролі глікогемоглобіну", volume: 3, dailyUsage: 0.5, price: 4077 },
+];
+
+const dailyReagentsGrouped = {
+  "Біохімія": [
+    { name: "Калібратори біохім. тестів Рівень 2", volume: 5, dailyUsage: 0.5, price: 3795 },
+    { name: "Контролі біохім. тестів Рівень 2/3", volume: 30, dailyUsage: 0.5, price: 12432 },
+  ],
+  "Ліпіди": [
+    { name: "Калібратори ліпідів", volume: 3, dailyUsage: 0.5, price: 6325 },
+    { name: "Контролі ліпідів", volume: 6, dailyUsage: 0.5, price: 8464 },
+  ],
+  "Специфічні білки": [
+    { name: "Контролі специфічних білків", volume: 6, dailyUsage: 0.5, price: 4226 },
+    { name: "Контролі глікогемоглобіну", volume: 3, dailyUsage: 0.5, price: 4077 },
+  ]
+};
+
+// Вивід чекбоксів по групах
+const dailyGroups = document.getElementById("dailyGroups");
+Object.entries(dailyReagentsGrouped).forEach(([category, reagents], groupIndex) => {
+  const groupDiv = document.createElement("div");
+  groupDiv.innerHTML = `<strong>${category}</strong><br>`;
+  reagents.forEach((r, i) => {
+    const id = `dailyCheck_${groupIndex}_${i}`;
+    groupDiv.innerHTML += `<label><input type="checkbox" id="${id}"> ${r.name}</label><br>`;
+    r.checkboxId = id;
+  });
+  dailyGroups.appendChild(groupDiv);
+});
+
+function toggleAllDaily(state) {
+  Object.values(dailyReagentsGrouped).flat().forEach(r => {
+    const box = document.getElementById(r.checkboxId);
+    if (box) box.checked = state;
+  });
+};
+
+
+// Добова витрата на день буде додаватися до витрат у загальному калькуляторі
+const checkboxList = document.getElementById("checkboxList");
+reagents.forEach((r, i) => {
+  r.usagePerTest = +(r.volume / r.testsPerSet).toFixed(4);
+  const block = document.createElement("div");
+  block.innerHTML = `
+    <label><input type="checkbox" id="check_${i}" onchange="toggleInputs(${i})"> ${r.name}</label>
+    <div id="inputs_${i}" style="display:none;">
+      <label>Кількість аналізів на день:</label>
+      <input type="number" id="daily_${i}">
+      <label>Ціна аналізу для пацієнта/компенсація НЦЗУ (грн):</label>
+      <input type="number" id="price_${i}">
+    </div>`;
+  checkboxList.appendChild(block);
+});
+
+function toggleInputs(i) {
+  document.getElementById(`inputs_${i}`).style.display =
+    document.getElementById(`check_${i}`).checked ? "block" : "none";
+}
+
+// Відображає щоденні реагенти в таблиці
+const dailyTableBody = document.querySelector("#dailyTable tbody");
+dailyReagents.forEach(r => {
+  const row = document.createElement("tr");
+  row.innerHTML = `<td>${r.name}</td><td>${r.volume}</td><td>${r.dailyUsage}</td><td>${r.price}</td>`;
+  dailyTableBody.appendChild(row);
+});
+
+function calculate() {
+  const deviceCost = +document.getElementById("deviceCost").value;
+  const workDays = { month: 21, quarter: 63, year: 252 };
+  const now = new Date().toLocaleDateString('uk-UA');
+
+  let totalDailyCost = 0;
+  let totalDailyProfit = 0;
+  let report = `<p><strong>🗓️ Дата розрахунку:</strong> ${now}</p>`;
+
+  // Основні аналізи
+  reagents.forEach((r, i) => {
+    if (!document.getElementById(`check_${i}`).checked) return;
+    const count = +document.getElementById(`daily_${i}`).value;
+    const patientPrice = +document.getElementById(`price_${i}`).value;
+
+    const costPerTest = +(r.price / r.testsPerSet).toFixed(2);
+    const profitPerTest = +(patientPrice - costPerTest).toFixed(2);
+    const usageMl = +(r.usagePerTest * count).toFixed(4);
+    const flaconsPerDay = +(usageMl / r.volume).toFixed(4);
+    const costDaily = +(flaconsPerDay * r.price).toFixed(2);
+    const profitDaily = +(profitPerTest * count).toFixed(2);
+
+    totalDailyCost += costDaily;
+    totalDailyProfit += profitDaily;
+
+    report += `
+      <h4>${r.name}</h4>
+      <ul>
+        <li>Собівартість аналізу: ${costPerTest} грн</li>
+        <li>Кількість на день: ${count}</li>
+        <li>Добова витрата: ${flaconsPerDay.toFixed(2)} флаконів / ${costDaily} грн</li>
+        <li>Чистий прибуток: ${profitDaily} грн</li>
+      </ul>`;
+  });
+
+  // 🧪 Щоденні реагенти — активні витрати
+report += `<h3>🧪 Активні щоденні реагенти</h3><ul>`;
+Object.values(dailyReagentsGrouped).flat().forEach(r => {
+  const box = document.getElementById(r.checkboxId);
+  if (!box || !box.checked) return;
+  const daysPerUnit = +(r.volume / r.dailyUsage).toFixed(2);
+  const bottlesPerDay = +(1 / daysPerUnit).toFixed(4);
+  const costDaily = +(bottlesPerDay * r.price).toFixed(2);
+  totalDailyCost += costDaily;
+  report += `<li>${r.name}: ${bottlesPerDay.toFixed(2)} флаконів / ${costDaily} грн</li>`;
+});
+report += `</ul>`;
+
+  const paybackDays = Math.ceil(deviceCost / totalDailyProfit);
+  const postPayProfit = Object.entries(workDays).map(([label, days]) => {
+    const sum = (totalDailyProfit * days).toFixed(2);
+    return `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${sum} грн</li>`;
+  }).join("");
+
+  report += `<hr><h3>📊 Сумарні показники</h3><ul>
+    <li>Добова витрата реагентів + щоденні витрати: ${totalDailyCost.toFixed(2)} грн</li>
+    <li>Добовий чистий прибуток: ${totalDailyProfit.toFixed(2)} грн</li>
+    <li>Окупність приладу: ${paybackDays} робочих днів</li>
+    <li>Прибуток після окупності:</li><ul>${postPayProfit}</ul>
+  </ul>`;
+
+  document.getElementById("results").innerHTML = report;
+}
+
+function copyReport() {
+  const text = document.getElementById("results").innerText;
+  navigator.clipboard.writeText(text)
+    .then(() => alert("Звіт скопійовано 📋"))
+    .catch(() => alert("Не вдалося скопіювати 😕"));
+}
+</script>
+</body>
+
+</html>

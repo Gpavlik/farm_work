@@ -26,9 +26,10 @@
       color: #1763aa;
     }
     label {
-      display: block;
-      margin: 8px 0;
-    }
+      display: grid;
+  grid-template-columns: 1fr 1fr; /* дві колонки однакової ширини */
+  gap: 20px; /* проміжки між елементами */
+}
     input {
       width: 100%;
       padding: 8px;
@@ -66,10 +67,92 @@
 
 <section>
   <h2>🔬 Дані по аналізах</h2>
-  <label>Глюкоза — кількість/день: <input type="number" id="glucoseVolume"></label>
-  <label>Глюкоза — ціна (грн)/Компенсація НЦЗУ: <input type="number" id="glucosePrice"></label>
-  <label>Холестерин — кількість/день: <input type="number" id="cholesterolVolume"></label>
-  <label>Холестерин — ціна (грн)/Компенсація НЦЗУ: <input type="number" id="cholesterolPrice"></label>
+<label>АЛТ - кількість/день: <input type="number" id="altVolume"></label>
+<label>АЛТ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="altPrice"></label>
+<label>Альбумін - кількість/день: <input type="number" id="albuminVolume"></label>
+<label>Альбумін - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="albuminPrice"></label>
+<label>Амілаза - кількість/день: <input type="number" id="amylaseVolume"></label>
+<label>Амілаза - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="amylasePrice"></label>
+<label>АСТ - кількість/день: <input type="number" id="astVolume"></label>
+<label>АСТ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="astPrice"></label>
+<label>Білірубін загальний - кількість/день: <input type="number" id="totalBilirubinVolume"></label>
+<label>Білірубін загальний - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="totalBilirubinPrice"></label>
+<label>Білірубін прямий - кількість/день: <input type="number" id="directBilirubinVolume"></label>
+<label>Білірубін прямий - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="directBilirubinPrice"></label>
+<label>Загальний білок - кількість/день: <input type="number" id="totalProteinVolume"></label>
+<label>Загальний білок - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="totalProteinPrice"></label>
+<label>ГГТ - кількість/день: <input type="number" id="ggtVolume"></label>
+<label>ГГТ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ggtPrice"></label>
+<label>Глюкоза - кількість/день: <input type="number" id="glucoseVolume"></label>
+<label>Глюкоза - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="glucosePrice"></label>
+<label>Залізо - кількість/день: <input type="number" id="ironVolume"></label>
+<label>Залізо - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ironPrice"></label>
+<label>Кальцій - кількість/день: <input type="number" id="calciumVolume"></label>
+<label>Кальцій - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="calciumPrice"></label>
+<label>Креатинін - кількість/день: <input type="number" id="creatinineVolume"></label>
+<label>Креатинін - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="creatininePrice"></label>
+<label>Креатинкіназа загальна (NAC) - кількість/день: <input type="number" id="ckTotalVolume"></label>
+<label>Креатинкіназа загальна (NAC) - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ckTotalPrice"></label>
+<label>Креатинкіназа серцева фракція (МВ) - кількість/день: <input type="number" id="ckMBVolume"></label>
+<label>Креатинкіназа серцева фракція (МВ) - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ckMBPrice"></label>
+<label>a-HBDH - кількість/день: <input type="number" id="ahbdhVolume"></label>
+<label>a-HBDH - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ahbdhPrice"></label>
+<label>ЛДГ - кількість/день: <input type="number" id="ldhVolume"></label>
+<label>ЛДГ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ldhPrice"></label>
+<label>Лактат - кількість/день: <input type="number" id="lactateVolume"></label>
+<label>Лактат - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="lactatePrice"></label>
+<label>Сечова кислота - кількість/день: <input type="number" id="uricAcidVolume"></label>
+<label>Сечова кислота - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="uricAcidPrice"></label>
+<label>Сечовина - кількість/день: <input type="number"    id="ureaVolume"></label>
+<label>Сечовина - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ureaPrice"></label>
+<label>Фосфатаза лужна - кількість/день: <input type="number" id="alkPhVolume"></label>
+<label>Фосфатаза лужна - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="alkPhPrice"></label>
+<label>Фосфор - кількість/день: <input type="number" id="phosphorVolume"></label>
+<label>Фосфор - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="phosphorPrice"></label>
+<label>ЛПВЩ - кількість/день: <input type="number" id="hdlVolume"></label>
+<label>ЛПВЩ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="hdlPrice"></label>
+<label>ЛПНЩ - кількість/день: <input type="number" id="ldlVolume"></label>
+<label>ЛПНЩ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ldlPrice"></label>
+<label>Холестерин - кількість/день: <input type="number" id="cholesterolVolume"></label>   
+<label>Холестерин - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="cholesterolPrice"></label>
+<label>Тригліцериди - кількість/день: <input type="number" id="triglyceridesVolume"></label>
+<label>Тригліцериди - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="triglyceridesPrice"></label>
+<label>Аполіпопротеїн Е - кількість/день: <input type="number" id="apoEVolume"></label>
+<label>Аполіпопротеїн Е - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="apoEPrice"></label>
+<label>Ліпопротеїн (а) - кількість/день: <input type="number" id="lpAVolume"></label>
+<label>Ліпопротеїн (а) - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="lpAPrice"></label>
+<label>Гомоцистеїн - кількість/день: <input type="number" id="hcyVolume"></label>
+<label>Гомоцистеїн - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="hcyPrice"></label>
+<label>АпоА1 - кількість/день: <input type="number" id="apoA1Volume"></label>
+<label>АпоА1 - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="apoA1Price"></label>
+<label>Апо В - кількість/день: <input type="number" id="apoBVolume"></label>
+<label>Апо В - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="apoBPrice"></label>
+<label>Жовчні кислоти - кількість/день: <input type="number" id="bileAcidsVolume"></label>
+<label>Жовчні кислоти - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="bileAcidsPrice"></label>
+<label>Трансферин - кількість/день: <input type="number" id="transferrinVolume"></label>
+<label>Трансферин - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="transferrinPrice"></label>
+<label>Ig А - кількість/день: <input type="number" id="igaVolume"></label>
+<label>Ig А - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="igaPrice"></label>
+<label>Ig G - кількість/день: <input type="number" id="iggVolume"></label>
+<label>Ig G - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="iggPrice"></label>
+<label>Ig М - кількість/день: <input type="number" id="igmVolume"></label>
+<label>Ig М - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="igmPrice"></label>
+<label>Лужна промивка - кількість/день: <input type="number" id="alkWashVolume"></label>
+<label>Лужна промивка - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="alkWashPrice"></label>
+<label>Кисла промивка - кількість/день: <input type="number" id="acidWashVolume"></label>
+<label>Кисла промивка - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="acidWashPrice"></label>
+<label>С-реактивний білок - кількість/день: <input type="number" id="crpVolume"></label>
+<label>С-реактивний білок - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="crpPrice"></label>
+<label>Глікогемоглобін - кількість/день: <input type="number" id="hba1cVolume"></label>
+<label>Глікогемоглобін - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="hba1cPrice"></label>
+<label>Цистатін С - кількість/день: <input type="number" id="cystatinCVolume"></label>
+<label>Цистатін С - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="cystatinCPrice"></label>
+<label>Магній - кількість/день: <input type="number" id="magnesiumVolume"></label>
+<label>Магній - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="magnesiumPrice"></label>
+<label>Ревматоїдний фактор - кількість/день: <input type="number" id="rheumatoidFactorVolume"></label>
+<label>Ревматоїдний фактор - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="rheumatoidFactorPrice"></label>
+<label>АСО - кількість/день: <input type="number" id="asoVolume"></label>
+<label>АСО - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="asoPrice"></label>
 </section>
 
 <section>
@@ -77,7 +160,7 @@
   <label>Вартість приладу (грн): <input type="number" id="deviceCost"></label>
 </section>
 
-<button id="calculateBtn">🔢 Розрахувати</button>
+<button id="calculateBtn" class="btn">🔢 Розрахувати</button>
 
 <section>
   <h2>📄 Результати</h2>
@@ -86,67 +169,312 @@
   <button id="copyBtn">📋 Копіювати</button>
   <!--<button id="emailBtn">📧 Надіслати</button>-->
 </section>
- ,,,,,,,,,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
 <script>
   const reagents = {
-    'R1': { name: 'Реагент A', cost: 1200, volume: 5000 },
-    'R2': { name: 'Реагент B', cost: 800, volume: 3000 },
+    'R1': { name: 'АЛТ', cost: 531, volume: 70 },
+    'R2': { name: 'Альбумін', cost: 294, volume: 60 },
+    'R3': { name: 'Амілаза', cost: 4005, volume: 70 },
+    'R4': { name: 'АСТ', cost: 532, volume: 70 },
+    'R5': { name: 'Білірубін загальний', cost: 773, volume: 70 },
+    'R6': { name: 'Білірубін прямий', cost: 773, volume: 70 },
+    'R7': { name: 'Загальний білок', cost: 270, volume: 60 },
+    'R8': { name: 'ГГТ', cost: 880, volume: 70 },
+    'R9': { name: 'Глюкоза', cost: 419, volume: 70 },
+    'R10': { name: 'Залізо', cost: 2038, volume: 72 },
+    'R11': { name: 'Кальцій', cost: 523, volume: 82 },
+    'R12': { name: 'Креатінін', cost: 4882, volume: 80 },
+    'R13': { name: 'Креатінкіназа загальна', cost: 2670, volume: 70 },
+    'R14': { name: 'Креатінкіназа серцева', cost: 6676, volume: 70 },
+    'R15': { name: 'a-HBDH', cost: 1175, volume: 70 },
+    'R16': { name: 'ЛДГ', cost: 1175, volume: 70 },
+    'R17': { name: 'Лактат', cost: 5332, volume: 82 },
+    'R18': { name: 'Сечова кислота', cost: 839, volume: 70 },
+    'R19': { name: 'Сечовина', cost: 668, volume: 70 },
+    'R20': { name: 'Фосфатаза лужна', cost: 381, volume: 70 },
+    'R21': { name: 'Фосфор', cost: 824, volume: 72 },
+    'R22': { name: 'ХЛПВЩ', cost: 3631, volume: 80 },
+    'R23': { name: 'ХЛПНЩ', cost: 4410, volume: 80 },
+    'R24': { name: 'Холестерин', cost: 762, volume: 70 },
+    'R25': { name: 'Тригліцериди', cost: 1735, volume: 233 },
+    'R26': { name: 'Аполіпопротеїн Е', cost: 9918, volume: 80 },
+    'R27': { name: 'Ліпопротеїн А', cost: 11750, volume: 70 },
+    'R28': { name: 'Гомоцистеїн', cost: 28810, volume: 35 },
+    'R29': { name: 'Апо А1', cost: 8504, volume: 71 },
+    'R30': { name: 'Апо B', cost: 10261, volume: 73 },
+    'R31': { name: 'Жовчні кислоти', cost: 6104, volume: 80 },
+    'R32': { name: 'Трансферин', cost: 14818, volume: 83 },
+    'R33': { name: 'Ig A', cost: 7649, volume: 73 },
+    'R34': { name: 'Ig G', cost: 7489, volume: 71 },
+    'R35': { name: 'Ig M', cost: 7649, volume: 73 },
+    'R36': { name: 'Лужна промивка', cost: 2670, volume: 2000 },
+    'R37': { name: 'Кисла Промивка', cost: 4769, volume: 500 },
+    'R38': { name: 'С-реактивний білок', cost: 18208, volume: 80 },
+    'R39': { name: 'Глікогемоглобін', cost: 26339, volume: 40 },
+    'R40': { name: 'Цистатін С', cost: 30987, volume: 36 },
+    'R41': { name: 'Магній', cost: 1213, volume: 80 },
+    'R42': { name: 'Ревматоїдний фактор', cost: 15888, volume: 80 },
+    'R43': { name: 'АСО', cost: 15469, volume: 60 },
   };
 
   const analyses = {
+    
+    'ALT': {
+      name: 'АЛТ',
+      reagentsUsed: { 'R1': 0.25 },
+      priceId: 'ALTPrice',
+      volumeId: 'ALTVolume',
+    },
+    'albumine': {
+      name: 'Альбумін',
+      reagentsUsed: { 'R2': 0.3 },
+      priceId: 'albuminePrice',
+      volumeId: 'albumineVolume',
+    },
+    'Amilase': {
+      name: 'Амілаза',
+      reagentsUsed: { 'R3': 0.25 },
+      priceId: 'AmilasePrice',
+      volumeId: 'AmilaseVolume',
+    },
+    'AST': {
+      name: 'АСТ',
+      reagentsUsed: { 'R4': 0.25 },
+      priceId: 'ASTPrice',
+      volumeId: 'ASTVolume',
+    },
+    'Bilirubine total': {
+      name: 'Білірубін загальний',
+      reagentsUsed: { 'R5': 0.35},
+      priceId: 'bilirubineTotalPrice',
+      volumeId: 'bilirubineTotalVolume',
+    },
+    'bilirubinedirect': {
+      name: 'Білірубін прямий',
+      reagentsUsed: { 'R6': 0.35 },
+      priceId: 'bilirubineDirectPrice',
+      volumeId: 'bilirubineDirectVolume',
+    },
+    'proteinetotal': {
+      name: 'Білок загальні',
+      reagentsUsed: { 'R7': 0.3 },
+      priceId: 'proteinsTotalPrice',
+      volumeId: 'proteinsTotalVolume',
+    },
+    'GGT': {
+      name: 'ГГТ',
+      reagentsUsed: { 'R8': 0.25 },
+      priceId: 'GGTPrice',
+      volumeId: 'GGTVolume',
+    },
     'glucose': {
       name: 'Глюкоза',
-      reagentsUsed: { 'R1': 5, 'R2': 2 },
+      reagentsUsed: { 'R9': 0.300429},
       priceId: 'glucosePrice',
       volumeId: 'glucoseVolume',
     },
+    'Ferrum': {
+      name: 'Залізо',
+      reagentsUsed: { 'R10': 0.257143},
+      priceId: 'FerrumPrice',
+      volumeId: 'FerrumVolume',
+    },
+    'Calcium': {
+      name: 'Кальцій',
+      reagentsUsed: { 'R11': 0.328},
+      priceId: 'CalciumPrice',
+      volumeId: 'CalciumVolume',
+    },
+    'Kreatinine': {
+      name: 'Креатинін',
+      reagentsUsed: { 'R12': 0.299625 },
+      priceId: 'KreatininePrice',
+      volumeId: 'KreatinineVolume',
+    },
+    'NAC': {
+      name: 'Креатинкіназа загальна',
+      reagentsUsed: { 'R13': 0.25 },
+      priceId: 'NACPrice',
+      volumeId: 'NACVolume',
+    },
+    'MB': {
+      name: 'Креатинкіназа серцева фракція',
+      reagentsUsed: { 'R14': 0.25 },
+      priceId: 'MBPrice',
+      volumeId: 'MBVolume',
+    },
+    'a-HBDH': {
+      name: 'a-HBDH',
+      reagentsUsed: { 'R15': 0.25,  },
+      priceId: 'a-HBDHPrice',
+      volumeId: 'a-HBDHVolume',
+    },
+    'LDG': {
+      name: 'ЛДГ',
+      reagentsUsed: { 'R16': 0.25 },
+      priceId: 'LDGPrice',
+      volumeId: 'LDGVolume',
+    },
+    'Lactate': {
+      name: 'Лактат',
+      reagentsUsed: { 'R17': 0.286713 },
+      priceId: 'LactatePrice',
+      volumeId: 'LactateVolume',
+    },
+    'Uricacid': {
+      name: 'Сечова кислота',
+      reagentsUsed: { 'R18': 0.25 },
+      priceId: 'UricacidPrice',
+      volumeId: 'UricacidVolume',
+    },
+    'urea': {
+      name: 'Сечовина',
+      reagentsUsed: { 'R19': 0.300429 },
+      priceId: 'ureaPrice',
+      volumeId: 'ureaVolume',
+    },
+    'alkph': {
+      name: 'Лужна фосфатаза',
+      reagentsUsed: { 'R20': 0.25 },
+      priceId: 'alkphPrice',
+      volumeId: 'alkphVolume',
+    },
+    'Phosphor': {
+      name: 'Фосфор',
+      reagentsUsed: { 'R21': 0.3 },
+      priceId: 'PhosphorPrice',
+      volumeId: 'PhosphorVolume',
+    },
+    'HDL': {
+      name: 'ЛПВЩ',
+      reagentsUsed: { 'R22': 0.32 },
+      priceId: 'HDLPrice',
+      volumeId: 'HDLVolume',
+    },
+    'LDL': {
+      name: 'ЛПНЩ',
+      reagentsUsed: { 'R23': 0.32 },
+      priceId: 'LDLPrice',
+      volumeId: 'LDLVolume',
+    },
     'cholesterol': {
       name: 'Холестерин',
-      reagentsUsed: { 'R2': 4 },
+      reagentsUsed: { 'R24': 0.300429 },
       priceId: 'cholesterolPrice',
       volumeId: 'cholesterolVolume',
+    },
+    'trigliceride': {
+      name: 'Тригліцериди',
+      reagentsUsed: { 'R25': 0.300429 },
+      priceId: 'trigliceridePrice',
+      volumeId: 'triglicerideVolume',
+    },
+    'APOE': {
+      name: 'Аполіпопротеїн Е',
+      reagentsUsed: { 'R26': 0.32},
+      priceId: 'APOEPrice',
+      volumeId: 'APOEVolume',
+    },
+    'LPA': {
+      name: 'Ліпопротеїн А',
+      reagentsUsed: { 'R27': 0.35},
+      priceId: 'LPAPrice',
+      volumeId: 'LAPVolume',
+    },
+    'Homoc': {
+      name: 'Гомоцистеїн',
+      reagentsUsed: { 'R28': 0.299145 },
+      priceId: 'HomocPrice',
+      volumeId: 'HomocVolume',
+    },
+    'APOA1': {
+      name: 'Аполіпопротеїн А1',
+      reagentsUsed: { 'R29': 0.330233 },
+      priceId: 'APOA1Price',
+      volumeId: 'APOA1Volume',
+    },
+    'APOB': {
+      name: 'Аполіпопротеїн В',
+      reagentsUsed: { 'R30': 0.339535 },
+      priceId: 'APOBPrice',
+      volumeId: 'APOBVolume',
+    },
+    'bileacid': {
+      name: 'Жовчні кислоти',
+      reagentsUsed: { 'R31': 0.36036 },
+      priceId: 'bileacidPrice',
+      volumeId: 'bileacidVolume',
+    },
+    'transf': {
+      name: 'Трансферин',
+      reagentsUsed: { 'R32': 0.332 },
+      priceId: 'transfPrice',
+      volumeId: 'transfVolume',
+    },
+    'IGA': {
+      name: 'Імуноглобулін A',
+      reagentsUsed: { 'R33': 0.304167 },
+      priceId: 'IGAPrice',
+      volumeId: 'IGAVolume',
+    },
+    'IGG': {
+      name: 'Імуноглобулін G',
+      reagentsUsed: { 'R34': 0.304721 },
+      priceId: 'IGGPrice',
+      volumeId: 'IGGVolume',
+    },
+    'igM': {
+      name: 'Імуноглобулін M',
+      reagentsUsed: { 'R35': 0.304167 },
+      priceId: 'igMPrice',
+      volumeId: 'igMVolume',
+    },
+    'ALKFLUSE': {
+      name: 'Лужна промивка',
+      reagentsUsed: { 'R36': 0.17 },
+      priceId: 'ALKFLUSEPrice',
+      volumeId: 'ALKFLUSEVolume',
+    },
+    'Acidfluse ': {
+      name: 'Кисла промивка',
+      reagentsUsed: { 'R37': 0.06 },
+      priceId: 'AcidflusePrice',
+      volumeId: 'AcidfluseVolume',
+    },
+    'C-react': {
+      name: 'C-реактивний білок',
+      reagentsUsed: { 'R38': 0.2 },
+      priceId: 'C-reactPrice',
+      volumeId: 'C-reactVolume',
+    },
+    'GlHem': {
+      name: 'Глікогемоглобін',
+      reagentsUsed: { 'R39': 0.27972 },
+      priceId: 'GlHemPrice',
+      volumeId: 'GlHemVolume',
+    },
+    'Cyst': {
+      name: 'Цистатин C',
+      reagentsUsed: { 'R40': 0.25 },
+      priceId: 'CystPrice',
+      volumeId: 'CystVolume',
+    },
+    'Mg': {
+      name: 'Магній',
+      reagentsUsed: { 'R41': 0.25 },
+      priceId: 'MgPrice',
+      volumeId: 'MgVolume',
+    },
+    'revm': {
+      name: 'Ревматоїдний фактор',
+      reagentsUsed: { 'R42': 0.235294 },
+      priceId: 'revmPrice',
+      volumeId: 'revmVolume',
+    },
+    'ACO': {
+      name: 'ACO',
+      reagentsUsed: { 'R43': 0.285714 },
+      priceId: 'ACOPrice',
+      volumeId: 'ACOVolume',
     }
   };
 
