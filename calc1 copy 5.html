@@ -136,9 +136,11 @@
   <label>🔢 Кількість тестів на день: <input type="number" id="testsPerDay" value=""></label>
   <label>💸 Ціна тесту для пацієнта (грн): <input type="number" id="testPrice" value=""></label>
 
-  <button class="btn" onclick="calculate()">🔎 Розрахувати</button>
-  <button class="btn" onclick="copyResults()">📋 Скопіювати результат</button>
-
+  <ul>
+  <li class="button"><button class="btn" onclick="calculate()">🔍 Розрахувати</button>
+  <button class="btn" onclick="copyResult()">📋 Скопіювати результат</button>
+<button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj4.html">Назад</a></button></li>
+</ul>
   <div id="output" class="result"></div>
   </div>
 </section>

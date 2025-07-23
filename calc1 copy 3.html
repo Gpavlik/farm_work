@@ -94,7 +94,7 @@
     </div>
     </header>
     <main>
-  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості</h2>
+  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості Biossays 240 Plus</h2>
 <label>💰 Ціна приладу (грн):</label><br>
 <input type="number" id="deviceCost"><br>
 
@@ -107,9 +107,11 @@
 <button class="btn" onclick="toggleAllDaily(false)">❌ Очистити</button>
 <div id="dailyReagentSelector"></div>
 
-<button class="btn" onclick="calculate()">Розрахувати</button>
-<button class="btn" onclick="copyReport()">📋 Скопіювати звіт</button>
-
+<ul>
+  <li class="button"><button class="btn" onclick="calculate()">🔍 Розрахувати</button>
+  <button class="btn" onclick="copyResult()">📋 Скопіювати результат</button>
+<button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj1.html">Назад</a></button></li>
+</ul>
 <div id="results"></div>
 </main>
   <footer class="footer">
