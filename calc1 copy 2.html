@@ -2,594 +2,326 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <title>Калькулятор аналізів</title>
+  <title>Розрахунок потреби реагентів та їх вартості</title>
+  link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.css"
+    integrity="sha512-Y0MM+V6ymRKN2zStTqzQ227DWhhp4Mzdo6gnlRnuaNCbc+YN/ZH0sBCLTM4M0oSy9c9VKiCvd4Jk44aCLrNS5Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/styles.css">
+
+<<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5BZZCV5DRK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-5BZZCV5DRK");
+</script>
+<script>
+  const email = localStorage.getItem("allowedEmail");
+  if (email) {
+    gtag("set", "user_properties", {
+      user_id: email
+    });
+  }
+</script>
+<script>
+  function sha256(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    return crypto.subtle.digest("SHA-256", data).then(hash => {
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    });
+  }
+</script>
   <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background-color: #f7f9fc;
-      color: #333;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #2a6bbf;
-    }
-    section {
-      background-color: #fff;
-      border: 1px solid #ccddee;
-      border-radius: 8px;
-      padding: 15px 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    h2 {
-      color: #1763aa;
-    }
-    label {
-      display: grid;
-  grid-template-columns: 1fr 1fr; /* дві колонки однакової ширини */
-  gap: 20px; /* проміжки між елементами */
-}
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #bbcce0;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px 16px;
-      margin-top: 10px;
-      margin-right: 10px;
-      background-color: #2a6bbf;
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background-color: #1f4e8c;
-    }
-    #results {
-      padding: 10px;
-      background-color: #eef3fa;
-      border-radius: 20px;
-      border: 1px dashed #a3bcd6;
-      white-space: pre-wrap;
-      font-family: "Courier New", monospace;
-    }
+        input { padding: 5px; margin: 5px; width: 30%; border-radius: 10px; }
+    label { display: block; margin-top: 10px; }
+    button { margin: 10px 0; padding: 10px 15px; }
+    .result { margin-top: 20px; font-weight: bold; white-space: pre-wrap; }
+    ul { margin-left: 20px; }
+    li { margin-bottom: 6px; }
+    main { max-width: 800px; padding: 20px; }
+    h2 { text-align: center; }
+
   </style>
 </head>
 <body>
+<header class="header">
+    <div class="container header__container">
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
+      <!--<ul class="nav">
+        <li class="nav__referent"><a class="nav__link" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts" target="_blank" rel="noopener noreferrer">Контакти</a></li>
+      </ul>-->
+      <ul class="contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-envelope"></use>
+            </svg>contact@pharmasco.com</a>
+          </a>
+        </li>
+       <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+      </ul>
+    </div>
+    <button class="mobile-menu-btn" type="button" data-menu-button>
+      <svg class="mobile-menu-icon" width="24" height="16">
+        <use class="mobile-menu-burger" href="./images/sprite.svg#24-menu"></use>
+        <use class="mobile-menu-close" href="./images/sprite.svg#icon-X"></use>
+      </svg>
+    </button>
+    <div class="mobile-menu" data-menu>
+      <!--<ul class="mobile-menu-nav">
+        <li class="mobile-menu-nav-item">
+          <a class="link " href="./index.html">Головна</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link current" href="./portfolio.html">Курси</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="/contact">Контакти</a>
+        </li>
+      </ul>-->
+      <ul class="mobile-menu-contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+        <li class="mobile-menu-contacts-item">
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-socials">
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer">Youtube</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+  
+  <main>
+<section class="works">
+  <div class="container">
+  <h2>🔬 Розрахунок потреби реагентів та їх вартості DH 36</h2>
 
-<h1>📊 Калькулятор вартості аналізів</h1>
+  <label>📦 Вартість приладу (грн): <input type="number" id="devicePrice" value=""></label>
+  <label>🔢 Кількість тестів на день: <input type="number" id="testsPerDay" value=""></label>
+  <label>💸 Ціна тесту для пацієнта (грн): <input type="number" id="testPrice" value=""></label>
 
-<section>
-  <h2>🔬 Дані по аналізах</h2>
-<label>АЛТ - кількість/день: <input type="number" id="altVolume"></label>
-<label>АЛТ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="altPrice"></label>
-<label>Альбумін - кількість/день: <input type="number" id="albuminVolume"></label>
-<label>Альбумін - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="albuminPrice"></label>
-<label>Амілаза - кількість/день: <input type="number" id="amylaseVolume"></label>
-<label>Амілаза - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="amylasePrice"></label>
-<label>АСТ - кількість/день: <input type="number" id="astVolume"></label>
-<label>АСТ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="astPrice"></label>
-<label>Білірубін загальний - кількість/день: <input type="number" id="totalBilirubinVolume"></label>
-<label>Білірубін загальний - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="totalBilirubinPrice"></label>
-<label>Білірубін прямий - кількість/день: <input type="number" id="directBilirubinVolume"></label>
-<label>Білірубін прямий - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="directBilirubinPrice"></label>
-<label>Загальний білок - кількість/день: <input type="number" id="totalProteinVolume"></label>
-<label>Загальний білок - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="totalProteinPrice"></label>
-<label>ГГТ - кількість/день: <input type="number" id="ggtVolume"></label>
-<label>ГГТ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ggtPrice"></label>
-<label>Глюкоза - кількість/день: <input type="number" id="glucoseVolume"></label>
-<label>Глюкоза - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="glucosePrice"></label>
-<label>Залізо - кількість/день: <input type="number" id="ironVolume"></label>
-<label>Залізо - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ironPrice"></label>
-<label>Кальцій - кількість/день: <input type="number" id="calciumVolume"></label>
-<label>Кальцій - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="calciumPrice"></label>
-<label>Креатинін - кількість/день: <input type="number" id="creatinineVolume"></label>
-<label>Креатинін - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="creatininePrice"></label>
-<label>Креатинкіназа загальна (NAC) - кількість/день: <input type="number" id="ckTotalVolume"></label>
-<label>Креатинкіназа загальна (NAC) - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ckTotalPrice"></label>
-<label>Креатинкіназа серцева фракція (МВ) - кількість/день: <input type="number" id="ckMBVolume"></label>
-<label>Креатинкіназа серцева фракція (МВ) - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ckMBPrice"></label>
-<label>a-HBDH - кількість/день: <input type="number" id="ahbdhVolume"></label>
-<label>a-HBDH - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ahbdhPrice"></label>
-<label>ЛДГ - кількість/день: <input type="number" id="ldhVolume"></label>
-<label>ЛДГ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ldhPrice"></label>
-<label>Лактат - кількість/день: <input type="number" id="lactateVolume"></label>
-<label>Лактат - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="lactatePrice"></label>
-<label>Сечова кислота - кількість/день: <input type="number" id="uricAcidVolume"></label>
-<label>Сечова кислота - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="uricAcidPrice"></label>
-<label>Сечовина - кількість/день: <input type="number"    id="ureaVolume"></label>
-<label>Сечовина - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ureaPrice"></label>
-<label>Фосфатаза лужна - кількість/день: <input type="number" id="alkPhVolume"></label>
-<label>Фосфатаза лужна - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="alkPhPrice"></label>
-<label>Фосфор - кількість/день: <input type="number" id="phosphorVolume"></label>
-<label>Фосфор - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="phosphorPrice"></label>
-<label>ЛПВЩ - кількість/день: <input type="number" id="hdlVolume"></label>
-<label>ЛПВЩ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="hdlPrice"></label>
-<label>ЛПНЩ - кількість/день: <input type="number" id="ldlVolume"></label>
-<label>ЛПНЩ - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="ldlPrice"></label>
-<label>Холестерин - кількість/день: <input type="number" id="cholesterolVolume"></label>   
-<label>Холестерин - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="cholesterolPrice"></label>
-<label>Тригліцериди - кількість/день: <input type="number" id="triglyceridesVolume"></label>
-<label>Тригліцериди - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="triglyceridesPrice"></label>
-<label>Аполіпопротеїн Е - кількість/день: <input type="number" id="apoEVolume"></label>
-<label>Аполіпопротеїн Е - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="apoEPrice"></label>
-<label>Ліпопротеїн (а) - кількість/день: <input type="number" id="lpAVolume"></label>
-<label>Ліпопротеїн (а) - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="lpAPrice"></label>
-<label>Гомоцистеїн - кількість/день: <input type="number" id="hcyVolume"></label>
-<label>Гомоцистеїн - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="hcyPrice"></label>
-<label>АпоА1 - кількість/день: <input type="number" id="apoA1Volume"></label>
-<label>АпоА1 - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="apoA1Price"></label>
-<label>Апо В - кількість/день: <input type="number" id="apoBVolume"></label>
-<label>Апо В - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="apoBPrice"></label>
-<label>Жовчні кислоти - кількість/день: <input type="number" id="bileAcidsVolume"></label>
-<label>Жовчні кислоти - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="bileAcidsPrice"></label>
-<label>Трансферин - кількість/день: <input type="number" id="transferrinVolume"></label>
-<label>Трансферин - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="transferrinPrice"></label>
-<label>Ig А - кількість/день: <input type="number" id="igaVolume"></label>
-<label>Ig А - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="igaPrice"></label>
-<label>Ig G - кількість/день: <input type="number" id="iggVolume"></label>
-<label>Ig G - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="iggPrice"></label>
-<label>Ig М - кількість/день: <input type="number" id="igmVolume"></label>
-<label>Ig М - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="igmPrice"></label>
-<label>Лужна промивка - кількість/день: <input type="number" id="alkWashVolume"></label>
-<label>Лужна промивка - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="alkWashPrice"></label>
-<label>Кисла промивка - кількість/день: <input type="number" id="acidWashVolume"></label>
-<label>Кисла промивка - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="acidWashPrice"></label>
-<label>С-реактивний білок - кількість/день: <input type="number" id="crpVolume"></label>
-<label>С-реактивний білок - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="crpPrice"></label>
-<label>Глікогемоглобін - кількість/день: <input type="number" id="hba1cVolume"></label>
-<label>Глікогемоглобін - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="hba1cPrice"></label>
-<label>Цистатін С - кількість/день: <input type="number" id="cystatinCVolume"></label>
-<label>Цистатін С - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="cystatinCPrice"></label>
-<label>Магній - кількість/день: <input type="number" id="magnesiumVolume"></label>
-<label>Магній - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="magnesiumPrice"></label>
-<label>Ревматоїдний фактор - кількість/день: <input type="number" id="rheumatoidFactorVolume"></label>
-<label>Ревматоїдний фактор - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="rheumatoidFactorPrice"></label>
-<label>АСО - кількість/день: <input type="number" id="asoVolume"></label>
-<label>АСО - ціна (грн)/Компенсація НЦЗУ: <input type="number" id="asoPrice"></label>
+  <button class="btn" onclick="calculate()">🔎 Розрахувати</button>
+  <button class="btn" onclick="copyResults()">📋 Скопіювати результат</button>
+
+  <div id="output" class="result"></div>
+  </div>
 </section>
+</main>
+ 
+<footer class="footer">
+    <div class="container">
+      <div class="find-us">
+        <div class="find">
+          <a class="logo footer__logo" href="/"><img src="./images/logo.svg" alt="logo" width="160"></a>
+          <ul class="contacts contacts--footer">
+            <li class="contacts__contact contacts__contact--footer">
+              <address class="contacts__post"><p>Україна, Київська обл.,</p> <p>м. Вишгород,</p> <p>вул. Шолуденка, 15г</p></address>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-mail contacts__contact-mail--footer"
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
+            </li>
+          </ul>
+        </div>
+        <div class="social social--footer">
+          <h2 class="social__title">приєднуйтесь</h2>
+          <ul class="social__list social__list--footer">
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer"
+                aria-label="инстаграм иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-instagram"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer"
+                aria-label="твиттер иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/uoytube.svg"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer"
+                aria-label="фейсбук иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-facebook"></use>
+                </svg></a> 
+            </li>       
+          </ul>
+        </div>
+        <div class="spam">
+          <h2 class="spam__title" style="line-height: 2;">ТОВ «НВК «Фармаско» – провідний постачальник засобів діагностики для українських закладів охорони здоров’я, лікарів та пацієнтів.</h2>
+          <!--<form class="spam__form">
+            <label class="spam__label">
+              <input class="spam__input" type="email" name="email" placeholder="E-mail" />
+            </label>
+            <button class="btn btn--spam" type="submit">Підписатися<a class="spam-link link" href="" target="_blank"
+                rel="noopener noreferrer" aria-label="инстаграм иконка">
+                <svg class="spam__icon" width="24px" height="24px">
+                  <use href="./images/sprite.svg#icon-send"></use>
+                </svg></a></button>
+          </form>-->
+        </div>
+      </div>
+    </div>
+        <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+        <button id="scrollTopBtn" title="До гори">⬆</button>
+  </footer>
+  <script>
+  const reagents = [
+  { name: "DIL-E", startup: 112.96, shutdown: 55.48, perTest: 23.81, packageSize: 20000, price: 2395 },
+  { name: "LYE-1", startup: 1.473, shutdown: 0, perTest: 0.52, packageSize: 500, price: 2650 },
+  { name: "CLE-P", startup: 0, shutdown: 1.8, perTest: 0, packageSize: 50, price: 395 }
+];
 
-<section>
-  <h2>⚙️ Вартість обладнання</h2>
-  <label>Вартість приладу (грн): <input type="number" id="deviceCost"></label>
-</section>
+function getWorkingDays(period) {
+  const perMonth = 21;
+  switch (period) {
+    case 'month': return perMonth;
+    case 'quarter': return perMonth * 3;
+    case 'year': return perMonth * 12;
+    default: return 1;
+  }
+}
 
-<button id="calculateBtn" class="btn">🔢 Розрахувати</button>
+function calculate() {
+  const devicePrice = +document.getElementById("devicePrice").value || 0;
+  const testsPerDay = +document.getElementById("testsPerDay").value || 0;
+  const testPrice = +document.getElementById("testPrice").value || 0;
 
-<section>
-  <h2>📄 Результати</h2>
-  <div id="results"></div>
-  <!--<input type="email" id="emailAddress" placeholder="Email для надсилання">-->
-  <button id="copyBtn">📋 Копіювати</button>
-  <!--<button id="emailBtn">📧 Надіслати</button>-->
-</section>
-<script>
-  const reagents = {
-    'R1': { name: 'АЛТ', cost: 531, volume: 70 },
-    'R2': { name: 'Альбумін', cost: 294, volume: 60 },
-    'R3': { name: 'Амілаза', cost: 4005, volume: 70 },
-    'R4': { name: 'АСТ', cost: 532, volume: 70 },
-    'R5': { name: 'Білірубін загальний', cost: 773, volume: 70 },
-    'R6': { name: 'Білірубін прямий', cost: 773, volume: 70 },
-    'R7': { name: 'Загальний білок', cost: 270, volume: 60 },
-    'R8': { name: 'ГГТ', cost: 880, volume: 70 },
-    'R9': { name: 'Глюкоза', cost: 419, volume: 70 },
-    'R10': { name: 'Залізо', cost: 2038, volume: 72 },
-    'R11': { name: 'Кальцій', cost: 523, volume: 82 },
-    'R12': { name: 'Креатінін', cost: 4882, volume: 80 },
-    'R13': { name: 'Креатінкіназа загальна', cost: 2670, volume: 70 },
-    'R14': { name: 'Креатінкіназа серцева', cost: 6676, volume: 70 },
-    'R15': { name: 'a-HBDH', cost: 1175, volume: 70 },
-    'R16': { name: 'ЛДГ', cost: 1175, volume: 70 },
-    'R17': { name: 'Лактат', cost: 5332, volume: 82 },
-    'R18': { name: 'Сечова кислота', cost: 839, volume: 70 },
-    'R19': { name: 'Сечовина', cost: 668, volume: 70 },
-    'R20': { name: 'Фосфатаза лужна', cost: 381, volume: 70 },
-    'R21': { name: 'Фосфор', cost: 824, volume: 72 },
-    'R22': { name: 'ХЛПВЩ', cost: 3631, volume: 80 },
-    'R23': { name: 'ХЛПНЩ', cost: 4410, volume: 80 },
-    'R24': { name: 'Холестерин', cost: 762, volume: 70 },
-    'R25': { name: 'Тригліцериди', cost: 1735, volume: 233 },
-    'R26': { name: 'Аполіпопротеїн Е', cost: 9918, volume: 80 },
-    'R27': { name: 'Ліпопротеїн А', cost: 11750, volume: 70 },
-    'R28': { name: 'Гомоцистеїн', cost: 28810, volume: 35 },
-    'R29': { name: 'Апо А1', cost: 8504, volume: 71 },
-    'R30': { name: 'Апо B', cost: 10261, volume: 73 },
-    'R31': { name: 'Жовчні кислоти', cost: 6104, volume: 80 },
-    'R32': { name: 'Трансферин', cost: 14818, volume: 83 },
-    'R33': { name: 'Ig A', cost: 7649, volume: 73 },
-    'R34': { name: 'Ig G', cost: 7489, volume: 71 },
-    'R35': { name: 'Ig M', cost: 7649, volume: 73 },
-    'R36': { name: 'Лужна промивка', cost: 2670, volume: 2000 },
-    'R37': { name: 'Кисла Промивка', cost: 4769, volume: 500 },
-    'R38': { name: 'С-реактивний білок', cost: 18208, volume: 80 },
-    'R39': { name: 'Глікогемоглобін', cost: 26339, volume: 40 },
-    'R40': { name: 'Цистатін С', cost: 30987, volume: 36 },
-    'R41': { name: 'Магній', cost: 1213, volume: 80 },
-    'R42': { name: 'Ревматоїдний фактор', cost: 15888, volume: 80 },
-    'R43': { name: 'АСО', cost: 15469, volume: 60 },
-  };
+  const workDays = getWorkingDays('year');
+  const totalTests = testsPerDay * workDays;
+  const annualRevenue = totalTests * testPrice;
 
-  const analyses = {
-    
-    'ALT': {
-      name: 'АЛТ',
-      reagentsUsed: { 'R1': 0.25 },
-      priceId: 'ALTPrice',
-      volumeId: 'ALTVolume',
-    },
-    'albumine': {
-      name: 'Альбумін',
-      reagentsUsed: { 'R2': 0.3 },
-      priceId: 'albuminePrice',
-      volumeId: 'albumineVolume',
-    },
-    'Amilase': {
-      name: 'Амілаза',
-      reagentsUsed: { 'R3': 0.25 },
-      priceId: 'AmilasePrice',
-      volumeId: 'AmilaseVolume',
-    },
-    'AST': {
-      name: 'АСТ',
-      reagentsUsed: { 'R4': 0.25 },
-      priceId: 'ASTPrice',
-      volumeId: 'ASTVolume',
-    },
-    'Bilirubine total': {
-      name: 'Білірубін загальний',
-      reagentsUsed: { 'R5': 0.35},
-      priceId: 'bilirubineTotalPrice',
-      volumeId: 'bilirubineTotalVolume',
-    },
-    'bilirubinedirect': {
-      name: 'Білірубін прямий',
-      reagentsUsed: { 'R6': 0.35 },
-      priceId: 'bilirubineDirectPrice',
-      volumeId: 'bilirubineDirectVolume',
-    },
-    'proteinetotal': {
-      name: 'Білок загальні',
-      reagentsUsed: { 'R7': 0.3 },
-      priceId: 'proteinsTotalPrice',
-      volumeId: 'proteinsTotalVolume',
-    },
-    'GGT': {
-      name: 'ГГТ',
-      reagentsUsed: { 'R8': 0.25 },
-      priceId: 'GGTPrice',
-      volumeId: 'GGTVolume',
-    },
-    'glucose': {
-      name: 'Глюкоза',
-      reagentsUsed: { 'R9': 0.300429},
-      priceId: 'glucosePrice',
-      volumeId: 'glucoseVolume',
-    },
-    'Ferrum': {
-      name: 'Залізо',
-      reagentsUsed: { 'R10': 0.257143},
-      priceId: 'FerrumPrice',
-      volumeId: 'FerrumVolume',
-    },
-    'Calcium': {
-      name: 'Кальцій',
-      reagentsUsed: { 'R11': 0.328},
-      priceId: 'CalciumPrice',
-      volumeId: 'CalciumVolume',
-    },
-    'Kreatinine': {
-      name: 'Креатинін',
-      reagentsUsed: { 'R12': 0.299625 },
-      priceId: 'KreatininePrice',
-      volumeId: 'KreatinineVolume',
-    },
-    'NAC': {
-      name: 'Креатинкіназа загальна',
-      reagentsUsed: { 'R13': 0.25 },
-      priceId: 'NACPrice',
-      volumeId: 'NACVolume',
-    },
-    'MB': {
-      name: 'Креатинкіназа серцева фракція',
-      reagentsUsed: { 'R14': 0.25 },
-      priceId: 'MBPrice',
-      volumeId: 'MBVolume',
-    },
-    'a-HBDH': {
-      name: 'a-HBDH',
-      reagentsUsed: { 'R15': 0.25,  },
-      priceId: 'a-HBDHPrice',
-      volumeId: 'a-HBDHVolume',
-    },
-    'LDG': {
-      name: 'ЛДГ',
-      reagentsUsed: { 'R16': 0.25 },
-      priceId: 'LDGPrice',
-      volumeId: 'LDGVolume',
-    },
-    'Lactate': {
-      name: 'Лактат',
-      reagentsUsed: { 'R17': 0.286713 },
-      priceId: 'LactatePrice',
-      volumeId: 'LactateVolume',
-    },
-    'Uricacid': {
-      name: 'Сечова кислота',
-      reagentsUsed: { 'R18': 0.25 },
-      priceId: 'UricacidPrice',
-      volumeId: 'UricacidVolume',
-    },
-    'urea': {
-      name: 'Сечовина',
-      reagentsUsed: { 'R19': 0.300429 },
-      priceId: 'ureaPrice',
-      volumeId: 'ureaVolume',
-    },
-    'alkph': {
-      name: 'Лужна фосфатаза',
-      reagentsUsed: { 'R20': 0.25 },
-      priceId: 'alkphPrice',
-      volumeId: 'alkphVolume',
-    },
-    'Phosphor': {
-      name: 'Фосфор',
-      reagentsUsed: { 'R21': 0.3 },
-      priceId: 'PhosphorPrice',
-      volumeId: 'PhosphorVolume',
-    },
-    'HDL': {
-      name: 'ЛПВЩ',
-      reagentsUsed: { 'R22': 0.32 },
-      priceId: 'HDLPrice',
-      volumeId: 'HDLVolume',
-    },
-    'LDL': {
-      name: 'ЛПНЩ',
-      reagentsUsed: { 'R23': 0.32 },
-      priceId: 'LDLPrice',
-      volumeId: 'LDLVolume',
-    },
-    'cholesterol': {
-      name: 'Холестерин',
-      reagentsUsed: { 'R24': 0.300429 },
-      priceId: 'cholesterolPrice',
-      volumeId: 'cholesterolVolume',
-    },
-    'trigliceride': {
-      name: 'Тригліцериди',
-      reagentsUsed: { 'R25': 0.300429 },
-      priceId: 'trigliceridePrice',
-      volumeId: 'triglicerideVolume',
-    },
-    'APOE': {
-      name: 'Аполіпопротеїн Е',
-      reagentsUsed: { 'R26': 0.32},
-      priceId: 'APOEPrice',
-      volumeId: 'APOEVolume',
-    },
-    'LPA': {
-      name: 'Ліпопротеїн А',
-      reagentsUsed: { 'R27': 0.35},
-      priceId: 'LPAPrice',
-      volumeId: 'LAPVolume',
-    },
-    'Homoc': {
-      name: 'Гомоцистеїн',
-      reagentsUsed: { 'R28': 0.299145 },
-      priceId: 'HomocPrice',
-      volumeId: 'HomocVolume',
-    },
-    'APOA1': {
-      name: 'Аполіпопротеїн А1',
-      reagentsUsed: { 'R29': 0.330233 },
-      priceId: 'APOA1Price',
-      volumeId: 'APOA1Volume',
-    },
-    'APOB': {
-      name: 'Аполіпопротеїн В',
-      reagentsUsed: { 'R30': 0.339535 },
-      priceId: 'APOBPrice',
-      volumeId: 'APOBVolume',
-    },
-    'bileacid': {
-      name: 'Жовчні кислоти',
-      reagentsUsed: { 'R31': 0.36036 },
-      priceId: 'bileacidPrice',
-      volumeId: 'bileacidVolume',
-    },
-    'transf': {
-      name: 'Трансферин',
-      reagentsUsed: { 'R32': 0.332 },
-      priceId: 'transfPrice',
-      volumeId: 'transfVolume',
-    },
-    'IGA': {
-      name: 'Імуноглобулін A',
-      reagentsUsed: { 'R33': 0.304167 },
-      priceId: 'IGAPrice',
-      volumeId: 'IGAVolume',
-    },
-    'IGG': {
-      name: 'Імуноглобулін G',
-      reagentsUsed: { 'R34': 0.304721 },
-      priceId: 'IGGPrice',
-      volumeId: 'IGGVolume',
-    },
-    'igM': {
-      name: 'Імуноглобулін M',
-      reagentsUsed: { 'R35': 0.304167 },
-      priceId: 'igMPrice',
-      volumeId: 'igMVolume',
-    },
-    'ALKFLUSE': {
-      name: 'Лужна промивка',
-      reagentsUsed: { 'R36': 0.17 },
-      priceId: 'ALKFLUSEPrice',
-      volumeId: 'ALKFLUSEVolume',
-    },
-    'Acidfluse ': {
-      name: 'Кисла промивка',
-      reagentsUsed: { 'R37': 0.06 },
-      priceId: 'AcidflusePrice',
-      volumeId: 'AcidfluseVolume',
-    },
-    'C-react': {
-      name: 'C-реактивний білок',
-      reagentsUsed: { 'R38': 0.2 },
-      priceId: 'C-reactPrice',
-      volumeId: 'C-reactVolume',
-    },
-    'GlHem': {
-      name: 'Глікогемоглобін',
-      reagentsUsed: { 'R39': 0.27972 },
-      priceId: 'GlHemPrice',
-      volumeId: 'GlHemVolume',
-    },
-    'Cyst': {
-      name: 'Цистатин C',
-      reagentsUsed: { 'R40': 0.25 },
-      priceId: 'CystPrice',
-      volumeId: 'CystVolume',
-    },
-    'Mg': {
-      name: 'Магній',
-      reagentsUsed: { 'R41': 0.25 },
-      priceId: 'MgPrice',
-      volumeId: 'MgVolume',
-    },
-    'revm': {
-      name: 'Ревматоїдний фактор',
-      reagentsUsed: { 'R42': 0.235294 },
-      priceId: 'revmPrice',
-      volumeId: 'revmVolume',
-    },
-    'ACO': {
-      name: 'ACO',
-      reagentsUsed: { 'R43': 0.285714 },
-      priceId: 'ACOPrice',
-      volumeId: 'ACOVolume',
-    }
-  };
+  // 🔄 Реальне використання і закупівля флаконів
+  let totalReagentCost = 0;
+  let reagentState = reagents.map(r => ({
+    remainingVolume: r.packageSize,
+    bottlesUsed: 0,
+    totalVolumeUsed: 0,
+    price: r.price,
+    packageSize: r.packageSize
+  }));
 
-  document.getElementById("calculateBtn").addEventListener("click", () => {
-    const deviceCost = parseFloat(document.getElementById("deviceCost").value) || 0;
-    const workingDays = 21;
-    const today = new Date();
-    const dateStr = today.toLocaleDateString('uk-UA');
-    let resultLines = [];
-    let totalMonthlyProfit = 0;
-    let totalMonthlyReagents = 0;
-    let reagentUsage = {};
-    for (let id in reagents) reagentUsage[id] = 0;
+  let accumulatedProfit = 0;
+  let paybackDay = 'не досягається';
 
-    for (let key in analyses) {
-      const a = analyses[key];
-      const price = parseFloat(document.getElementById(a.priceId).value) || 0;
-      const dailyVolume = parseInt(document.getElementById(a.volumeId).value) || 0;
-      if (!price || !dailyVolume) continue;
+  for (let day = 1; day <= workDays; day++) {
+    let dailyCost = 0;
+    const revenue = testsPerDay * testPrice;
 
-      const monthlyVolume = dailyVolume * workingDays;
-      let costPerAnalysis = 0;
+    reagentState.forEach((state, i) => {
+      const r = reagents[i];
+      const dailyVolume = r.startup + r.shutdown + r.perTest * testsPerDay;
+      state.totalVolumeUsed += dailyVolume;
 
-      for (let r in a.reagentsUsed) {
-        const ml = a.reagentsUsed[r];
-        costPerAnalysis += ml * (reagents[r].cost / reagents[r].volume);
-        reagentUsage[r] += ml * monthlyVolume;
+      if (state.remainingVolume < dailyVolume) {
+        state.bottlesUsed += 1;
+        totalReagentCost += r.price;
+        dailyCost += r.price;
+        state.remainingVolume = r.packageSize - dailyVolume;
+      } else {
+        state.remainingVolume -= dailyVolume;
       }
+    });
 
-      const profitPerAnalysis = price - costPerAnalysis;
-      const reagentCostMonth = Object.entries(a.reagentsUsed).reduce((sum, [r, ml]) => {
-        return sum + Math.ceil((ml * monthlyVolume) / reagents[r].volume) * reagents[r].cost;
-      }, 0);
+    const dailyProfit = revenue - dailyCost;
+    accumulatedProfit += dailyProfit;
 
-      const profitMonth = profitPerAnalysis * monthlyVolume;
-      totalMonthlyProfit += profitMonth;
-      totalMonthlyReagents += reagentCostMonth;
-
-      resultLines.push(`
-🔬 ${a.name}:
-• Кількість/день: ${dailyVolume}
-• Ціна: ${price.toFixed(2)} грн
-• Собівартість реагентів: ${costPerAnalysis.toFixed(2)} грн
-• Прибуток з одного: ${profitPerAnalysis.toFixed(2)} грн
-• Витрати на реагенти/міс: ${reagentCostMonth.toFixed(2)} грн
-• Прибуток/міс: ${profitMonth.toFixed(2)} грн
-      `);
+    if (accumulatedProfit >= devicePrice && paybackDay === 'не досягається') {
+      paybackDay = day;
     }
+  }
 
-    const reagentBreakdown = Object.entries(reagentUsage).map(([rId, mlMonth]) => {
-      const reagent = reagents[rId];
-      const mlQuarter = mlMonth * 3;
-      const mlYear = mlMonth * 12;
+  const annualProfit = annualRevenue - totalReagentCost;
+  const costPerTest = totalTests > 0 ? totalReagentCost / totalTests : 0;
+  const finalNetProfit = annualProfit - devicePrice;
 
-      const bottlesMonth = Math.ceil(mlMonth / reagent.volume);
-      const bottlesQuarter = Math.ceil(mlQuarter / reagent.volume);
-      const bottlesYear = Math.ceil(mlYear / reagent.volume);
+  // 📦 Планування закупівель реагентів
+  let reagentPlanning = "";
+  ["month", "quarter", "year"].forEach(period => {
+    const days = getWorkingDays(period);
+    const tests = testsPerDay * days;
 
-      const costMonth = bottlesMonth * reagent.cost;
-      const costQuarter = bottlesQuarter * reagent.cost;
-      const costYear = bottlesYear * reagent.cost;
-
-      const dailyML = mlMonth / workingDays;
-      const daysPerBottle = dailyML > 0 ? Math.floor(reagent.volume / dailyML) : '–';
-
-      return `💉 ${reagent.name}:
-• На місяць: ${mlMonth.toFixed(2)} мл → ${bottlesMonth} флаконів → ${costMonth.toFixed(2)} грн
-• На квартал: ${mlQuarter.toFixed(2)} мл → ${bottlesQuarter} флаконів → ${costQuarter.toFixed(2)} грн
-• На рік: ${mlYear.toFixed(2)} мл → ${bottlesYear} флаконів → ${costYear.toFixed(2)} грн
-• 1 флакон вистачить приблизно на: ${daysPerBottle} роб. днів`;
-    }).join('\n');
-
-    const quarterlyProfit = totalMonthlyProfit * 3;
-    const yearlyProfit = totalMonthlyProfit * 12;
-    const quarterlyReagent = totalMonthlyReagents * 3;
-    const yearlyReagent = totalMonthlyReagents * 12;
-    const payback = totalMonthlyProfit > 0 ? Math.ceil(deviceCost / totalMonthlyProfit) : '∞';
-
-    const summary = `
-📅 Дата розрахунку: ${dateStr}
-📆 Робочих днів: ${workingDays}
-💰 Загальний прибуток/міс: ${totalMonthlyProfit.toFixed(2)} грн
-🧪 Загальні витрати на реагенти/міс: ${totalMonthlyReagents.toFixed(2)} грн
-
-📊 Квартал:
-• Прибуток: ${quarterlyProfit.toFixed(2)} грн
-• Витрати: ${quarterlyReagent.toFixed(2)} грн
-
-📈 Рік:
-• Прибуток: ${yearlyProfit.toFixed(2)} грн
-• Витрати: ${yearlyReagent.toFixed(2)} грн
-📦 Вартість приладу: ${deviceCost.toFixed(2)} грн
-
-⏳ Самоокупність приладу: ${payback} міс.
-
-📦 Детальний розрахунок по реагентах:
-${reagentBreakdown}
-
-(Дані приблизні, без урахування сервісу, персоналу тощо)
-    `;
-
-    document.getElementById("results").textContent = resultLines.join('\n') + summary;
+    reagentPlanning += `<li><strong>${period}</strong><ul>`;
+    reagents.forEach(r => {
+      const volume = days * (r.startup + r.shutdown) + tests * r.perTest;
+      const bottles = Math.ceil(volume / r.packageSize);
+      const cost = bottles * r.price;
+      reagentPlanning += `<li>${r.name}: ${bottles} флак. — ${cost.toFixed(2)} грн</li>`;
+    });
+    reagentPlanning += `</ul></li>`;
   });
 
-  document.getElementById("copyBtn").addEventListener("click", () => {
-    navigator.clipboard.writeText(document.getElementById("results").textContent);
-    alert("Результати скопійовано!");
-  });
+  // 📋 Вивід результату
+  document.getElementById("output").innerHTML = `
+📊 Розрахунок на основі реального використання
+• Робочих днів: ${workDays}
+• Загальна кількість тестів: ${totalTests}
+• Фактичні витрати на реагенти: ${totalReagentCost.toFixed(2)} грн
+• Загальний дохід: ${annualRevenue.toFixed(2)} грн
+• Загальний прибуток: ${annualProfit.toFixed(2)} грн
+• Собівартість одного тесту: ${costPerTest.toFixed(2)} грн
+📅 Термін окупності приладу: ${paybackDay} робочих днів
+• Чистий фінансовий результат (з урахуванням вартості приладу): ${finalNetProfit.toFixed(2)} грн через рік після початку використання приладу.
 
-  document.getElementById("emailBtn").addEventListener("click", () => {
-    const email = document.getElementById("emailAddress").value;
-    if (!email) return alert("Введіть e-mail.");
-    const body = encodeURIComponent(document.getElementById("results").textContent);
-    window.location.href = `mailto:${email}?subject=Розрахунок аналізів&body=${body}`;
-  });
+📦 Планування закупівель реагентів
+${reagentPlanning}
+  `;
+}
+
+function copyResults() {
+  const output = document.getElementById("output");
+  if (!output) return;
+  const temp = document.createElement("textarea");
+  temp.value = output.innerText;
+  document.body.appendChild(temp);
+  temp.select();
+  document.execCommand("copy");
+  document.body.removeChild(temp);
+  alert("✅ Результат скопійовано!");
+}
+
 </script>
 </body>
 </html>

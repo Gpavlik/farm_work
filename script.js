@@ -4,7 +4,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
 
     const allowedEmails = [
         "i.luzan@pharmasco.com", "l.prysiazhniuk@pharmasco.com", "v.bilous@pharmasco.com", "y.levchenko@pharmasco.com", "o.krasnikov@pharmasco.com",
-        "a.onischuk@pharmasco.com", "m.pohribna@pharmasco.com", "s.kucherenko@pharmasco.com",
+        "a.onischuk@pharmasco.com", "m.pohribna@pharmasco.com", 
         "n.pylypchuk@pharmasco.com", "a.haievska@pharmasco.com", "i.bohuslavets@pharmasco.com",
         "m.krishtalyan@pharmasco.com", "k.skriabina@pharmasco.com", "a.alekseenko@pharmasco.com",
         "a.priadko@pharmasco.com", "o.hovorukha@pharmasco.com", "t.demus@pharmasco.com",
