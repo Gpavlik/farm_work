@@ -215,7 +215,8 @@
   { name: "LYG-1", startup: 4.00, shutdown: 0, perTest: 0.5, packageSize: 500, price: 3520 },
   { name: "LYA-2", startup: 3.00, shutdown: 0.104, perTest: 0.5, packageSize: 500, price: 6490 },
   { name: "LYA-3", startup: 3.00, shutdown: 1.19, perTest: 1.4, packageSize: 1000, price: 4743 },
-  { name: "CLE-P", startup: 0, shutdown: 3.6, perTest: 0, packageSize: 50, price: 395 }
+  { name: "CLE-P", startup: 0, shutdown: 3.6, perTest: 0, packageSize: 50, price: 395 },
+  { name: "CBC-DH", startup: 0.1, shutdown: 0, perTest: 0, packageSize: 1, price: 3520 }
 ];
 
 function getWorkingDays(period) {
@@ -314,17 +315,8 @@ ${reagentPlanning}
   `;
 }
 
-function copyResults() {
-  const output = document.getElementById("output");
-  if (!output) return;
-  const temp = document.createElement("textarea");
-  temp.value = output.innerText;
-  document.body.appendChild(temp);
-  temp.select();
-  document.execCommand("copy");
-  document.body.removeChild(temp);
-  alert("✅ Результат скопійовано!");
-}
+function copyResult() { const result = document.getElementById("output").innerText; navigator.clipboard.writeText(result).then(() => alert("✅ Результат скопійовано в буфер обміну!") ); }
+
 
 </script>
 </body>

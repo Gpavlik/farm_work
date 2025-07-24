@@ -130,7 +130,7 @@
   <main>
 <section class="works">
   <div class="container">
-  <h2>🔬 Розрахунок потреби реагентів та їх вартості DF 50</h2>
+  <h2>🔬 Розрахунок потреби реагентів та їх вартості KT 6300</h2>
 
   <label>📦 Вартість приладу (грн): <input type="number" id="devicePrice" value=""></label>
   <label>🔢 Кількість тестів на день: <input type="number" id="testsPerDay" value=""></label>
@@ -212,11 +212,11 @@
   </footer>
   <script>
   const reagents = [
-  { name: "DIL-C", startup: 104.00, shutdown: 129.64, perTest: 32.80, packageSize: 20000, price: 2607 },
-  { name: "LYC-1", startup: 0.16, shutdown: 0, perTest: 0.19, packageSize: 200, price: 1605 },
-  { name: "LYC-2", startup: 0.82, shutdown: 1.183, perTest: 0.66, packageSize: 500, price: 3852 },
-  { name: "CLE-P", startup: 0, shutdown: 3.6, perTest: 0, packageSize: 50, price: 395 },
-  { name: "CBC-DH", startup: 0.1, shutdown: 0, perTest: 0, packageSize: 1, price: 3520 }
+  { name: "Розчин лізуючий", startup: 2.4, shutdown: 0, perTest: 0.369, packageSize: 500, price: 2563 },
+  { name: "Розчинник (ділюєнт)", startup: 46.5, shutdown: 2.96, perTest: 23.164, packageSize: 2000, price: 2563 },
+  { name: "Очисник для периферичної крові", startup: 0, shutdown: 2.0, perTest: 0, packageSize: 50, price: 786.5 },
+  { name: "Очисник ферментативний", startup: 0, shutdown: 2.0, perTest: 0, packageSize: 50, price: 786.5 },
+  { name: "CBC-3D", startup: 0.1, shutdown: 0, perTest: 0, packageSize: 1, price: 2750 }
 ];
 
 function getWorkingDays(period) {

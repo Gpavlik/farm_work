@@ -242,11 +242,14 @@ const dailyReagentsGrouped = {
     { name: "Контролі біохім. тестів Рівень 2/3", volume: 30, dailyUsage: 0.5, price: 12432 },
   ],
   "Ліпіди": [
-    { name: "Калібратори ліпідів", volume: 3, dailyUsage: 0.5, price: 6325 },
-    { name: "Контролі ліпідів", volume: 6, dailyUsage: 0.5, price: 8464 },
+    { name: "Калібратори ліпідів", volume: 3, dailyUsage: 0.33, price: 6325 },
+    { name: "Контролі ліпідів", volume: 6, dailyUsage: 0.33, price: 8464 },
   ],
   "Специфічні білки": [
     { name: "Контролі специфічних білків", volume: 6, dailyUsage: 0.5, price: 4226 },
+  ],
+  
+  "Діагностика цукрового діабету": [
     { name: "Контролі глікогемоглобіну", volume: 3, dailyUsage: 0.5, price: 4077 },
   ]
 };
@@ -264,15 +267,6 @@ Object.entries(dailyReagentsGrouped).forEach(([category, reagents], groupIndex) 
   dailyGroups.appendChild(groupDiv);
 });
 
-function toggleAllDaily(state) {
-  Object.values(dailyReagentsGrouped).flat().forEach(r => {
-    const box = document.getElementById(r.checkboxId);
-    if (box) box.checked = state;
-  });
-};
-
-
-// Добова витрата на день буде додаватися до витрат у загальному калькуляторі
 const checkboxList = document.getElementById("checkboxList");
 reagents.forEach((r, i) => {
   r.usagePerTest = +(r.volume / r.testsPerSet).toFixed(4);
@@ -282,7 +276,7 @@ reagents.forEach((r, i) => {
     <div id="inputs_${i}" style="display:none;">
       <label>Кількість аналізів на день:</label>
       <input type="number" id="daily_${i}">
-      <label>Ціна аналізу для пацієнта/компенсація НЦЗУ (грн):</label>
+      <label>Ціна аналізу для пацієнта/відшкодування НЦЗУ:</label>
       <input type="number" id="price_${i}">
     </div>`;
   checkboxList.appendChild(block);
@@ -293,83 +287,114 @@ function toggleInputs(i) {
     document.getElementById(`check_${i}`).checked ? "block" : "none";
 }
 
-// Відображає щоденні реагенти в таблиці
-const dailyTableBody = document.querySelector("#dailyTable tbody");
-dailyReagents.forEach(r => {
-  const row = document.createElement("tr");
-  row.innerHTML = `<td>${r.name}</td><td>${r.volume}</td><td>${r.dailyUsage}</td><td>${r.price}</td>`;
-  dailyTableBody.appendChild(row);
-});
-
 function calculate() {
   const deviceCost = +document.getElementById("deviceCost").value;
   const workDays = { month: 21, quarter: 63, year: 252 };
   const now = new Date().toLocaleDateString('uk-UA');
 
-  let totalDailyCost = 0;
+  let totalTestsPerDay = 0;
+  let report = `<p><strong>📆 Дата розрахунку:</strong> ${now}</p>`;
   let totalDailyProfit = 0;
-  let report = `<p><strong>🗓️ Дата розрахунку:</strong> ${now}</p>`;
+  let totalYearlyCost = 0;
 
-  // Основні аналізи
-  reagents.forEach((r, i) => {
-    if (!document.getElementById(`check_${i}`).checked) return;
-    const count = +document.getElementById(`daily_${i}`).value;
-    const patientPrice = +document.getElementById(`price_${i}`).value;
-
-    const costPerTest = +(r.price / r.testsPerSet).toFixed(2);
-    const profitPerTest = +(patientPrice - costPerTest).toFixed(2);
-    const usageMl = +(r.usagePerTest * count).toFixed(4);
-    const flaconsPerDay = +(usageMl / r.volume).toFixed(4);
-    const costDaily = +(flaconsPerDay * r.price).toFixed(2);
-    const profitDaily = +(profitPerTest * count).toFixed(2);
-
-    totalDailyCost += costDaily;
-    totalDailyProfit += profitDaily;
-
-    report += `
-      <h4>${r.name}</h4>
-      <ul>
-        <li>Собівартість аналізу: ${costPerTest} грн</li>
-        <li>Кількість на день: ${count}</li>
-        <li>Добова витрата: ${flaconsPerDay.toFixed(2)} флаконів / ${costDaily} грн</li>
-        <li>Чистий прибуток: ${profitDaily} грн</li>
-      </ul>`;
+  // Щоденні реагенти — розрахунок сумарних витрат на день
+  let dailyReagentTotalCost = 0;
+  let activeDailyReagents = Object.values(dailyReagentsGrouped).flat().filter(r => {
+    const box = document.getElementById(r.checkboxId);
+    return box?.checked;
   });
 
-  // 🧪 Щоденні реагенти — активні витрати
-report += `<h3>🧪 Активні щоденні реагенти</h3><ul>`;
-Object.values(dailyReagentsGrouped).flat().forEach(r => {
-  const box = document.getElementById(r.checkboxId);
-  if (!box || !box.checked) return;
-  const daysPerUnit = +(r.volume / r.dailyUsage).toFixed(2);
-  const bottlesPerDay = +(1 / daysPerUnit).toFixed(4);
-  const costDaily = +(bottlesPerDay * r.price).toFixed(2);
-  totalDailyCost += costDaily;
-  report += `<li>${r.name}: ${bottlesPerDay.toFixed(2)} флаконів / ${costDaily} грн</li>`;
-});
-report += `</ul>`;
+  activeDailyReagents.forEach(r => {
+    const usedPerDay = r.dailyUsage;
+    const cost = +(r.price * usedPerDay / r.volume).toFixed(2);
+    dailyReagentTotalCost += cost;
+  });
 
-  const paybackDays = Math.ceil(deviceCost / totalDailyProfit);
-  const postPayProfit = Object.entries(workDays).map(([label, days]) => {
-    const sum = (totalDailyProfit * days).toFixed(2);
-    return `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${sum} грн</li>`;
-  }).join("");
+  // Основні реагенти
+  reagents.forEach((r, i) => {
+    const check = document.getElementById(`check_${i}`);
+    if (!check?.checked) return;
 
-  report += `<hr><h3>📊 Сумарні показники</h3><ul>
-    <li>Добова витрата реагентів + щоденні витрати: ${totalDailyCost.toFixed(2)} грн</li>
-    <li>Добовий чистий прибуток: ${totalDailyProfit.toFixed(2)} грн</li>
+    const count = +document.getElementById(`daily_${i}`).value;
+    const patientPrice = +document.getElementById(`price_${i}`).value;
+    totalTestsPerDay += count;
+
+    const reagentPerTestCost = +(r.price * r.usagePerTest / r.volume).toFixed(2);
+    const dailyOverhead = +(dailyReagentTotalCost / totalTestsPerDay).toFixed(2);
+    const costPerTest = +(reagentPerTestCost + dailyOverhead).toFixed(2);
+    const profitPerTest = +(patientPrice - costPerTest).toFixed(2);
+    const dailyProfit = +(profitPerTest * count).toFixed(2);
+
+    totalDailyProfit += dailyProfit;
+
+    // Закупівля флаконів на періоди
+    let periodCosts = {};
+    Object.entries(workDays).forEach(([label, days]) => {
+      const totalVolume = r.usagePerTest * count * days;
+      const flacons = Math.ceil(totalVolume / r.volume);
+      const cost = flacons * r.price;
+      periodCosts[label] = { flacons, cost };
+      if (label === "year") totalYearlyCost += cost;
+    });
+
+    report += `<h4>${r.name}</h4><ul>
+      <li>Собівартість тесту з урахуванням щоденних реагентів: ${costPerTest} грн</li>
+      <li>Кількість тестів на день: ${count}</li>
+      <li>Добовий прибуток: ${dailyProfit} грн</li>
+      <li>📦 Закупівля на періоди:
+        <ul>
+          ${Object.entries(periodCosts).map(([label, obj]) => 
+            `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} флаконів / ${obj.cost} грн</li>`
+          ).join("")}
+        </ul>
+      </li>
+    </ul>`;
+  });
+
+  // Щоденні реагенти — закупівлі
+  report += `<hr><h3>🧪 Щоденні реагенти</h3><ul>`;
+  activeDailyReagents.forEach(r => {
+    const flaconsPerDay = r.dailyUsage / r.volume;
+    let periodCosts = {};
+    Object.entries(workDays).forEach(([label, days]) => {
+      const totalVolume = r.dailyUsage * days;
+      const flacons = Math.ceil(totalVolume / r.volume);
+      const cost = flacons * r.price;
+      periodCosts[label] = { flacons, cost };
+      if (label === "year") totalYearlyCost += cost;
+    });
+
+    report += `<li><strong>${r.name}</strong>
+      <ul>
+        ${Object.entries(periodCosts).map(([label, obj]) => 
+          `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} флаконів / ${obj.cost} грн</li>`
+        ).join("")}
+      </ul>
+    </li>`;
+  });
+  report += `</ul>`;
+
+  // Фінансовий підсумок
+  const yearlyProfitGross = +(totalDailyProfit * workDays.year).toFixed(2);
+  const yearlyProfitNet = +(yearlyProfitGross - totalYearlyCost - deviceCost).toFixed(2);
+  const paybackDays = totalDailyProfit > 0 ? Math.ceil(deviceCost / totalDailyProfit) : "∞";
+
+  report += `<hr><h3>📊 Загальні фінансові показники</h3><ul>
+    <li>Загальна кількість тестів: ${totalTestsPerDay} на день</li>
+    <li>Сумарний прибуток на день: ${totalDailyProfit.toFixed(2)} грн</li>
     <li>Окупність приладу: ${paybackDays} робочих днів</li>
-    <li>Прибуток після окупності:</li><ul>${postPayProfit}</ul>
+    <li>Чистий річний прибуток: ${yearlyProfitNet} грн</li>
   </ul>`;
 
   document.getElementById("results").innerHTML = report;
 }
 
+
 function copyReport() {
   const text = document.getElementById("results").innerText;
   navigator.clipboard.writeText(text)
-    .then(() => alert("Звіт скопійовано 📋"))
-    .catch(() => alert("Не вдалося скопіювати 😕"));
+    .then(() => alert("📋 Звіт скопійовано"))
+    .catch(() => alert("⚠️ Не вдалося скопіювати"));
 }
 </script>
 </body>
