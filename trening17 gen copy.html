@@ -1,11 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Знижки</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Генератор пропозиції</title>
+  <style>
+   
+    h2{
+      text-align: center;
+      color: #005fbf;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    label::before {
+      content: attr(data-icon);
+      font-size: 1.2em;
+      margin-right: 8px;
+    }
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #d0d7df;
+      border-radius: 8px;
+      background-color: #ffffff;
+    }
+    button {
+      background-color: #005fbf;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0048a2;
+    }
+    .output {
+      margin-top: 20px;
+      font-size: 1.1em;
+      background: #eaf0f8;
+      padding: 12px;
+      border-radius: 10px;
+      border-left: 5px solid #005fbf;
+      min-height: 80px;
+    }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
@@ -43,6 +85,7 @@
   }
 </script>
 </head>
+
 <body>
   <header class="header">
     <div class="container header__container">
@@ -121,18 +164,50 @@
   <main>
     <section class="works">
       <div class="container">
-        <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Тренінг з ведення перемовин поро знижки</h2>
-        <ul class="button">
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./tr/Надання знижок.pdf" target="_blank" rel="noopener noreferrer">Презентація</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 calc.html">Калькулятор</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 gen.html">Аргументація</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 gen copy.html">Альтернатива</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 task.html">Завдання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/spreadsheets/d/11JUeUJSrHMm_NEEHFO4E6waD7ZGPV-S1QLKX8kXo0i0/edit?usp=sharing#gid=2103776744" target="_blank" rel="noopener noreferrer">Ваші запитання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio trenings.html">Назад</a></button></li>
-        </ul>
+  <h1 style="text-align: center;">🎯 Генератор Альтернатив Знижці</h1>
+
+  <label for="institution">Тип установи:</label>
+  <select id="institution">
+    <option value="державна">Державна лабораторія</option>
+    <option value="приватна">Приватна лабораторія</option>
+  </select>
+
+  <label for="disc">DISC-профіль партнера:</label>
+  <select id="disc">
+    <option value="D">D — Рішучий</option>
+    <option value="I">I — Впливовий</option>
+    <option value="S">S — Стабільний</option>
+    <option value="C">C — Аналітичний</option>
+  </select>
+
+  <label for="situation">Ситуація:</label>
+  <select id="situation">
+    <option value="старт">Старт</option>
+    <option value="тендер">Тендер</option>
+    <option value="масштабування">Масштабування</option>
+  </select>
+
+  <label for="need">Основна потреба партнера:</label>
+  <select id="need">
+    <option value="бюджет">Бюджет</option>
+    <option value="швидкість">Швидкість</option>
+    <option value="сервіс">Сервіс</option>
+    <option value="надійність">Надійність</option>
+  </select>
+
+  <button style="margin-top: 20px;" class="btn" onclick="generate()">🔄 Згенерувати фразу</button>
+  <button class="btn" onclick="window.location.href='./trening17.html'">Назад</button>
+  <div id="result"></div>
+
+  <!-- Кнопки після блоку результату -->
+<div id="actions" style="margin-top: 10px;">
+  <button class="btn" onclick="copyText()">📋 Копіювати</button>
+  <button  class="btn" onclick="sendViber()">📨 Viber</button>
+  <button class="btn" onclick="sendTelegram()">📨 Telegram</button>
+  <button class="btn" onclick="sendWhatsApp()">📨 WhatsApp</button>
+</div>
       </div>
-  </section>
+</section>
   </main>
   <footer class="footer">
     <div class="container">
@@ -196,9 +271,86 @@
     </div>
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
   </footer>
-  <script src="./js/menu.js"></script>
-  <script src="theme-toggle.js"></script>
-  <script src="tracking.js"></script>
-</body>
+  <script>
+    const data = {
+      institution: {
+        державна: ["Враховуючи специфіку державної лабораторії, ми адаптували рішення без потреби формальної знижки.",
+                   "Модель співпраці враховує ваші бюджетні обмеження — без прямого дисконту."],
+        приватна: ["Приватна лабораторія — це про гнучкість. Тому ми пропонуємо цінність у сервісі, а не в цифрах.",
+                   "Замість знижки — пріоритетний сервіс та мінімізація логістичних витрат."]
+      },
+      disc: {
+        D: ["Розуміємо, вам важливо діяти швидко — тому наш підхід без зайвих погоджень.",
+            "Без зайвих етапів: замість знижки — старт без затримок та чіткий KPI."],
+        I: ["Ваша роль в рішенні критична — ми створюємо умови, де ви можете проявити вплив.",
+            "Разом з вами створюємо win-win. Замість знижки — можливість показати результат."],
+        S: ["Ми будуємо довіру — тому пропонуємо стабільність без ілюзії знижок.",
+            "Фіксовані умови — це наша альтернатива знижці для довгострокових відносин."],
+        C: ["Детальна структура пропозиції замість знижки — ми відкрито обґрунтовуємо кожну цифру.",
+            "Альтернатива знижці — оптимізована модель з об'єктивними даними."]
+      },
+      situation: {
+        старт: ["На старті важлива простота — ми беремо на себе логістичні турботи.",
+                "Щоб старт був легким, ми надаємо супровід, замість формального дисконту."],
+        тендер: ["У тендері важлива прозорість — ми пропонуємо повну модель вартості без прихованих знижок.",
+                 "Замість дисконтів — адаптована комерційна пропозиція з чіткими умовами."],
+        масштабування: ["Масштабування — це про ефективність. Ми оптимізуємо обсяг без знижок.",
+                        "При зростанні — пропонуємо пакетне рішення, яке фактично є знижкою."]
+      },
+      need: {
+        бюджет: ["Модель економить бюджет, не втрачаючи якість.",
+                 "Ми пропонуємо таку ціну, яка вже враховує знижку — без її назви."],
+        швидкість: ["Швидке реагування — наша альтернатива будь-яким дисконтам.",
+                    "У швидкості — наша перевага. Ми стартуємо без пауз."],
+        сервіс: ["Преміум-сервіс замість знижки — ви отримуєте більше, ніж очікуєте.",
+                 "Рівень сервісу компенсує формальну відсутність дисконту."],
+        надійність: ["Надійність у постачанні — це головне, і ми гарантуємо це замість знижки.",
+                     "Фіксовані поставки та гарантії — це наша альтернатива знижці."]
+      }
+    };
 
+    function getRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generate() {
+      const inst = document.getElementById("institution").value;
+      const disc = document.getElementById("disc").value;
+      const sit = document.getElementById("situation").value;
+      const need = document.getElementById("need").value;
+
+      const phrase = [
+        getRandom(data.institution[inst]),
+        getRandom(data.disc[disc]),
+        getRandom(data.situation[sit]),
+        getRandom(data.need[need])
+      ].join(" ");
+
+      document.getElementById("result").innerHTML = `<strong>У відповідь на Ваш запит можемо запропонувати:</strong><br>${phrase}`;
+    }
+    // Функція копіювання
+  function copyText() {
+    const text = document.getElementById("result").innerText.replace('У відповідь на Ваш запит можемо запропонувати:', '').trim();
+    navigator.clipboard.writeText(text).then(() => alert("✅ Скопійовано!"));
+  }
+
+  // Viber
+  function sendViber() {
+    const msg = encodeURIComponent(document.getElementById("result").innerText);
+    window.open(`viber://forward?text=${msg}`);
+  }
+
+  // Telegram
+  function sendTelegram() {
+    const msg = encodeURIComponent(document.getElementById("result").innerText);
+    window.open(`https://t.me/share/url?url=&text=${msg}`, '_blank');
+  }
+
+  // WhatsApp
+  function sendWhatsApp() {
+    const msg = encodeURIComponent(document.getElementById("result").innerText);
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  }
+  </script>
+</body>
 </html>

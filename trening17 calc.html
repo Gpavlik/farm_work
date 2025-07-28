@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Знижки</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta charset="UTF-8">
+  <title>Калькулятор окупності знижок</title>
+  <style>
+    
+    input { padding: 6px; width: 100%; margin: 5px 0; }
+    label { display: block; margin-top: 10px; }
+    .highlight { background-color: #e6ffe6; border-left: 5px solid #4CAF50; padding-left: 10px; margin-top: 15px; }
+    .warning { color: #b71c1c; font-weight: bold; }
+    .result { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 20px; }
+    canvas { margin-top: 30px; }
+  </style>
+  <LSink rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
     rel="stylesheet" />
@@ -121,18 +127,29 @@
   <main>
     <section class="works">
       <div class="container">
-        <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Тренінг з ведення перемовин поро знижки</h2>
-        <ul class="button">
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./tr/Надання знижок.pdf" target="_blank" rel="noopener noreferrer">Презентація</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 calc.html">Калькулятор</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 gen.html">Аргументація</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 gen copy.html">Альтернатива</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 task.html">Завдання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/spreadsheets/d/11JUeUJSrHMm_NEEHFO4E6waD7ZGPV-S1QLKX8kXo0i0/edit?usp=sharing#gid=2103776744" target="_blank" rel="noopener noreferrer">Ваші запитання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio trenings.html">Назад</a></button></li>
-        </ul>
+  <h2 style="text-align: center;">📊 Калькулятор окупності стратегій знижок</h2>
+
+  <label>Собівартість одиниці (₴):</label>
+  <input type="number" id="cost" placeholder="Напр. 5000" />
+  <label>Базова ціна продажу (₴):</label>
+  <input type="number" id="basePrice" placeholder="Напр. 8500" />
+  <label>Поточний обсяг продажів (шт):</label>
+  <input type="number" id="volume" placeholder="Напр. 10" />
+  <label>Очікуване зростання при знижці 0%:</label>
+  <input type="number" id="growth0" placeholder="Напр. 0" />
+  <label>Очікуване зростання при знижці 10%:</label>
+  <input type="number" id="growth10" placeholder="Напр. 15" />
+  <label>Очікуване зростання при знижці 20%:</label>
+  <input type="number" id="growth20" placeholder="Напр. 30" />
+  <label>Очікуване зростання при знижці 30%:</label>
+  <input type="number" id="growth30" placeholder="Напр. 50" />
+
+  <button style="margin-top: 10px;" class="btn" onclick="calculate()">🔍 Порівняти</button>
+   <button class="btn" onclick="window.location.href='./trening17.html'">Назад</button>
+  <div class="result" id="output"></div>
+  <canvas id="chart" height="230"></canvas>
       </div>
-  </section>
+</section>
   </main>
   <footer class="footer">
     <div class="container">
@@ -196,9 +213,123 @@
     </div>
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
   </footer>
-  <script src="./js/menu.js"></script>
-  <script src="theme-toggle.js"></script>
-  <script src="tracking.js"></script>
-</body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let chartInstance = null;
 
+    function format(num) {
+      return num.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function calculateRecovery(baseProfit, marginPerUnit) {
+      if (marginPerUnit <= 0) return Infinity;
+      return Math.ceil(baseProfit / marginPerUnit);
+    }
+
+    function calculate() {
+      const cost = parseFloat(document.getElementById('cost').value);
+      const basePrice = parseFloat(document.getElementById('basePrice').value);
+      const volume = parseFloat(document.getElementById('volume').value);
+      const growths = [
+        parseFloat(document.getElementById('growth0').value),
+        parseFloat(document.getElementById('growth10').value),
+        parseFloat(document.getElementById('growth20').value),
+        parseFloat(document.getElementById('growth30').value)
+      ];
+
+      if ([cost, basePrice, volume, ...growths].some(isNaN)) {
+        document.getElementById('output').innerHTML = "❗ Заповніть усі поля.";
+        return;
+      }
+
+      const discounts = [0, 10, 20, 30];
+      const baseProfit = (basePrice - cost) * volume;
+      let strategies = [];
+
+      discounts.forEach((discount, i) => {
+        const price = basePrice * (1 - discount / 100);
+        const growth = growths[i];
+        const vol = Math.floor(volume * (1 + growth / 100));
+        const margin = price - cost;
+        const marginPercent = (margin / price) * 100;
+        const profit = margin * vol;
+        const recoveryVolume = calculateRecovery(baseProfit, margin);
+        const isRecovered = profit >= baseProfit;
+
+        strategies.push({
+          name: `${discount}%`,
+          discount,
+          price,
+          volume: vol,
+          margin,
+          marginPercent,
+          profit,
+          recoveryVolume,
+          isRecovered
+        });
+      });
+
+      document.getElementById('output').innerHTML = strategies.map(s => {
+        let extra = "";
+        if (!s.isRecovered) {
+          extra += `<div class="warning">⚠️ Прибуток нижчий за базовий (${format(s.profit)} < ${format(baseProfit)})</div>`;
+        } else {
+          extra += `<div><b>✅ Окупність досягнута</b></div>`;
+        }
+
+        return `
+          <div class="${s.isRecovered ? 'highlight' : ''}">
+            <b>Стратегія знижки ${s.name}</b><br/>
+            ➤ Ціна: ₴${format(s.price)}<br/>
+            ➤ Маржа: ₴${format(s.margin)} (${s.marginPercent.toFixed(1)}%)<br/>
+            ➤ Очікуваний обсяг: ${s.volume.toLocaleString('uk-UA')} шт<br/>
+            ➤ Прибуток: ₴${format(s.profit)}<br/>
+            ➤ Для окупності потрібно: ${s.recoveryVolume.toLocaleString('uk-UA')} шт<br/>
+            ${extra}
+          </div>
+        `;
+      }).join('');
+
+      const ctx = document.getElementById('chart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: strategies.map(s => s.name),
+          datasets: [
+            {
+              label: 'Прибуток (₴)',
+              data: strategies.map(s => s.profit),
+              backgroundColor: strategies.map(s => s.isRecovered ? '#4CAF50' : '#ccc')
+            },
+            {
+              label: 'Окупність знижки (шт)',
+              data: strategies.map(s => s.recoveryVolume),
+              backgroundColor: '#E91E63'
+            },
+            {
+              label: 'Очікуваний обсяг продажів (шт)',
+              data: strategies.map(s => s.volume),
+              backgroundColor: '#2196F3'
+            }
+          ]
+        },
+        options: {
+          scales: {
+            y: { beginAtZero: true }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.dataset.label}: ${ctx.raw.toLocaleString('uk-UA')}`
+              }
+            },
+            legend: { position: 'top' }
+          }
+        }
+      });
+    }
+  </script>
+</body>
 </html>

@@ -1,11 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Знижки</title>
+  <meta charset="UTF-8">
+  <title>Генератор фраз знижки</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  
+    h2 { text-align: center; color: #333; }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    select, button { width: 100%; padding: 12px; margin-top: 5px; font-size: 16px; border-radius: 20px; border: 1px solid #ccc; }
+    button { background: #0078D4; color: white; font-weight: bold; border: none; cursor: pointer; }
+    .card { background: white; margin-top: 20px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .card h3 { margin: 0 0 10px; color: #0078D4; }
+    .card p { font-size: 16px; line-height: 1.4; }
+    .share-buttons { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+    .share-btn {
+      flex: 1;
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .telegram { background: #0088cc; }
+    .copy-btn { background: #00a859; margin-top: 10px; }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
@@ -121,17 +143,46 @@
   <main>
     <section class="works">
       <div class="container">
-        <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Тренінг з ведення перемовин поро знижки</h2>
-        <ul class="button">
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./tr/Надання знижок.pdf" target="_blank" rel="noopener noreferrer">Презентація</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 calc.html">Калькулятор</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 gen.html">Аргументація</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 gen copy.html">Альтернатива</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening17 task.html">Завдання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/spreadsheets/d/11JUeUJSrHMm_NEEHFO4E6waD7ZGPV-S1QLKX8kXo0i0/edit?usp=sharing#gid=2103776744" target="_blank" rel="noopener noreferrer">Ваші запитання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio trenings.html">Назад</a></button></li>
-        </ul>
-      </div>
+  <h2 style="text-align: center;">🧩 Генератор аргументації знижки</h2>
+
+  <label>1️⃣ Причина:</label>
+  <select id="reason">
+    <option value="Ця пропозиція створена спеціально для старту співпраці">Старт співпраці</option>
+    <option value="Ми хочемо, щоб ви першими протестували оновлене рішення">Промо-запуск</option>
+    <option value="Враховуючи ваш досвід роботи з нами, ми запропонували персональну умову">Лояльність</option>
+    <option value="Це частина нашої програми оновлення обладнання">Акційна програма</option>
+  </select>
+
+  <label>2️⃣ Вигода:</label>
+  <select id="value">
+    <option value="Окрім знижки, ви отримуєте безкоштовне сервісне обслуговування">Сервісний бонус</option>
+    <option value="Ми включаємо стартовий комплект реактивів для запуску">Комплект реагентів</option>
+    <option value="У комплект входить налаштування, навчання персоналу та техпідтримка">Технічна підтримка</option>
+  </select>
+
+  <label>3️⃣ Обмеження:</label>
+  <select id="limit">
+    <option value="Пропозиція дійсна до кінця місяця">До кінця місяця</option>
+    <option value="Умови діють при замовленні до зазначеної дати">Тимчасова дія</option>
+    <option value="Пропозиція доступна лише для комплектного рішення">Умовний формат</option>
+  </select>
+
+  <label>4️⃣ Завершення:</label>
+  <select id="closing">
+    <option value="Це дозволить вам протестувати рішення без фінансового ризику">Без ризику</option>
+    <option value="Ми впевнені, що ви відчуєте вигоду з першого дня використання">Відчутна вигода</option>
+    <option value="Залишається лише узгодити деталі — ми на зв’язку">Заклик до дії</option>
+  </select>
+  <div class="button-section" Style="margin-top: 20px;">
+    <button class="btn" onclick="generate()">📣 Сформулювати фразу</button>
+    <button class="btn" onclick="copyPhrase()">📋 Копіювати текст</button>
+    <button class="btn" onclick="window.location.href='./trening17.html'">Назад</button>
+  </div>
+  <div class="card" id="output" style="display:none;">
+    <h3>Згенерована фраза:</h3>
+    <p id="phraseText"></p>
+    
+  </div>
   </section>
   </main>
   <footer class="footer">
@@ -196,9 +247,36 @@
     </div>
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
   </footer>
-  <script src="./js/menu.js"></script>
-  <script src="theme-toggle.js"></script>
-  <script src="tracking.js"></script>
-</body>
+    
+  
 
+  <script>
+    function generate() {
+      const r = document.getElementById('reason').value;
+      const v = document.getElementById('value').value;
+      const l = document.getElementById('limit').value;
+      const c = document.getElementById('closing').value;
+      const phrase = `${r}. ${v}. ${l}. ${c}.`;
+
+      document.getElementById('phraseText').innerText = phrase;
+      document.getElementById('output').style.display = 'block';
+
+      // WhatsApp
+      const wa = "https://api.whatsapp.com/send?text=" + encodeURIComponent(phrase);
+      document.getElementById('whatsappLink').href = wa;
+
+      // Telegram
+      const tg = "https://t.me/share/url?url=&text=" + encodeURIComponent(phrase);
+      document.getElementById('telegramLink').href = tg;
+    }
+
+    function copyPhrase() {
+      const text = document.getElementById('phraseText').innerText;
+      navigator.clipboard.writeText(text);
+      alert("✅ Текст скопійовано!");
+    }
+
+    
+  </script>
+</body>
 </html>
