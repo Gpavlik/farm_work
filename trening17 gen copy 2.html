@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор фраз</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1, h2 {
+      color: #2c3e50;
+      text-align: center;
+    }
+    .section {
+      background: #ffffff;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.3);
+      vertical-align: middle;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #output {
+      background: #eafaf1;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 17px;
+      color: #2e7d32;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      label { font-size: 15px; }
+      button { font-size: 16px; padding: 12px; }
+      #output { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>📱 Генератор фраз</h1>
+
+<div class="section">
+  <h2>Контекст</h2>
+  <label><input type="checkbox" id="newContact"> Новий партнер</label>
+  <label><input type="checkbox" id="knownContact"> Знайомий</label>
+  <label><input type="checkbox" id="onlineFormat"> Онлайн формат</label>
+  <label><input type="checkbox" id="productFocus"> Продукт</label>
+  <label><input type="checkbox" id="educationFocus"> Освітній контекст</label>
+</div>
+
+<div class="section">
+  <h2>Подача рішення</h2>
+  <label><input type="checkbox" id="caseSolution"> Кейс з клініки</label>
+  <label><input type="checkbox" id="protocolSolution"> Протокол</label>
+  <label><input type="checkbox" id="economicBenefit"> Економічна перевага</label>
+  <label><input type="checkbox" id="evidenceBenefit"> Доказова база</label>
+</div>
+
+<button onclick="generatePhrase()">🔄 Згенерувати фразу</button>
+
+<div id="output"></div>
+
+<script>
+  function generatePhrase() {
+    let phrase = "💬 ";
+    const isNew = document.getElementById("newContact").checked;
+    const isKnown = document.getElementById("knownContact").checked;
+    const isOnline = document.getElementById("onlineFormat").checked;
+    const isProduct = document.getElementById("productFocus").checked;
+    const isEducation = document.getElementById("educationFocus").checked;
+
+    const isCase = document.getElementById("caseSolution").checked;
+    const isProtocol = document.getElementById("protocolSolution").checked;
+    const isEcon = document.getElementById("economicBenefit").checked;
+    const isEvidence = document.getElementById("evidenceBenefit").checked;
+
+    // Контекст знайомства
+    if (isNew) phrase += "Радий новому знайомству! ";
+    if (isKnown) phrase += "Завжди приємно поспілкуватися з вами знову. ";
+    if (isOnline) phrase += "Це зручно, що можемо обговорити онлайн. ";
+    if (isEducation) phrase += "Ми підтримуємо освітні формати — думаю, вам буде цікаво. ";
+    if (isProduct) phrase += "Маємо рішення, яке може доповнити вашу практику. ";
+
+    // Подача рішення
+    if (isCase && isEcon) phrase += "У кейсі клініки вдалося знизити витрати на 30%. ";
+    if (isProtocol && isEvidence) phrase += "Протокол базується на доказовій практиці й уже застосовується у закладах. ";
+
+    document.getElementById("output").innerText = phrase || "📌 Оберіть параметри для генерації фрази.";
+  }
+</script>
+
+</body>
+</html>

@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Виявлення потреб</title>
+  <meta charset="UTF-8">
+  <title>Розрахунок потреби реагентів та їх вартості</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
@@ -16,7 +13,7 @@
   <link rel="stylesheet" href="./css/main.css" />
   <link rel="stylesheet" href="./css/styles.css">
 
-<!-- Google tag (gtag.js) -->
+<<!-- Google tag (gtag.js) -->
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5BZZCV5DRK"></script>
 <script>
@@ -42,9 +39,20 @@
     });
   }
 </script>
+  <style>
+        input { padding: 5px; margin: 5px; width: 30%; border-radius: 10px; }
+    label { display: block; margin-top: 10px; }
+    button { margin: 10px 0; padding: 10px 15px; }
+    .result { margin-top: 20px; font-weight: bold; white-space: pre-wrap; }
+    ul { margin-left: 20px; }
+    li { margin-bottom: 6px; }
+    main { max-width: 800px; padding: 20px; }
+    h2 { text-align: center; }
+
+  </style>
 </head>
 <body>
-  <header class="header">
+<header class="header">
     <div class="container header__container">
       <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
       <!--<ul class="nav">
@@ -118,22 +126,28 @@
       </ul>
     </div>
   </header>
+  
   <main>
-    <section class="works">
-      <div class="container">
-        <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Тренінг з виявлення потреб</h2>
-        <ul class="button">
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./tr/Виявлення потреби.pdf" target="_blank" rel="noopener noreferrer">Презентація</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening19 sp.html" >Шпаргалка</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./spin.html">Спінер</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./trening19 task.html">Завдання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="https://docs.google.com/spreadsheets/d/11JUeUJSrHMm_NEEHFO4E6waD7ZGPV-S1QLKX8kXo0i0/edit?usp=sharing#gid=1950082017" target="_blank" rel="noopener noreferrer">Ваші запитання</a></button></li>
-          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio trenings.html">Назад</a></button></li>
-        </ul>
-      </div>
-  </section>
-  </main>
-  <footer class="footer">
+<section class="works">
+  <div class="container">
+  <h2>🔬 Розрахунок потреби реагентів та їх вартості Citolab Reader 300</h2>
+
+  <label>📦 Вартість приладу (грн): <input type="number" id="devicePrice" value=""></label>
+  <label>🔢 Кількість тестів на день: <input type="number" id="testsPerDay" value=""></label>
+  <label>💸 Ціна тесту для пацієнта (грн): <input type="number" id="testPrice" value=""></label>
+
+  <ul>
+  <li class="button"><button class="btn" onclick="calculate()">🔍 Розрахувати</button>
+  <button class="btn" onclick="copyResult()">📋 Скопіювати результат</button>
+<button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj7.html">Назад</a></button></li>
+</ul>
+
+  <div id="output" class="result"></div>
+  </div>
+</section>
+</main>
+ 
+<footer class="footer">
     <div class="container">
       <div class="find-us">
         <div class="find">
@@ -194,10 +208,112 @@
       </div>
     </div>
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+        <button id="scrollTopBtn" title="До гори">⬆</button>
   </footer>
-  <script src="./js/menu.js"></script>
-  <script src="theme-toggle.js"></script>
-  <script src="tracking.js"></script>
-</body>
+  <script>
+  const reagents = [
+    { name: "CITOLAB™ 10М", startup: 0, shutdown: 0, perTest: 1, packageSize: 100, price: 926.8 },
+    { name: "Калібровочні смужки", startup: 0.05, shutdown: 0, perTest: 0, packageSize: 25, price: 212.7 }
+  ];
 
+function getWorkingDays(period) {
+  const perMonth = 21;
+  switch (period) {
+    case 'month': return perMonth;
+    case 'quarter': return perMonth * 3;
+    case 'year': return perMonth * 12;
+    default: return 1;
+  }
+}
+
+function calculate() {
+  const devicePrice = +document.getElementById("devicePrice").value || 0;
+  const testsPerDay = +document.getElementById("testsPerDay").value || 0;
+  const testPrice = +document.getElementById("testPrice").value || 0;
+
+  const workDays = getWorkingDays('year');
+  const totalTests = testsPerDay * workDays;
+  const annualRevenue = totalTests * testPrice;
+
+  // 🔄 Реальне використання і закупівля флаконів
+  let totalReagentCost = 0;
+  let reagentState = reagents.map(r => ({
+    remainingVolume: r.packageSize,
+    bottlesUsed: 0,
+    totalVolumeUsed: 0,
+    price: r.price,
+    packageSize: r.packageSize
+  }));
+
+  let accumulatedProfit = 0;
+  let paybackDay = 'не досягається';
+
+  for (let day = 1; day <= workDays; day++) {
+    let dailyCost = 0;
+    const revenue = testsPerDay * testPrice;
+
+    reagentState.forEach((state, i) => {
+      const r = reagents[i];
+      const dailyVolume = r.startup + r.shutdown + r.perTest * testsPerDay;
+      state.totalVolumeUsed += dailyVolume;
+
+      if (state.remainingVolume < dailyVolume) {
+        state.bottlesUsed += 1;
+        totalReagentCost += r.price;
+        dailyCost += r.price;
+        state.remainingVolume = r.packageSize - dailyVolume;
+      } else {
+        state.remainingVolume -= dailyVolume;
+      }
+    });
+
+    const dailyProfit = revenue - dailyCost;
+    accumulatedProfit += dailyProfit;
+
+    if (accumulatedProfit >= devicePrice && paybackDay === 'не досягається') {
+      paybackDay = day;
+    }
+  }
+
+  const annualProfit = annualRevenue - totalReagentCost;
+  const costPerTest = totalTests > 0 ? totalReagentCost / totalTests : 0;
+  const finalNetProfit = annualProfit - devicePrice;
+
+  // 📦 Планування закупівель реагентів
+  let reagentPlanning = "";
+  ["month", "quarter", "year"].forEach(period => {
+    const days = getWorkingDays(period);
+    const tests = testsPerDay * days;
+
+    reagentPlanning += `<li><strong>${period}</strong><ul>`;
+    reagents.forEach(r => {
+      const volume = days * (r.startup + r.shutdown) + tests * r.perTest;
+      const bottles = Math.ceil(volume / r.packageSize);
+      const cost = bottles * r.price;
+      reagentPlanning += `<li>${r.name}: ${bottles} туб — ${cost.toFixed(2)} грн</li>`;
+    });
+    reagentPlanning += `</ul></li>`;
+  });
+
+  // 📋 Вивід результату
+  document.getElementById("output").innerHTML = `
+📊 Розрахунок на основі реального використання
+• Робочих днів: ${workDays}
+• Загальна кількість тестів: ${totalTests}
+• Фактичні витрати на реагенти: ${totalReagentCost.toFixed(2)} грн
+• Загальний дохід: ${annualRevenue.toFixed(2)} грн
+• Загальний прибуток: ${annualProfit.toFixed(2)} грн
+• Собівартість одного тесту: ${costPerTest.toFixed(2)} грн
+📅 Термін окупності приладу: ${paybackDay} робочих днів
+• Чистий фінансовий результат (з урахуванням вартості приладу): ${finalNetProfit.toFixed(2)} грн через рік після початку використання приладу.
+
+📦 Планування закупівель реагентів
+${reagentPlanning}
+  `;
+}
+
+function copyResult() { const result = document.getElementById("output").innerText; navigator.clipboard.writeText(result).then(() => alert("✅ Результат скопійовано в буфер обміну!") ); }
+
+</script>
+</body>
 </html>
