@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Відображаємо у футері
     const el = document.getElementById("currentUser");
     if (el) {
-      el.textContent = "Ви увійшли як: " + nameOrEmail;
+      el.textContent = "Ви зайшли як: " + nameOrEmail;
     }
   }
 
