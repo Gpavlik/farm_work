@@ -97,7 +97,7 @@ function sendWeeklyEmails() {
         <div style="font-family: Arial, sans-serif; line-height: 1.5;">
           <p>Добрий день, <strong>${name}</strong>,</p>
           <p>На цьому тижні Вам необхідно написати відгук за наступним посиланням:</p>
-          <a href="${taskLink}" style="display: inline-block; padding: 10px 20px; background-color: #2D9CDB; color: white; text-decoration: none; border-radius: 4px;">Надіслати відгук</a>
+          <a href="${taskLink}" style="display: inline-block; padding: 10px 20px; background-color: #68ff63ff; color: white; text-decoration: none; border-radius: 10px;">Надіслати відгук</a>
           <p style="margin-top: 20px;">З повагою,<br>команда маркетингу компанії Фармаско</p>
         </div>
       `

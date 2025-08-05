@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: '"Фармаско Маркетинг" <oplevish66@gmail.com>',   // email відправника
-  to: 'pavlo@example.com',                               // твоє тестове email
+  to: 'oplevish66@gmail.com',                               // твоє тестове email
   subject: 'Тестове завдання на тиждень',
   html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.5;">
