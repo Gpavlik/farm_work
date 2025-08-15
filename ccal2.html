@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Календар задач</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+.day.has-tasks {
+  background-color: #dbeafe; /* світло-синій */
+}
+
+.day.all-done {
+  background-color: #d1e7dd; /* світло-зелений */
+}
+    .calendar-container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .calendar-header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-weight: bold;
+      padding: 5px;
+      background: #e0e0e0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .day {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 5px;
+      min-height: 100px;
+      cursor: pointer;
+    }
+.day:hover {
+  box-shadow: 0 0 5px 5px #ffc0cbce;
+  transition: box-shadow 0.3s ease;
+}
+
+    .day strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .task {
+      font-size: 12px;
+      margin: 3px 0;
+      background: #d1ecf1;
+      padding: 2px 4px;
+      border-radius: 3px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+button {
+      background: #25a72b;
+      color: white;
+      border: 1px solid #ccc;
+      padding: 2px 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218a24;
+    }
+    button:active {
+      outline: none;
+      box-shadow: 0 0 0 3px #25a72b;
+    }
+
+    .task-text {
+      flex-grow: 1;
+      margin-right: 5px;
+    }
+
+    .task-text.done {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      width: 350px;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      margin-top: 5px;
+      padding: 5px;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+
+    button {
+      font-size: 14px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+    .filter {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .edit-input {
+      width: 100%;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button onclick="changeMonth(-1)">←</button>
+      <span id="monthLabel"></span>
+      <button onclick="changeMonth(1)">→</button>
+    </div>
+    <div class="calendar" id="calendar">
+      <!-- Weekday headers will be inserted here -->
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3>Задачі на <span id="modalDate"></span></h3>
+      <div class="filter">
+        <label><input type="checkbox" id="hideDone" onchange="renderTaskList()"> Показати лише невиконані</label>
+      </div>
+      <div id="taskList"></div>
+      <input type="text" id="taskInput" placeholder="Нова задача">
+      <button onclick="addTask()">Додати</button>
+      <button onclick="closeModal()">Закрити</button>
+    </div>
+  </div>
+
+  <script>
+   let currentYear = new Date().getFullYear();
+let currentMonth = new Date().getMonth();
+let tasks = {};
+let selectedDay = null;
+
+const monthNames = [
+  "Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
+  "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"
+];
+
+const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
+
+function loadTasks() {
+  const key = `tasks-${currentYear}-${currentMonth}`;
+  tasks = JSON.parse(localStorage.getItem(key)) || {};
+}
+
+function saveTasks() {
+  const key = `tasks-${currentYear}-${currentMonth}`;
+  localStorage.setItem(key, JSON.stringify(tasks));
+}
+
+function generateCalendar(year, month) {
+  document.getElementById('monthLabel').textContent = `${monthNames[month]} ${year}`;
+  const calendar = document.getElementById('calendar');
+  calendar.innerHTML = '';
+
+  weekdays.forEach(day => {
+    const header = document.createElement('div');
+    header.className = 'weekday';
+    header.textContent = day;
+    calendar.appendChild(header);
+  });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const offset = (firstDay + 6) % 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < offset; i++) {
+    const empty = document.createElement('div');
+    calendar.appendChild(empty);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'day';
+    dayDiv.onclick = () => openModal(d);
+
+    let innerHTML = `<strong>${d}</strong>`;
+
+    if (tasks[d]) {
+      const allDone = tasks[d].every(task => task.startsWith('✔️'));
+      const hasTasks = tasks[d].length > 0;
+
+      if (allDone) {
+        dayDiv.classList.add('all-done');
+      } else if (hasTasks) {
+        dayDiv.classList.add('has-tasks');
+      }
+
+      tasks[d].slice(0, 2).forEach(task => {
+        const isDone = task.startsWith('✔️');
+        const taskClass = isDone ? 'task-text done' : 'task-text';
+        innerHTML += `<div class="task"><span class="${taskClass}">${task}</span></div>`;
+      });
+
+      if (tasks[d].length > 2) {
+        innerHTML += `<div style="font-size:10px; color:gray;">+${tasks[d].length - 2} ще</div>`;
+      }
+    }
+
+    dayDiv.innerHTML = innerHTML;
+    calendar.appendChild(dayDiv);
+  }
+}
+
+function openModal(day) {
+  selectedDay = day;
+  document.getElementById('modalDate').textContent = `${day} ${monthNames[currentMonth]} ${currentYear}`;
+  document.getElementById('taskInput').value = '';
+  document.getElementById('hideDone').checked = false;
+  renderTaskList();
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+function renderTaskList() {
+  const container = document.getElementById('taskList');
+  container.innerHTML = '';
+  const hideDone = document.getElementById('hideDone').checked;
+
+  if (tasks[selectedDay]) {
+    tasks[selectedDay].forEach((taskText, index) => {
+      const isDone = taskText.startsWith('✔️');
+      if (hideDone && isDone) return;
+
+      const taskEl = document.createElement('div');
+      taskEl.className = 'task';
+
+      const taskClass = isDone ? 'task-text done' : 'task-text';
+
+      taskEl.innerHTML = `
+        <span class="${taskClass}" ondblclick="editTask(${selectedDay}, ${index})">${taskText}</span>
+        <button onclick="markDone(${selectedDay}, ${index})">✅</button>
+        <button onclick="cancelTask(${selectedDay}, ${index})">❌</button>
+      `;
+      container.appendChild(taskEl);
+    });
+  }
+}
+
+function addTask() {
+  const input = document.getElementById('taskInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (!tasks[selectedDay]) tasks[selectedDay] = [];
+  tasks[selectedDay].push(text);
+  input.value = '';
+  saveTasks();
+  renderTaskList();
+  generateCalendar(currentYear, currentMonth);
+}
+
+function markDone(day, index) {
+  const taskText = tasks[day][index];
+  if (!taskText.startsWith('✔️')) {
+    tasks[day][index] = `✔️ ${taskText}`;
+    saveTasks();
+    renderTaskList();
+    generateCalendar(currentYear, currentMonth);
+  }
+}
+
+function cancelTask(day, index) {
+  tasks[day].splice(index, 1);
+  if (tasks[day].length === 0) delete tasks[day];
+  saveTasks();
+  renderTaskList();
+  generateCalendar(currentYear, currentMonth);
+}
+
+function editTask(day, index) {
+  const container = document.getElementById('taskList');
+  const taskText = tasks[day][index].replace(/^✔️ /, '');
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = taskText;
+  input.className = 'edit-input';
+
+  input.onkeydown = (e) => {
+    if (e.key === 'Enter') {
+      const newText = input.value.trim();
+      if (newText) {
+        const isDone = tasks[day][index].startsWith('✔️');
+        const prefix = isDone ? '✔️ ' : '';
+        tasks[day][index] = prefix + newText;
+        saveTasks();
+        renderTaskList();
+        generateCalendar(currentYear, currentMonth);
+      }
+    }
+  };
+
+  const taskEl = container.children[index];
+  const span = taskEl.querySelector('span');
+  span.replaceWith(input);
+  input.focus();
+}
+
+function changeMonth(offset) {
+  currentMonth += offset;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  } else if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  loadTasks();
+  generateCalendar(currentYear, currentMonth);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadTasks();
+  generateCalendar(currentYear, currentMonth);
+});
+
+    </script>
+    </body>
+</html>

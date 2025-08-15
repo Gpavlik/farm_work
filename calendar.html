@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Календар задач</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .day { border: 1px solid #ccc; padding: 10px; min-height: 100px; position: relative; }
+    .day:hover { background: #f0f8ff; cursor: pointer; }
+    .date { font-weight: bold; margin-bottom: 5px; }
+    .task { background: #dff0d8; padding: 3px; margin-top: 3px; border-radius: 3px; font-size: 0.9em; }
+    #taskModal { display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -30%); background: white; padding: 20px; border: 1px solid #ccc; z-index: 10; }
+    #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 5; }
+    .day[data-has-task="true"] {background-color: #ffeeba;}
+  </style>
+</head>
+<body>
+  <h1>Календар задач</h1>
+  <div style="text-align:center; margin-bottom: 10px;">
+  <button onclick="changeMonth(-1)">←</button>
+  <span id="monthLabel"></span>
+  <button onclick="changeMonth(1)">→</button>
+</div>
+
+  <div class="calendar" id="calendar"></div>
+
+  <div id="overlay"></div>
+  <div id="taskModal">
+    <h3>Додати задачу</h3>
+    <p id="selectedDate"></p>
+    <input type="text" id="taskInput" placeholder="Опис задачі" />
+    <button onclick="addTask()">Зберегти</button>
+    <button onclick="closeModal()">Скасувати</button>
+  </div>
+
+  <script>
+  const calendar = document.getElementById('calendar');
+  const taskModal = document.getElementById('taskModal');
+  const overlay = document.getElementById('overlay');
+  const selectedDateEl = document.getElementById('selectedDate');
+  const taskInput = document.getElementById('taskInput');
+  let selectedDay = null;
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const storageKey = `tasks-${year}-${month}`;
+
+  let tasks = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+  function generateCalendar(year, month) {
+    calendar.innerHTML = '';
+    const date = new Date(year, month, 1);
+    const firstDay = date.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      calendar.innerHTML += `<div class="day"></div>`;
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'day';
+      dayDiv.innerHTML = `<div class="date">${d}</div>`;
+      dayDiv.onclick = () => openModal(d);
+
+      if (tasks[d]) {
+        tasks[d].forEach(taskText => {
+          const taskEl = document.createElement('div');
+          taskEl.className = 'task';
+          taskEl.textContent = taskText;
+          dayDiv.appendChild(taskEl);
+        });
+      }
+
+      calendar.appendChild(dayDiv);
+    }
+  }
+
+  function openModal(day) {
+    selectedDay = day;
+    selectedDateEl.textContent = `Дата: ${day}`;
+    taskInput.value = '';
+    taskModal.style.display = 'block';
+    overlay.style.display = 'block';
+  }
+
+  function closeModal() {
+    taskModal.style.display = 'none';
+    overlay.style.display = 'none';
+  }
+
+  function addTask() {
+    const taskText = taskInput.value.trim();
+    if (!taskText) return;
+
+    if (!tasks[selectedDay]) tasks[selectedDay] = [];
+    tasks[selectedDay].push(taskText);
+    localStorage.setItem(storageKey, JSON.stringify(tasks));
+    generateCalendar(year, month);
+    closeModal();
+  }
+
+  generateCalendar(year, month);
+
+  let currentYear = today.getFullYear();
+let currentMonth = today.getMonth();
+const monthNames = ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+
+function updateMonthLabel() {
+  document.getElementById('monthLabel').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+}
+
+function changeMonth(delta) {
+  currentMonth += delta;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  } else if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  updateMonthLabel();
+  loadTasks();
+  generateCalendar(currentYear, currentMonth);
+}
+
+function loadTasks() {
+  const key = `tasks-${currentYear}-${currentMonth}`;
+  tasks = JSON.parse(localStorage.getItem(key)) || {};
+}
+
+function saveTasks() {
+  const key = `tasks-${currentYear}-${currentMonth}`;
+  localStorage.setItem(key, JSON.stringify(tasks));
+}
+
+function generateCalendar(year, month) {
+  calendar.innerHTML = '';
+  const date = new Date(year, month, 1);
+  const firstDay = date.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    calendar.innerHTML += `<div class="day"></div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'day';
+    dayDiv.innerHTML = `<div class="date">${d}</div>`;
+    dayDiv.onclick = () => openModal(d);
+
+    if (tasks[d]) {
+      dayDiv.style.background = '#ffeeba'; // 🎨 підсвічування
+      tasks[d].forEach(taskText => {
+        const taskEl = document.createElement('div');
+        taskEl.className = 'task';
+        taskEl.textContent = taskText;
+        dayDiv.appendChild(taskEl);
+      });
+    }
+
+    calendar.appendChild(dayDiv);
+  }
+}
+
+function addTask() {
+  const taskText = taskInput.value.trim();
+  if (!taskText) return;
+
+  if (!tasks[selectedDay]) tasks[selectedDay] = [];
+  tasks[selectedDay].push(taskText);
+  saveTasks();
+  generateCalendar(currentYear, currentMonth);
+  closeModal();
+}
+
+function checkNotifications() {
+  const now = new Date();
+  const todayDay = now.getDate();
+  const todayMonth = now.getMonth();
+  const todayYear = now.getFullYear();
+
+  for (let m = 0; m < 12; m++) {
+    const key = `tasks-${todayYear}-${m}`;
+    const monthTasks = JSON.parse(localStorage.getItem(key)) || {};
+    for (let d in monthTasks) {
+      const taskDate = new Date(todayYear, m, d);
+      const diffDays = Math.floor((taskDate - now) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1 || diffDays === 7) {
+        monthTasks[d].forEach(task => {
+          alert(`🔔 Нагадування: "${task}" заплановано на ${d} ${monthNames[m]}`);
+        });
+      }
+    }
+  }
+}
+
+// Ініціалізація
+updateMonthLabel();
+loadTasks();
+generateCalendar(currentYear, currentMonth);
+checkNotifications();
+    </script>
+    <script>
+        // Додаткові функції для зміни місяця
+        function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        updateMonthLabel();
+        loadTasks();
+        generateCalendar(currentYear, currentMonth);
+        }
+    
+        function updateMonthLabel() {
+        document.getElementById('monthLabel').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        }
+</script>
+
+</body>
+</html>

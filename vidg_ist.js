@@ -78,19 +78,19 @@ const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
     user: 'oplevish66@gmail.com',
-    pass: 'Dovbak66!'
+    pass: 'hans nsxi scff esgt'
   }
 });
 
 // 📤 Функція для надсилання листів
 function sendWeeklyEmails() {
-  const currentWeek = new Date().getWeek?.() || getISOWeek(new Date());
+  const currentWeek = getISOWeek(new Date());
   for (const [email, { name, tasks }] of Object.entries(employeeData)) {
     const taskLink = tasks[currentWeek];
     if (!taskLink) continue;
 
     const mailOptions = {
-      from: '"Фармаско Маркетинг" <your_email@gmail.com>',
+      from: '"Фармаско Маркетинг" <oplevish66@gmail.com>',
       to: email,
       subject: `Завдання на тиждень ${currentWeek}`,
       html: `
