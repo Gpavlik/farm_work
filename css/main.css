@@ -2018,3 +2018,17 @@ main {
 html {
   scroll-behavior: smooth;
 }
+.weather-today {
+  position: absolute;
+  top: 45px;
+  right: 20%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: var(--brand-color);
+}
+  .weather-today img {
+    width: 30px;
+    height: 30px;
+  }

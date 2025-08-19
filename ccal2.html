@@ -3,41 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <title>Календар задач</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.css"
+    integrity="sha512-Y0MM+V6ymRKN2zStTqzQ227DWhhp4Mzdo6gnlRnuaNCbc+YN/ZH0sBCLTM4M0oSy9c9VKiCvd4Jk44aCLrNS5Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/styles.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
   <style>
-    body {
+    main {
       font-family: Arial, sans-serif;
       background: #f4f4f4;
-      margin: 0;
-      padding: 20px;
+      margin-top: 0px;
+      padding: 0px;
+      opacity: 1;
+    transform: translateY(40px);
+    transition: all 2s ease-out;
+    
     }
-.day.has-tasks {
-  background-color: #dbeafe; /* світло-синій */
+    main.loaded {
+  animation: breathe 2s ease-out;
+  }
+
+@keyframes breathe {
+  0% { transform: scale(0.9) translateY(40px); opacity: 0; }
+  50% { transform: scale(1.05) translateY(-10px); opacity: 0.8; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-.day.all-done {
-  background-color: #d1e7dd; /* світло-зелений */
+.calendar-container {
+  max-width: 1200px;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+      padding: 10px;
+    }
+
+    #calendarBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.9;
+  z-index: 0;
+  transition: opacity 1s ease-in-out, background-image 1s ease-in-out;
 }
-    .calendar-container {
-      max-width: 1200px;
-      margin: auto;
+
+#calendarBackground.loaded {
+  opacity: 0.9;
+}
+    #calendar {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
     }
 
     .calendar-header {
       text-align: center;
       margin-bottom: 10px;
-    }
-
-    .calendar {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
+      position: relative;
+      z-index: 2;
     }
 
     .weekday {
       text-align: center;
       font-weight: bold;
       padding: 5px;
-      background: #e0e0e0;
+      background: #e5fdd1;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
@@ -47,17 +88,31 @@
       border: 1px solid #ccc;
       border-radius: 10px;
       padding: 5px;
-      min-height: 100px;
+      min-height: 150px;
       cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      opacity: 0.8;
     }
-.day:hover {
-  box-shadow: 0 0 5px 5px #ffc0cbce;
-  transition: box-shadow 0.3s ease;
-}
+
+    .day:hover {
+      box-shadow: 0 0 5px 5px #ffc0cbce;
+    }
 
     .day strong {
       display: block;
       margin-bottom: 5px;
+    }
+
+    .day.weekend {
+      background-color: #ffe5e5;
+    }
+
+    .day.has-tasks {
+      background-color: #dbeafe;
+    }
+
+    .day.all-done {
+      background-color: #d1e7dd;
     }
 
     .task {
@@ -70,22 +125,6 @@
       justify-content: space-between;
       align-items: center;
     }
-button {
-      background: #25a72b;
-      color: white;
-      border: 1px solid #ccc;
-      padding: 2px 5px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #218a24;
-    }
-    button:active {
-      outline: none;
-      box-shadow: 0 0 0 3px #25a72b;
-    }
 
     .task-text {
       flex-grow: 1;
@@ -97,16 +136,37 @@ button {
       color: gray;
     }
 
+    button {
+      background: #25a72b;
+      color: white;
+      border: 1px solid #ccc;
+      padding: 2px 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background: #218a24;
+    }
+
+    button:active {
+      outline: none;
+      box-shadow: 0 0 0 3px #25a72b;
+    }
+
     .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.5);
       display: none;
       justify-content: center;
       align-items: center;
+      z-index: 10;
     }
 
     .modal-content {
@@ -128,12 +188,6 @@ button {
       border-radius: 5px;
     }
 
-    button {
-      font-size: 14px;
-      margin-top: 5px;
-      cursor: pointer;
-    }
-
     .filter {
       margin-top: 10px;
       text-align: center;
@@ -144,17 +198,124 @@ button {
       font-size: 12px;
       margin-top: 3px;
     }
+
+    span {
+      font-weight: bold;
+      font-size: large;
+      color: #25a72b;
+    }
+    .today-highlight {
+  border: 2px solid #25a72b;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 5px rgba(15, 190, 30, 0.603); }
+  70% { box-shadow: 0 0 0 10px rgba(15, 190, 30, 0); }
+  100% { box-shadow: 0 0 0 3px rgba(15, 190, 30, 0); }
+}
+
   </style>
+  <script src='./weather.js'></script>
 </head>
 <body>
+  <header class="header">
+    <div class="container header__container">
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
+      <!--<ul class="nav">
+        <li class="nav__referent"><a class="nav__link" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts" target="_blank" rel="noopener noreferrer">Контакти</a></li>
+      </ul>-->
+      <ul class="contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-envelope"></use>
+            </svg>contact@pharmasco.com</a>
+          </a>
+        </li>
+       <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+      </ul>
+    </div>
+    <button class="mobile-menu-btn" type="button" data-menu-button>
+      <svg class="mobile-menu-icon" width="24" height="16">
+        <use class="mobile-menu-burger" href="./images/sprite.svg#24-menu"></use>
+        <use class="mobile-menu-close" href="./images/sprite.svg#icon-X"></use>
+      </svg>
+    </button>
+    <div class="mobile-menu" data-menu>
+      <!--<ul class="mobile-menu-nav">
+        <li class="mobile-menu-nav-item">
+          <a class="link " href="./index.html">Головна</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link current" href="./portfolio.html">Курси</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="/contact">Контакти</a>
+        </li>
+      </ul>-->
+      <ul class="mobile-menu-contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+        <li class="mobile-menu-contacts-item">
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-socials">
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer">Youtube</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+<main class="loaded">
   <div class="calendar-container">
+    <div id="calendarBackground">
+      <img id="bgPreloader" style="display: none;" />
+    </div>
+
     <div class="calendar-header">
       <button onclick="changeMonth(-1)">←</button>
       <span id="monthLabel"></span>
       <button onclick="changeMonth(1)">→</button>
+      <button class="btn" type="button" style="margin-left: 80%;">
+        <a class="text__work" href="./portfolio standart.html" style="text-decoration: none; font-size: smaller;">
+          Назад
+        </a>
+      </button>
     </div>
-    <div class="calendar" id="calendar">
-      <!-- Weekday headers will be inserted here -->
+
+    <div id="calendar">
+      <!-- Weekday headers and days will be inserted here -->
     </div>
   </div>
 
@@ -162,7 +323,9 @@ button {
     <div class="modal-content">
       <h3>Задачі на <span id="modalDate"></span></h3>
       <div class="filter">
-        <label><input type="checkbox" id="hideDone" onchange="renderTaskList()"> Показати лише невиконані</label>
+        <label>
+          <input type="checkbox" id="hideDone" onchange="renderTaskList()"> Показати лише невиконані
+        </label>
       </div>
       <div id="taskList"></div>
       <input type="text" id="taskInput" placeholder="Нова задача">
@@ -170,7 +333,69 @@ button {
       <button onclick="closeModal()">Закрити</button>
     </div>
   </div>
-
+<footer class="footer">
+    <div class="container">
+      <div class="find-us">
+        <div class="find">
+          <a class="logo footer__logo" href="/"><img src="./images/logo.svg" alt="logo" width="160"></a>
+          <ul class="contacts contacts--footer">
+            <li class="contacts__contact contacts__contact--footer">
+              <address class="contacts__post"><p>Україна, Київська обл.,</p> <p>м. Вишгород,</p> <p>вул. Шолуденка, 15г</p></address>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-mail contacts__contact-mail--footer"
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
+            </li>
+          </ul>
+        </div>
+        <div class="social social--footer">
+          <h2 class="social__title">приєднуйтесь</h2>
+          <ul class="social__list social__list--footer">
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer"
+                aria-label="инстаграм иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-instagram"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer"
+                aria-label="твиттер иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/uoytube.svg"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer"
+                aria-label="фейсбук иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-facebook"></use>
+                </svg></a> 
+            </li>       
+          </ul>
+        </div>
+        <div class="spam">
+          <h2 class="spam__title" style="line-height: 2;">ТОВ «НВК «Фармаско» – провідний постачальник засобів діагностики для українських закладів охорони здоров’я, лікарів та пацієнтів.</h2>
+          <!--<form class="spam__form">
+            <label class="spam__label">
+              <input class="spam__input" type="email" name="email" placeholder="E-mail" />
+            </label>
+            <button class="btn btn--spam" type="submit">Підписатися<a class="spam-link link" href="" target="_blank"
+                rel="noopener noreferrer" aria-label="инстаграм иконка">
+                <svg class="spam__icon" width="24px" height="24px">
+                  <use href="./images/sprite.svg#icon-send"></use>
+                </svg></a></button>
+          </form>-->
+        </div>
+      </div>
+    </div>
+        <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+  </footer>
+  <script src="theme-toggle.js"></script>
   <script>
    let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
@@ -184,6 +409,15 @@ const monthNames = [
 
 const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
+const backgroundKeywords = [
+  "nature", "forest", "sunrise", "flowers", "mountains", "sky", "beach", "fog", "leaves", "snow"
+];
+
+let carouselIndex = 0;
+let carouselInterval;
+let carouselRunning = true;
+let previousBackgroundUrl = "";
+
 function loadTasks() {
   const key = `tasks-${currentYear}-${currentMonth}`;
   tasks = JSON.parse(localStorage.getItem(key)) || {};
@@ -194,7 +428,94 @@ function saveTasks() {
   localStorage.setItem(key, JSON.stringify(tasks));
 }
 
+function setRandomBackground(month) {
+  const keywords = [
+    "snow", "love", "spring", "flowers", "green", "sun", "beach",
+    "forest", "leaves", "pumpkin", "fog", "christmas"
+  ];
+  const query = keywords[month] || "nature";
+  const uniqueSig = `${currentYear}${month}${Date.now()}`;
+  const requestUrl = `https://source.unsplash.com/1600x900/?${query}&sig=${uniqueSig}`;
+  const fallbackUrl = `https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80`;
+
+  const bg = document.getElementById('calendarBackground');
+  if (!bg) return;
+
+  bg.classList.remove('loaded');
+
+  fetch(requestUrl)
+    .then(response => {
+      bg.style.backgroundImage = `url('${response.url}')`;
+      setTimeout(() => bg.classList.add('loaded'), 100);
+    })
+    .catch(error => {
+      console.error("Помилка завантаження фону:", error);
+      bg.style.backgroundImage = `url('${fallbackUrl}')`;
+      setTimeout(() => bg.classList.add('loaded'), 100);
+    });
+}
+
+const fallbackImages = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1507149833265-60c372daea22?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&w=1600&q=80"
+];
+
+function updateBackgroundManually() {
+  const bg = document.getElementById('calendarBackground');
+  if (!bg) return;
+
+  const keyword = backgroundKeywords[carouselIndex % backgroundKeywords.length];
+  const uniqueSig = `${Date.now()}-${carouselIndex}`;
+  const requestUrl = `https://source.unsplash.com/1600x900/?${keyword}&sig=${uniqueSig}`;
+  const fallbackUrl = fallbackImages[carouselIndex % fallbackImages.length];
+
+  const img = new Image();
+  img.onload = () => {
+    bg.style.backgroundImage = `url('${requestUrl}')`;
+    bg.classList.add('loaded');
+  };
+  img.onerror = () => {
+    console.warn("Unsplash не відповів. Завантажуємо fallback.");
+    bg.style.backgroundImage = `url('${fallbackUrl}')`;
+    bg.classList.add('loaded');
+  };
+  img.src = requestUrl;
+
+  carouselIndex++;
+}
+
+
+
+function startBackgroundCarousel() {
+  updateBackgroundManually(); // перший запуск
+  carouselInterval = setInterval(updateBackgroundManually, 10000);
+}
+
+function toggleCarousel() {
+  if (carouselRunning) {
+    clearInterval(carouselInterval);
+    carouselRunning = false;
+  } else {
+    startBackgroundCarousel();
+    carouselRunning = true;
+  }
+}
+
 function generateCalendar(year, month) {
+  setRandomBackground(month);
+
   document.getElementById('monthLabel').textContent = `${monthNames[month]} ${year}`;
   const calendar = document.getElementById('calendar');
   calendar.innerHTML = '';
@@ -216,9 +537,26 @@ function generateCalendar(year, month) {
   }
 
   for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    const dayOfWeek = date.getDay();
+
     const dayDiv = document.createElement('div');
     dayDiv.className = 'day';
     dayDiv.onclick = () => openModal(d);
+
+    const isToday =
+  d === new Date().getDate() &&
+  month === new Date().getMonth() &&
+  year === new Date().getFullYear();
+
+if (isToday) {
+  dayDiv.classList.add('today-highlight');
+}
+
+
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      dayDiv.classList.add('weekend');
+    }
 
     let innerHTML = `<strong>${d}</strong>`;
 
@@ -255,10 +593,14 @@ function openModal(day) {
   document.getElementById('hideDone').checked = false;
   renderTaskList();
   document.getElementById('modal').style.display = 'flex';
+  clearInterval(carouselInterval);
+  carouselRunning = false;
 }
 
 function closeModal() {
   document.getElementById('modal').style.display = 'none';
+  startBackgroundCarousel();
+  carouselRunning = true;
 }
 
 function renderTaskList() {
@@ -329,13 +671,14 @@ function editTask(day, index) {
     if (e.key === 'Enter') {
       const newText = input.value.trim();
       if (newText) {
-        const isDone = tasks[day][index].startsWith('✔️');
         const prefix = isDone ? '✔️ ' : '';
         tasks[day][index] = prefix + newText;
         saveTasks();
         renderTaskList();
         generateCalendar(currentYear, currentMonth);
       }
+    } else if (e.key === 'Escape') {
+      renderTaskList(); // скасувати редагування
     }
   };
 
@@ -358,11 +701,17 @@ function changeMonth(offset) {
   generateCalendar(currentYear, currentMonth);
 }
 
+// Ініціалізація при завантаженні сторінки
 document.addEventListener('DOMContentLoaded', () => {
   loadTasks();
   generateCalendar(currentYear, currentMonth);
+  startBackgroundCarousel();
+});
+document.getElementById('nextBackgroundBtn').addEventListener('click', () => {
+  updateBackgroundManually();
 });
 
     </script>
+
     </body>
 </html>
