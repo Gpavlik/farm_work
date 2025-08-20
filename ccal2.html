@@ -220,7 +220,62 @@
 }
 
   </style>
-  <script src='./weather.js'></script>
+<script type="module">
+  // Імпортуємо потрібні модулі
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+  // Конфігурація Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyA2Gr8WYApA8STh3N4OUGOID9h9QCa6L5g",
+    authDomain: "calendarstand.firebaseapp.com",
+    projectId: "calendarstand",
+    storageBucket: "calendarstand.firebasestorage.app",
+    messagingSenderId: "435487300190",
+    appId: "1:435487300190:web:4c161f304e54fb0aa5b2cf",
+    measurementId: "G-ZKRJCVX1J4"
+  };
+
+  // Ініціалізація Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app); // 🔥 Ось тут ініціалізуємо Firestore
+
+  // 📥 Зчитування задач
+  async function loadTasks(year, month) {
+    const key = `tasks-${year}-${month}`;
+    const ref = doc(db, "calendar", key);
+    const snapshot = await getDoc(ref);
+    return snapshot.exists() ? snapshot.data() : {};
+  }
+
+  // 📤 Збереження задач
+  async function saveTasks(year, month, tasks) {
+    const key = `tasks-${year}-${month}`;
+    const ref = doc(db, "calendar", key);
+    await setDoc(ref, tasks);
+  }
+
+  // Завантажити задачі
+  loadTasks(currentYear, currentMonth).then(tasks => {
+    console.log("Завантажено задачі:", tasks);
+  });
+
+  // Зберегти задачі
+  const newTasks = {
+    "2025-08-20": {
+      task: "Зустріч з дизайнером",
+      emotion: "натхнення",
+      weather: "сонячно",
+      done: false
+    }
+  };
+  saveTasks(currentYear, currentMonth, newTasks).then(() => {
+    console.log("Задачі збережено!");
+  });
+</script>
+<script src='./weather.js'></script>
 </head>
 <body>
   <header class="header">
