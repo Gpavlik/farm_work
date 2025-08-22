@@ -264,9 +264,9 @@
   </footer>
   <script>
   const reagents = [
-  { name: "Розчин лізуючий", startup: 2.4, shutdown: 0, perTest: 0.369, packageSize: 500, price: 2563 },
-  { name: "Розчинник (ділюєнт)", startup: 46.5, shutdown: 2.96, perTest: 23.164, packageSize: 2000, price: 2563 },
-  { name: "Очисник для периферичної крові", startup: 0, shutdown: 2.0, perTest: 0, packageSize: 50, price: 786.5 },
+  { name: "Розчин лізуючий", startup: 2.4, shutdown: 6, perTest: 0.369, packageSize: 500, price: 2563 },
+  { name: "Розчинник (ділюєнт)", startup: 46.5, shutdown: 100.96, perTest: 23.164, packageSize: 20000, price: 2563 },
+  { name: "Очисник для периферичної крові", startup: 1.5, shutdown: 2.0, perTest: 0, packageSize: 50, price: 786.5 },
   { name: "Очисник ферментативний", startup: 0, shutdown: 2.0, perTest: 0, packageSize: 50, price: 786.5 },
   { name: "CBC-3D", startup: 0.1, shutdown: 0, perTest: 0, packageSize: 1, price: 2750 }
 ];
@@ -345,7 +345,7 @@ function calculate() {
       const volume = days * (r.startup + r.shutdown) + tests * r.perTest;
       const bottles = Math.ceil(volume / r.packageSize);
       const cost = bottles * r.price;
-      reagentPlanning += `<li>${r.name}: ${bottles} флак. — ${cost.toFixed(2)} грн</li>`;
+      reagentPlanning += `<li>${r.name}: ${bottles} упак. — ${cost.toFixed(2)} грн</li>`;
     });
     reagentPlanning += `</ul></li>`;
   });

@@ -261,9 +261,9 @@
   </footer>
   <script>
   const reagents = [
-  { name: "DIL-C", startup: 104.00, shutdown: 129.64, perTest: 32.80, packageSize: 20000, price: 2607 },
+  { name: "DIL-C", startup: 104.00, shutdown: 500.64, perTest: 32.80, packageSize: 20000, price: 2607 },
   { name: "LYC-1", startup: 0.16, shutdown: 0, perTest: 0.19, packageSize: 200, price: 1605 },
-  { name: "LYC-2", startup: 0.82, shutdown: 1.183, perTest: 0.66, packageSize: 500, price: 3852 },
+  { name: "LYC-2", startup: 13, shutdown: 1.183, perTest: 0.66, packageSize: 500, price: 3852 },
   { name: "CLE-P", startup: 0, shutdown: 3.6, perTest: 0, packageSize: 50, price: 395 },
   { name: "CBC-DH", startup: 0.1, shutdown: 0, perTest: 0, packageSize: 1, price: 3520 }
 ];
@@ -342,7 +342,7 @@ function calculate() {
       const volume = days * (r.startup + r.shutdown) + tests * r.perTest;
       const bottles = Math.ceil(volume / r.packageSize);
       const cost = bottles * r.price;
-      reagentPlanning += `<li>${r.name}: ${bottles} флак. — ${cost.toFixed(2)} грн</li>`;
+      reagentPlanning += `<li>${r.name}: ${bottles} упак. — ${cost.toFixed(2)} грн</li>`;
     });
     reagentPlanning += `</ul></li>`;
   });

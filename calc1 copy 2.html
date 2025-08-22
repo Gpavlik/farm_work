@@ -283,8 +283,8 @@
   </footer>
   <script>
   const reagents = [
-  { name: "DIL-E", startup: 112.96, shutdown: 55.48, perTest: 23.81, packageSize: 20000, price: 2395 },
-  { name: "LYE-1", startup: 1.473, shutdown: 0, perTest: 0.52, packageSize: 500, price: 2650 },
+  { name: "DIL-E", startup: 112.96, shutdown: 450.0, perTest: 23.81, packageSize: 20000, price: 2395 },
+  { name: "LYE-1", startup: 1.473, shutdown: 0, perTest: 0.5, packageSize: 500, price: 2650 },
   { name: "CLE-P", startup: 0, shutdown: 1.8, perTest: 0, packageSize: 50, price: 395 },
   { name: "CBC-3D", startup: 0.1, shutdown: 0, perTest: 0, packageSize: 1, price: 2750 }
 ];
@@ -363,7 +363,7 @@ function calculate() {
       const volume = days * (r.startup + r.shutdown) + tests * r.perTest;
       const bottles = Math.ceil(volume / r.packageSize);
       const cost = bottles * r.price;
-      reagentPlanning += `<li>${r.name}: ${bottles} флак. — ${cost.toFixed(2)} грн</li>`;
+      reagentPlanning += `<li>${r.name}: ${bottles} упак. — ${cost.toFixed(2)} грн</li>`;
     });
     reagentPlanning += `</ul></li>`;
   });

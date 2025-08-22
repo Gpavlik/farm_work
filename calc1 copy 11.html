@@ -107,7 +107,7 @@
     </div>
     </header>
     <main>
-  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості Biossays 240 Plus</h2>
+  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості DP-C16</h2>
 <label>💰 Ціна приладу (грн):</label><br>
 <input type="number" id="deviceCost"><br>
 
@@ -191,51 +191,46 @@
 
 <script>
 // Реагенти (приклад із 3-х, можеш вставити повний список)
-const excludedNames = ["Лужна промивка", "Кисла промивка"];
-const reagents = [
-  { name: "АЛТ", volume: 70, price: 531, testsPerSet: 295, usagePerTest: 0.25 },
-  { name: "Альбумін", volume: 60, price: 294, testsPerSet: 200, usagePerTest: 0.3 },
-  { name: "Амілаза", volume: 70, price: 4005, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "АСТ", volume: 70, price: 532, testsPerSet: 295, usagePerTest: 0.25 },
-  { name: "Білірубін загальний", volume: 70, price: 773, testsPerSet: 200, usagePerTest: 0.35 },
-  { name: "Білірубін прямий", volume: 70, price: 773, testsPerSet: 200, usagePerTest: 0.35 },
-  { name: "Загальний білок", volume: 60, price: 270, testsPerSet: 200, usagePerTest: 0.3 },
-  { name: "ГГТ", volume: 70, price: 880, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "Глюкоза", volume: 70, price: 419, testsPerSet: 260, usagePerTest: 0.3004 },
-  { name: "Залізо", volume: 72, price: 2038, testsPerSet: 280, usagePerTest: 0.2571 },
-  { name: "Кальцій", volume: 82, price: 523, testsPerSet: 250, usagePerTest: 0.328 },
-  { name: "Креатинін", volume: 80, price: 4882, testsPerSet: 300, usagePerTest: 0.2996 },
-  { name: "Креатинкіназа загальна (NAC)", volume: 70, price: 2670, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "Креатинкіназа серцева фракція (МВ)", volume: 70, price: 6676, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "a-HBDH", volume: 70, price: 1175, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "ЛДГ", volume: 70, price: 1175, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "Лактат", volume: 82, price: 5332, testsPerSet: 286, usagePerTest: 0.2867 },
-  { name: "Сечова кислота", volume: 70, price: 839, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "Сечовина", volume: 70, price: 668, testsPerSet: 233, usagePerTest: 0.3004 },
-  { name: "Фосфатаза лужна", volume: 70, price: 381, testsPerSet: 280, usagePerTest: 0.25 },
-  { name: "Фосфор", volume: 72, price: 824, testsPerSet: 240, usagePerTest: 0.3 },
-  { name: "ХЛПВЩ", volume: 80, price: 3631, testsPerSet: 250, usagePerTest: 0.32 },
-  { name: "ХЛПНЩ", volume: 80, price: 4410, testsPerSet: 250, usagePerTest: 0.32 },
-  { name: "Холестерин", volume: 70, price: 762, testsPerSet: 233, usagePerTest: 0.3004 },
-  { name: "Тригліцериди", volume: 70, price: 1735, testsPerSet: 233, usagePerTest: 0.3004 },
-  { name: "Аполіпопротеїн Е", volume: 80, price: 9918, testsPerSet: 250, usagePerTest: 0.32 },
-  { name: "Ліпопротеїн (а)", volume: 70, price: 11750, testsPerSet: 200, usagePerTest: 0.35 },
-  { name: "Гомоцистеїн", volume: 35, price: 28810, testsPerSet: 117, usagePerTest: 0.2991 },
-  { name: "АпоА1", volume: 71, price: 8504, testsPerSet: 215, usagePerTest: 0.3302 },
-  { name: "Апо В", volume: 73, price: 10261, testsPerSet: 215, usagePerTest: 0.3395 },
-  { name: "Жовчні кислоти", volume: 80, price: 6104, testsPerSet: 222, usagePerTest: 0.3604 },
-  { name: "Трансферин", volume: 83, price: 14818, testsPerSet: 250, usagePerTest: 0.3327 },
-  { name: "Ig А", volume: 73, price: 7649, testsPerSet: 240, usagePerTest: 0.3042 },
-  { name: "Ig G", volume: 71, price: 7489, testsPerSet: 233, usagePerTest: 0.3047 },
-  { name: "Ig М", volume: 73, price: 7649, testsPerSet: 240, usagePerTest: 0.3042 },
-  { name: "Лужна промивка", volume: 2000, price: 2670, testsPerSet: 8017, usagePerTest: 0.25 },
-  { name: "Кисла промивка", volume: 500, price: 4769, testsPerSet: 50000, usagePerTest: 0.01 },
-  { name: "С-реактивний білок", volume: 80, price: 18208, testsPerSet: 400, usagePerTest: 0.2 },
-  { name: "Глікогемоглобін", volume: 40, price: 26339, testsPerSet: 143, usagePerTest: 0.2797 },
-  { name: "Цистатін С", volume: 36, price: 30987, testsPerSet: 144, usagePerTest: 0.25 },
-  { name: "Магній", volume: 80, price: 1213, testsPerSet: 320, usagePerTest: 0.25 },
-  { name: "Ревматоїдний фактор", volume: 80, price: 15888, testsPerSet: 340, usagePerTest: 0.2353 },
-  { name: "АСО", volume: 60, price: 15469, testsPerSet: 210, usagePerTest: 0.2857 }
+
+const reagents =[
+  { name: "Альбумін", volume: 120, price: 610.00, testsPerSet: 80, usagePerTest: 1.5 },
+  { name: "АЛТ", volume: 250, price: 799.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "АЛТ", volume: 250, price: 1337.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "Амілаза", volume: 100, price: 4427.00, testsPerSet: 100, usagePerTest: 1.0 },
+  { name: "АСТ", volume: 250, price: 1377.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "АСТ", volume: 250, price: 817.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "Білірубін прямий", volume: 250, price: 1001.00, testsPerSet: 167, usagePerTest: 1.5 },
+  { name: "Білірубін загальний", volume: 250, price: 1492.00, testsPerSet: 167, usagePerTest: 1.5 },
+  { name: "Білок загальний", volume: 200, price: 700.00, testsPerSet: 200, usagePerTest: 1.0 },
+  { name: "Білок загальний", volume: 1000, price: 954.00, testsPerSet: 1000, usagePerTest: 1.0 },
+  { name: "ГГТ", volume: 150, price: 1256.00, testsPerSet: 150, usagePerTest: 1.0 },
+  { name: "Глікогемоглобін", volume: 40, price: 22086.00, testsPerSet: 40, usagePerTest: 1.0 },
+  { name: "Розчин лізуючий для глікогемоглобіну", volume: 100, price: 314.00, testsPerSet: 100, usagePerTest: 1.0 },
+  { name: "Глюкоза", volume: 600, price: 1578.00, testsPerSet: 600, usagePerTest: 1.0 },
+  { name: "Глюкоза", volume: 250, price: 495.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "ЗЗЗЗ", volume: 100, price: 2158.00, testsPerSet: 100, usagePerTest: 1.0 },
+  { name: "Залізо", volume: 150, price: 885.00, testsPerSet: 150, usagePerTest: 1.0 },
+  { name: "Магній", volume: 120, price: 936.00, testsPerSet: 120, usagePerTest: 1.0 },
+  { name: "Магній", volume: 300, price: 1267.00, testsPerSet: 300, usagePerTest: 1.0 },
+  { name: "Калій", volume: 120, price: 3662.00, testsPerSet: 120, usagePerTest: 1.0 },
+  { name: "Кальцій (Арсеназо)", volume: 150, price: 853.00, testsPerSet: 150, usagePerTest: 1.0 },
+  { name: "Вільний кальцій", volume: 30, price: 545.00, testsPerSet: 30, usagePerTest: 1.0 },
+  { name: "Креатинін", volume: 300, price: 1148.00, testsPerSet: 300, usagePerTest: 1.0 },
+  { name: "Креатинін", volume: 600, price: 1506.00, testsPerSet: 600, usagePerTest: 1.0 },
+  { name: "Лактат", volume: 50, price: 5719.00, testsPerSet: 50, usagePerTest: 1.0 },
+  { name: "ЛДГ", volume: 60, price: 437.00, testsPerSet: 60, usagePerTest: 1.0 },
+  { name: "Ліпаза", volume: 48, price: 10494.00, testsPerSet: 40, usagePerTest: 1.2 },
+  { name: "Лужна фосфатаза DGKC", volume: 250, price: 1395.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "Натрій", volume: 120, price: 18562.00, testsPerSet: 100, usagePerTest: 1.2 },
+  { name: "Сечовина", volume: 250, price: 1339.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "Сечова кислота", volume: 250, price: 1278.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "Тригліцериди", volume: 150, price: 1719.00, testsPerSet: 150, usagePerTest: 1.0 },
+  { name: "Фосфор", volume: 120, price: 607.00, testsPerSet: 120, usagePerTest: 1.0 },
+  { name: "Холестерин", volume: 300, price: 1940.00, testsPerSet: 300, usagePerTest: 1.0 },
+  { name: "Холестерин", volume: 250, price: 1130.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "ЛПВЩ", volume: 80, price: 4674.00, testsPerSet: 80, usagePerTest: 1.0 },
+  { name: "ЛПНЩ", volume: 80, price: 8494.00, testsPerSet: 80, usagePerTest: 1.0 },
+  { name: "Хлориди", volume: 180, price: 867.00, testsPerSet: 180, usagePerTest: 1.0 }
 ];
 
 // Щоденні реагенти — тепер з чекбоксами

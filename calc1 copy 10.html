@@ -101,10 +101,7 @@
 <h3 style="margin-top: 20px;">📋 Оберіть аналізи:</h3>
 <div id="checkboxList"></div>
 
-<h3>🧪 Щоденні реагенти — оберіть потрібні:</h3>
-<div id="dailyGroups"></div>
-<button class="btn" onclick="toggleAllDaily(true)">✅ Активувати всі</button>
-<button class="btn" onclick="toggleAllDaily(false)">❌ Очистити</button>
+
 <div id="dailyReagentSelector"></div>
 
 <ul>
@@ -181,7 +178,7 @@
   </footer>
 
 <script>
-// Реагенти (приклад із 3-х, можеш вставити повний список)
+
 const reagents = [
   { name: "Тест для визначення антигену коронавірусу", volume: 25, price: 10863, testsPerSet: 25, usagePerTest: 1 },
   { name: "Тест для визначення антитіл IgM/IgG до коронавірусу", volume: 25, price: 7323, testsPerSet: 25, usagePerTest: 1 },
@@ -214,43 +211,6 @@ const reagents = [
   { name: "Тест для визначення ревматоїдного фактору (RF)", volume: 25, price: 5925, testsPerSet: 25, usagePerTest: 1 },
   { name: "Тест для визначення Антистрептолізину-О(ASO)", volume: 25, price: 5925, testsPerSet: 25, usagePerTest: 1 }
 ];
-
-// Щоденні реагенти — тепер з чекбоксами
-const dailyReagents = [
-  { name: "Контроль для визначення D-димеру", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Контроль для визначення СРБ", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Контроль для визначення прокальцитоніну", volume: 0.01, dailyUsage: 0.5, price: 950 },
-  { name: "Контроль для визначення глікованого гемоглобіну", volume: 0.01, dailyUsage: 0.5, price: 950 },
-  { name: "Контроль для визначення інтерлейкіну-6", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Гормональна панель контроль HC2202", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Креатинкіназа MB, Mіоглобін, ТропонінI контроль", volume: 1, dailyUsage: 0.01, price: 950 }
-];
-
-const dailyReagentsGrouped = {
-  "Контролі": [
-    { name: "Контроль для визначення D-димеру", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Контроль для визначення СРБ", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Контроль для визначення прокальцитоніну", volume: 0.01, dailyUsage: 0.5, price: 950 },
-  { name: "Контроль для визначення глікованого гемоглобіну", volume: 0.01, dailyUsage: 0.5, price: 950 },
-  { name: "Контроль для визначення інтерлейкіну-6", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Гормональна панель контроль HC2202", volume: 1, dailyUsage: 0.01, price: 950 },
-  { name: "Креатинкіназа MB, Mіоглобін, ТропонінI контроль", volume: 1, dailyUsage: 0.01, price: 950 }
-  ]
-};
-
-// Вивід чекбоксів по групах
-const dailyGroups = document.getElementById("dailyGroups");
-Object.entries(dailyReagentsGrouped).forEach(([category, reagents], groupIndex) => {
-  const groupDiv = document.createElement("div");
-  groupDiv.innerHTML = `<strong>${category}</strong><br>`;
-  reagents.forEach((r, i) => {
-    const id = `dailyCheck_${groupIndex}_${i}`;
-    groupDiv.innerHTML += `<label><input type="checkbox" id="${id}"> ${r.name}</label><br>`;
-    r.checkboxId = id;
-  });
-  dailyGroups.appendChild(groupDiv);
-});
-
 const checkboxList = document.getElementById("checkboxList");
 reagents.forEach((r, i) => {
   r.usagePerTest = +(r.volume / r.testsPerSet).toFixed(4);
@@ -281,20 +241,6 @@ function calculate() {
   let totalDailyProfit = 0;
   let totalYearlyCost = 0;
 
-  // Щоденні реагенти — розрахунок сумарних витрат на день
-  let dailyReagentTotalCost = 0;
-  let activeDailyReagents = Object.values(dailyReagentsGrouped).flat().filter(r => {
-    const box = document.getElementById(r.checkboxId);
-    return box?.checked;
-  });
-
-  activeDailyReagents.forEach(r => {
-    const usedPerDay = r.dailyUsage;
-    const cost = +(r.price * usedPerDay / r.volume).toFixed(2);
-    dailyReagentTotalCost += cost;
-  });
-
-  // Основні реагенти
   reagents.forEach((r, i) => {
     const check = document.getElementById(`check_${i}`);
     if (!check?.checked) return;
@@ -304,14 +250,12 @@ function calculate() {
     totalTestsPerDay += count;
 
     const reagentPerTestCost = +(r.price * r.usagePerTest / r.volume).toFixed(2);
-    const dailyOverhead = +(dailyReagentTotalCost / totalTestsPerDay).toFixed(2);
-    const costPerTest = +(reagentPerTestCost + dailyOverhead).toFixed(2);
+    const costPerTest = reagentPerTestCost;
     const profitPerTest = +(patientPrice - costPerTest).toFixed(2);
     const dailyProfit = +(profitPerTest * count).toFixed(2);
 
     totalDailyProfit += dailyProfit;
 
-    // Закупівля флаконів на періоди
     let periodCosts = {};
     Object.entries(workDays).forEach(([label, days]) => {
       const totalVolume = r.usagePerTest * count * days;
@@ -322,12 +266,12 @@ function calculate() {
     });
 
     report += `<h4>${r.name}</h4><ul>
-      <li>Собівартість тесту з урахуванням щоденних реагентів: ${costPerTest} грн</li>
+      <li>Собівартість тесту: ${costPerTest} грн</li>
       <li>Кількість тестів на день: ${count}</li>
       <li>Добовий прибуток: ${dailyProfit} грн</li>
       <li>📦 Закупівля на періоди:
         <ul>
-          ${Object.entries(periodCosts).map(([label, obj]) => 
+          ${Object.entries(periodCosts).map(([label, obj]) =>
             `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} упаковок / ${obj.cost} грн</li>`
           ).join("")}
         </ul>
@@ -335,32 +279,8 @@ function calculate() {
     </ul>`;
   });
 
-  // Щоденні реагенти — закупівлі
-  report += `<hr><h3>🧪 Щоденні реагенти</h3><ul>`;
-  activeDailyReagents.forEach(r => {
-    const flaconsPerDay = r.dailyUsage / r.volume;
-    let periodCosts = {};
-    Object.entries(workDays).forEach(([label, days]) => {
-      const totalVolume = r.dailyUsage * days;
-      const flacons = Math.ceil(totalVolume / r.volume);
-      const cost = flacons * r.price;
-      periodCosts[label] = { flacons, cost };
-      if (label === "year") totalYearlyCost += cost;
-    });
-
-    report += `<li><strong>${r.name}</strong>
-      <ul>
-        ${Object.entries(periodCosts).map(([label, obj]) => 
-          `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} фл. / ${obj.cost} грн</li>`
-        ).join("")}
-      </ul>
-    </li>`;
-  });
-  report += `</ul>`;
-
-  // Фінансовий підсумок
   const yearlyProfitGross = +(totalDailyProfit * workDays.year).toFixed(2);
-  const yearlyProfitNet = +(yearlyProfitGross  - deviceCost).toFixed(2);
+  const yearlyProfitNet = +(yearlyProfitGross - deviceCost).toFixed(2);
   const paybackDays = totalDailyProfit > 0 ? Math.ceil(deviceCost / totalDailyProfit) : "∞";
 
   report += `<hr><h3>📊 Загальні фінансові показники</h3><ul>
@@ -373,8 +293,6 @@ function calculate() {
 
   document.getElementById("results").innerHTML = report;
 }
-
-
 
 function copyReport() {
   const text = document.getElementById("results").innerText;

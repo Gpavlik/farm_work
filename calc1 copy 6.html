@@ -238,7 +238,7 @@ const testReagents = [
   { name: "АЧТЧ", vialPrice: 3548, usagePerTest: 0.002508 },
   { name: "Фібриноген", vialPrice: 16910, usagePerTest: 0.001248 },
   { name: "ТЧ", vialPrice: 5463, usagePerTest: 0.002508 },
-  { name: "D-димер", vialPrice: 11056, usagePerTest: 0.024512 }
+  { name: "D-димер", vialPrice: 32519, usagePerTest: 0.0083 }
 ];
 
 const cleaningReagents = [
@@ -247,10 +247,25 @@ const cleaningReagents = [
 ];
 
 const dailyReagents = [
-  { name: "Контроль коагуляції (рівень 1)", vialPrice: 1105.6, usagePerDay: 0.6 },
-  { name: "Контроль коагуляції (рівень 2)", vialPrice: 1105.6, usagePerDay: 0.6 },
-  { name: "Колібратор Фібриногену", vialPrice: 7154.0, usagePerDay: 0.1 }
+  { name: "Контроль коагуляції (рівень 1)", vialPrice: 1105.6, usagePerDay: 0.1 },
+  { name: "Контроль коагуляції (рівень 2)", vialPrice: 1105.6, usagePerDay: 0.1 }
 ];
+
+const reagentMap = {
+  "Контроль коагуляції (рівень 1)": ["ПЧ", "АЧТЧ", "ТЧ"],
+  "Контроль коагуляції (рівень 2)": ["ПЧ", "АЧТЧ", "ТЧ"],
+  "Калібратор Фібриногену": ["Фібриноген"],
+  "Калібратор D-димеру": ["D-димер"],
+  "Контроль D-димеру (низький рівень)": ["D-димер"],
+  "Контроль D-димеру (високий рівень)": ["D-димер"]
+};
+
+const specialReagents = {
+  "Калібратор Фібриногену": { vialPrice: 7154.0, yearlyUnits: 1 },
+  "Калібратор D-димеру": { vialPrice: 13007.5, yearlyUnits: 1 },
+  "Контроль D-димеру (низький рівень)": { vialPrice: 21285.0, usagePerDay: 0.1 },
+  "Контроль D-димеру (високий рівень)": { vialPrice: 21285.0, usagePerDay: 0.1 }
+};
 
 const container = document.getElementById("testList");
 testReagents.forEach((test, i) => {
@@ -268,7 +283,7 @@ testReagents.forEach((test, i) => {
 
 function calculate() {
   const deviceCost = Number(document.getElementById("deviceCost").value);
-  let totalTestsYear = 0;
+  let totalTestsPerDay = 0;
   let totalProfit = 0;
   let testCost = { month: 0, quarter: 0, year: 0 };
   let cleaningCost = { month: 0, quarter: 0, year: 0 };
@@ -276,123 +291,181 @@ function calculate() {
   let dailyCost = { month: 0, quarter: 0, year: 0 };
   let html = `📅 Дата розрахунку: ${today}\n\n📊 Результати:\n`;
 
+  const activeTests = [];
+
   testReagents.forEach((r, i) => {
-  const qty = Number(document.getElementById("qty" + i).value);
-  const price = Number(document.getElementById("price" + i).value);
-  if (qty <= 0) return;
+    const qty = Number(document.getElementById("qty" + i).value);
+    const price = Number(document.getElementById("price" + i).value);
+    if (qty <= 0) return;
 
-  const tMonth = qty * daysMonth;
-  const tQuarter = qty * daysQuarter;
-  const tYear = qty * daysYear;
-  totalTestsYear += tYear;
+    activeTests.push(r.name);
+    totalTestsPerDay += qty;
 
-  const fMonth = Math.ceil(r.usagePerTest * tMonth);
-  const fQuarter = Math.ceil(r.usagePerTest * tQuarter);
-  const fYear = Math.ceil(r.usagePerTest * tYear);
+    const tMonth = qty * daysMonth;
+    const tQuarter = qty * daysQuarter;
+    const tYear = qty * daysYear;
 
-  const costMonth = fMonth * r.vialPrice;
-  const costQuarter = fQuarter * r.vialPrice;
-  const costYear = fYear * r.vialPrice;
+    const fMonth = Math.ceil(r.usagePerTest * tMonth);
+    const fQuarter = Math.ceil(r.usagePerTest * tQuarter);
+    const fYear = Math.ceil(r.usagePerTest * tYear);
 
-  testCost.month += costMonth;
-  testCost.quarter += costQuarter;
-  testCost.year += costYear;
+    const costMonth = fMonth * r.vialPrice;
+    const costQuarter = fQuarter * r.vialPrice;
+    const costYear = fYear * r.vialPrice;
 
-  const cPackMonth = Math.ceil(tMonth / cuvettePackSize);
-  const cPackQuarter = Math.ceil(tQuarter / cuvettePackSize);
-  const cPackYear = Math.ceil(tYear / cuvettePackSize);
+    testCost.month += costMonth;
+    testCost.quarter += costQuarter;
+    testCost.year += costYear;
+
+    const costPerTest = r.usagePerTest * r.vialPrice +
+      cleaningReagents.reduce((sum, x) => sum + x.usagePerTest * x.vialPrice, 0) +
+      cuvettePrice / cuvettePackSize;
+
+    const profitYear = (price - costPerTest) * tYear;
+    totalProfit += profitYear;
+
+    html += `🔬 ${r.name}:
+▸ Собівартість тесту: ${formatNumber(costPerTest)} грн
+▸ Місяць: ${fMonth} уп. × ${formatNumber(r.vialPrice)} грн = ${formatNumber(costMonth)} грн
+▸ Квартал: ${fQuarter} уп. × ${formatNumber(r.vialPrice)} грн = ${formatNumber(costQuarter)} грн
+▸ Рік: ${fYear} уп. × ${formatNumber(r.vialPrice)} грн = ${formatNumber(costYear)} грн\n\n`;
+  });
+
+  const totalTestsMonth = totalTestsPerDay * daysMonth;
+  const totalTestsQuarter = totalTestsPerDay * daysQuarter;
+  const totalTestsYear = totalTestsPerDay * daysYear;
+
+  // Кювети
+  const cPackMonth = Math.ceil(totalTestsMonth / cuvettePackSize);
+  const cPackQuarter = Math.ceil(totalTestsQuarter / cuvettePackSize);
+  const cPackYear = Math.ceil(totalTestsYear / cuvettePackSize);
 
   const cMonth = cPackMonth * cuvettePrice;
   const cQuarter = cPackQuarter * cuvettePrice;
   const cYear = cPackYear * cuvettePrice;
 
-  cuvetteCost.month += cMonth;
-  cuvetteCost.quarter += cQuarter;
-  cuvetteCost.year += cYear;
+  cuvetteCost.month = cMonth;
+  cuvetteCost.quarter = cQuarter;
+  cuvetteCost.year = cYear;
 
-  const cleanMonth = cleaningReagents.map(cl => ({
-    name: cl.name,
-    vials: Math.ceil(cl.usagePerTest * tMonth),
-    cost: Math.ceil(cl.usagePerTest * tMonth) * cl.vialPrice
-  }));
-  const cleanQuarter = cleaningReagents.map(cl => ({
-    name: cl.name,
-    vials: Math.ceil(cl.usagePerTest * tQuarter),
-    cost: Math.ceil(cl.usagePerTest * tQuarter) * cl.vialPrice
-  }));
-  const cleanYear = cleaningReagents.map(cl => ({
-    name: cl.name,
-    vials: Math.ceil(cl.usagePerTest * tYear),
-    cost: Math.ceil(cl.usagePerTest * tYear) * cl.vialPrice
-  }));
+  html += `🧫 Кювети:
+▸ Місяць: ${cPackMonth} уп. × ${formatNumber(cuvettePrice)} грн = ${formatNumber(cMonth)} грн
+▸ Квартал: ${cPackQuarter} уп. × ${formatNumber(cuvettePrice)} грн = ${formatNumber(cQuarter)} грн
+▸ Рік: ${cPackYear} уп. × ${formatNumber(cuvettePrice)} грн = ${formatNumber(cYear)} грн\n\n`;
 
-  cleanMonth.forEach(cl => cleaningCost.month += cl.cost);
-  cleanQuarter.forEach(cl => cleaningCost.quarter += cl.cost);
-  cleanYear.forEach(cl => cleaningCost.year += cl.cost);
+  // Очищення
+  cleaningReagents.forEach(cl => {
+    const vMonth = Math.ceil(cl.usagePerTest * totalTestsMonth);
+    const vQuarter = Math.ceil(cl.usagePerTest * totalTestsQuarter);
+    const vYear = Math.ceil(cl.usagePerTest * totalTestsYear);
 
-  const costPerTest = r.usagePerTest * r.vialPrice +
-    cleaningReagents.reduce((sum, x) => sum + x.usagePerTest * x.vialPrice, 0) +
-    cuvettePrice / cuvettePackSize;
+    const costMonth = vMonth * cl.vialPrice;
+    const costQuarter = vQuarter * cl.vialPrice;
+    const costYear = vYear * cl.vialPrice;
 
-  const profitYear = (price - costPerTest) * tYear;
-  totalProfit += profitYear;
+    cleaningCost.month += costMonth;
+    cleaningCost.quarter += costQuarter;
+    cleaningCost.year += costYear;
 
-  html += `🔬 ${r.name}:
-▸ Собівартість тесту: ₴ ${formatNumber(costPerTest)}
-▸ Наборів флаконів:
-   - Місяць: ${fMonth} × ₴${formatNumber(r.vialPrice)} = ₴${formatNumber(costMonth)}
-   - Квартал: ${fQuarter} × ₴${formatNumber(r.vialPrice)} = ₴${formatNumber(costQuarter)}
-   - Рік: ${fYear} × ₴${formatNumber(r.vialPrice)} = ₴${formatNumber(costYear)}
-▸ Кювети:
-   - Місяць: ${cPackMonth} уп. × ₴${formatNumber(cuvettePrice)} = ₴${formatNumber(cMonth)}
-   - Квартал: ${cPackQuarter} уп. × ₴${formatNumber(cuvettePrice)} = ₴${formatNumber(cQuarter)}
-   - Рік: ${cPackYear} уп. × ₴${formatNumber(cuvettePrice)} = ₴${formatNumber(cYear)}
-▸ Очищення:
-${cleanMonth.map(cl => `   - ${cl.name} (місяць): ${cl.vials} × ₴${formatNumber(cl.cost / cl.vials)} = ₴${formatNumber(cl.cost)}`).join("\n")}
-${cleanQuarter.map(cl => `   - ${cl.name} (квартал): ${cl.vials} × ₴${formatNumber(cl.cost / cl.vials)} = ₴${formatNumber(cl.cost)}`).join("\n")}
-${cleanYear.map(cl => `   - ${cl.name} (рік): ${cl.vials} × ₴${formatNumber(cl.cost / cl.vials)} = ₴${formatNumber(cl.cost)}`).join("\n")}\n\n`;
-});
-
-
-  dailyReagents.forEach(r => {
-    const uMonth = Math.ceil(r.usagePerDay * daysMonth);
-    const uQuarter = Math.ceil(r.usagePerDay * daysQuarter);
-    const uYear = Math.ceil(r.usagePerDay * daysYear);
-
-    dailyCost.month += uMonth * r.vialPrice;
-    dailyCost.quarter += uQuarter * r.vialPrice;
-    dailyCost.year += uYear * r.vialPrice;
-
-    html += `🧪 ${r.name}:
-▸ Місяць: ${uMonth} × ₴${formatNumber(r.vialPrice)} = ₴${formatNumber(uMonth * r.vialPrice)}
-▸ Квартал: ${uQuarter} × ₴${formatNumber(r.vialPrice)} = ₴${formatNumber(uQuarter * r.vialPrice)}
-▸ Рік: ${uYear} × ₴${formatNumber(r.vialPrice)} = ₴${formatNumber(uYear * r.vialPrice)}\n`;
+    html += `🧼 ${cl.name}:
+▸ Місяць: ${vMonth} уп. × ${formatNumber(cl.vialPrice)} грн = ${formatNumber(costMonth)} грн
+▸ Квартал: ${vQuarter} уп. × ${formatNumber(cl.vialPrice)} грн = ${formatNumber(costQuarter)} грн
+▸ Рік: ${vYear} уп. × ${formatNumber(cl.vialPrice)} грн = ${formatNumber(costYear)} грн\n`;
   });
 
-  const totalCostMonth = testCost.month + cleaningCost.month + cuvetteCost.month + dailyCost.month;
-  const totalCostQuarter = testCost.quarter + cleaningCost.quarter + cuvetteCost.quarter + dailyCost.quarter;
-  const totalCostYear = testCost.year + cleaningCost.year + cuvetteCost.year + dailyCost.year;
-  const netProfit = totalProfit - deviceCost - dailyCost.year;
-  const payback = totalProfit > 0
-    ? Math.ceil((deviceCost + dailyCost.year) / (totalProfit / daysYear))
-    : "∞";
+// Щоденні реагенти
+dailyReagents.forEach(r => {
+  const relatedTests = reagentMap[r.name];
+  const isUsed = relatedTests?.some(test => activeTests.includes(test));
+  if (!isUsed) return;
 
-   html += `\n📦 Підсумки:
-- Загальна кільна кількість тестів: ${totalTestsYear}
+  const uMonth = Math.ceil(r.usagePerDay * daysMonth);
+  const uQuarter = Math.ceil(r.usagePerDay * daysQuarter);
+  const uYear = Math.ceil(r.usagePerDay * daysYear);
 
-Загальні витрати: ▸ Місяць: ₴${formatNumber(totalCostMonth)} ▸ Квартал: ₴${formatNumber(totalCostQuarter)} ▸ Рік: ₴${formatNumber(totalCostYear)}
+  const costMonth = uMonth * r.vialPrice;
+  const costQuarter = uQuarter * r.vialPrice;
+  const costYear = uYear * r.vialPrice;
 
-Загальний прибуток за рік: ₴${formatNumber(totalProfit)}
+  dailyCost.month += costMonth;
+  dailyCost.quarter += costQuarter;
+  dailyCost.year += costYear;
 
-Чистий прибуток (мінус прилад і щоденні реагенти): ₴${formatNumber(netProfit)}
+  html += `🧪 ${r.name}:
+▸ Місяць: ${uMonth} уп. × ${formatNumber(r.vialPrice)} грн = ${formatNumber(costMonth)} грн
+▸ Квартал: ${uQuarter} уп. × ${formatNumber(r.vialPrice)} грн = ${formatNumber(costQuarter)} грн
+▸ Рік: ${uYear} уп. × ${formatNumber(r.vialPrice)} грн = ${formatNumber(costYear)} грн\n`;
+});
 
-Термін окупності: ${payback} робочих днів
+// Спеціальні реагенти
+Object.entries(specialReagents).forEach(([name, config]) => {
+  const relatedTests = reagentMap[name];
+  const isUsed = relatedTests?.some(test => activeTests.includes(test));
+  if (!isUsed) return;
 
-Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.`;
+  if (config.yearlyUnits) {
+    const cost = config.vialPrice;
+    dailyCost.month += cost;
+    dailyCost.quarter += cost;
+    dailyCost.year += cost;
 
-document.getElementById("output").innerText = html; }
+    html += `🧪 ${name}:
+▸ Місяць: 1 уп. × ${formatNumber(config.vialPrice)} грн = ${formatNumber(config.vialPrice)} грн
+▸ Квартал: 1 уп. × ${formatNumber(config.vialPrice)} грн = ${formatNumber(config.vialPrice)} грн
+▸ Рік: 1 уп. × ${formatNumber(config.vialPrice)} грн = ${formatNumber(config.vialPrice)} грн\n`;
+  } else if (config.usagePerDay) {
+    const uMonth = Math.ceil(config.usagePerDay * daysMonth);
+    const uQuarter = Math.ceil(config.usagePerDay * daysQuarter);
+    const uYear = Math.ceil(config.usagePerDay * daysYear);
 
-function copyResult() { const result = document.getElementById("output").innerText; navigator.clipboard.writeText(result).then(() => alert("✅ Результат скопійовано в буфер обміну!") ); }
-  </script>
-</body>
+    const costMonth = uMonth * config.vialPrice;
+    const costQuarter = uQuarter * config.vialPrice;
+    const costYear = uYear * config.vialPrice;
+
+    dailyCost.month += costMonth;
+    dailyCost.quarter += costQuarter;
+    dailyCost.year += costYear;
+
+    html += `🧪 ${name}:
+▸ Місяць: ${uMonth} уп. × ${formatNumber(config.vialPrice)} грн = ${formatNumber(costMonth)} грн
+▸ Квартал: ${uQuarter} уп. × ${formatNumber(config.vialPrice)} грн = ${formatNumber(costQuarter)} грн
+▸ Рік: ${uYear} уп. × ${formatNumber(config.vialPrice)} грн = ${formatNumber(costYear)} грн\n`;
+  }
+});
+
+// 📊 Підсумки
+const totalCostMonth = testCost.month + cleaningCost.month + cuvetteCost.month + dailyCost.month;
+const totalCostQuarter = testCost.quarter + cleaningCost.quarter + cuvetteCost.quarter + dailyCost.quarter;
+const totalCostYear = testCost.year + cleaningCost.year + cuvetteCost.year + dailyCost.year;
+
+const netProfit = totalProfit - deviceCost - dailyCost.year;
+const payback = totalProfit > 0
+  ? Math.ceil((deviceCost + dailyCost.year) / (totalProfit / daysYear))
+  : "∞";
+
+html += `\n📦 Підсумки:
+- Загальна кількість тестів: ${totalTestsYear}
+- Загальні витрати:
+  ▸ Місяць: ${formatNumber(totalCostMonth)} грн
+  ▸ Квартал: ${formatNumber(totalCostQuarter)} грн
+  ▸ Рік: ${formatNumber(totalCostYear)} грн
+- Загальний прибуток за рік: ${formatNumber(totalProfit)} грн
+- Чистий прибуток (мінус прилад і щоденні реагенти): ${formatNumber(netProfit)} грн
+- Термін окупності: ${payback} робочих днів
+
+Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи.`;
+
+document.getElementById("output").innerText = html;
+}
+
+function copyResult() {
+  const result = document.getElementById("output").innerText;
+  navigator.clipboard.writeText(result)
+    .then(() => alert("✅ Результат скопійовано в буфер обміну!"))
+    .catch(() => alert("⚠️ Не вдалося скопіювати"));
+}
+  
+</script>
+
+  </body>
 </html>

@@ -183,7 +183,12 @@
   <label>📦 Вартість приладу (грн): <input type="number" id="devicePrice" value=""></label>
   <label>🔢 Кількість тестів на день: <input type="number" id="testsPerDay" value=""></label>
   <label>💸 Ціна тесту для пацієнта (грн): <input type="number" id="testPrice" value=""></label>
-
+  <label for="mainReagent">Оберіть реагент:</label><br>
+<select style="padding: 5px; border-radius: 8px;" id="mainReagent">
+  <option  value="10 M">CITOLAB™ 10 М</option>
+  <option  value="11 M">CITOLAB™ 11 М</option>
+  <option  value="10 MAC">CITOLAB™ 10 МAC</option>
+</select><br>
   <ul>
   <li class="button"><button class="btn" onclick="calculate()">🔍 Розрахувати</button>
   <button class="btn" onclick="copyResult()">📋 Скопіювати результат</button>
@@ -259,11 +264,24 @@
         <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
         <button id="scrollTopBtn" title="До гори">⬆</button>
   </footer>
-  <script>
-  const reagents = [
-    { name: "CITOLAB™ 10М", startup: 0, shutdown: 0, perTest: 1, packageSize: 100, price: 926.8 },
-    { name: "Калібровочні смужки", startup: 0.05, shutdown: 0, perTest: 0, packageSize: 25, price: 212.7 }
-  ];
+
+<script>
+function getSelectedReagents() {
+  const selected = document.getElementById("mainReagent").value.trim();
+  const baseReagents = {
+    "10 M": { name: "CITOLAB™ 10 М", startup: 0, shutdown: 0, perTest: 1, packageSize: 100, price: 926.8 },
+    "11 M": { name: "CITOLAB™ 11 М", startup: 0, shutdown: 0, perTest: 1, packageSize: 100, price: 993.5 },
+    "10 MAC": { name: "CITOLAB™ 10 МAC", startup: 0, shutdown: 0, perTest: 1, packageSize: 100, price: 733.5 }
+  };
+  const strips = { name: "Калібровочні смужки", startup: 0.05, shutdown: 0, perTest: 0, packageSize: 25, price: 212.7 };
+
+  const main = baseReagents[selected];
+  if (!main) {
+    alert("⚠️ Обраний реагент не знайдено.");
+    return [];
+  }
+  return [main, strips];
+}
 
 function getWorkingDays(period) {
   const perMonth = 21;
@@ -280,11 +298,13 @@ function calculate() {
   const testsPerDay = +document.getElementById("testsPerDay").value || 0;
   const testPrice = +document.getElementById("testPrice").value || 0;
 
+  const reagents = getSelectedReagents();
+  if (reagents.length === 0) return;
+
   const workDays = getWorkingDays('year');
   const totalTests = testsPerDay * workDays;
   const annualRevenue = totalTests * testPrice;
 
-  // 🔄 Реальне використання і закупівля флаконів
   let totalReagentCost = 0;
   let reagentState = reagents.map(r => ({
     remainingVolume: r.packageSize,
@@ -328,7 +348,6 @@ function calculate() {
   const costPerTest = totalTests > 0 ? totalReagentCost / totalTests : 0;
   const finalNetProfit = annualProfit - devicePrice;
 
-  // 📦 Планування закупівель реагентів
   let reagentPlanning = "";
   ["month", "quarter", "year"].forEach(period => {
     const days = getWorkingDays(period);
@@ -344,41 +363,34 @@ function calculate() {
     reagentPlanning += `</ul></li>`;
   });
 
-  
-const outputText = `
-`;
-
-const outputDiv = document.getElementById("output");
-outputDiv.innerHTML = ""; // очищає попередній вміст
-
-outputText.trim().split('\n').forEach(line => {
-  const span = document.createElement("span");
-  span.textContent = line;
-  span.classList.add("output-line");
-  outputDiv.appendChild(span);
-});
-  outputDiv.innerHTML += `
-  <h3>Результати розрахунку:</h3>
-  <p>📊 Розрахунок на основі реального використання</p>
-  <ul>
-    <li>Робочих днів: ${workDays}</li>
-    <li>Загальна кількість тестів: ${totalTests}</li>
-    <li>Фактичні витрати на реагенти: ${totalReagentCost.toFixed(2)} грн</li>
-    <li>Загальний дохід: ${annualRevenue.toFixed(2)} грн</li>
-    <li>Загальний прибуток: ${annualProfit.toFixed(2)} грн</li>
-    <li>Собівартість одного тесту: ${costPerTest.toFixed(2)} грн</li>
-    <li>Термін окупності приладу: ${paybackDay} робочих днів</li>
-    <li>Чистий фінансовий результат (з урахуванням вартості приладу): ${finalNetProfit.toFixed(2)} грн через рік після початку використання приладу.</li><br>
-    <li>Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.</li><br>
-  </ul>
-
-📦 Планування закупівель реагентів
-${reagentPlanning}
+  const outputDiv = document.getElementById("output");
+  outputDiv.innerHTML = `
+    <h3>Результати розрахунку:</h3>
+    <p>📊 Розрахунок на основі реального використання</p>
+    <ul>
+      <li>Робочих днів: ${workDays}</li>
+      <li>Загальна кількість тестів: ${totalTests}</li>
+      <li>Фактичні витрати на реагенти: ${totalReagentCost.toFixed(2)} грн</li>
+      <li>Загальний дохід: ${annualRevenue.toFixed(2)} грн</li>
+      <li>Загальний прибуток: ${annualProfit.toFixed(2)} грн</li>
+      <li>Собівартість одного тесту: ${costPerTest.toFixed(2)} грн</li>
+      <li>Термін окупності приладу: ${paybackDay} робочих днів</li>
+      <li>Чистий фінансовий результат (з урахуванням вартості приладу): ${finalNetProfit.toFixed(2)} грн через рік після початку використання приладу.</li>
+    </ul>
+    <h4>📦 Планування закупівель реагентів:</h4>
+    <ul>${reagentPlanning}</ul>
+    <p style="color: green; font-weight: bold;"></p>
   `;
 }
 
-function copyResult() { const result = document.getElementById("output").innerText; navigator.clipboard.writeText(result).then(() => alert("✅ Результат скопійовано в буфер обміну!") ); }
-
+function copyResult() {
+  const result = document.getElementById("output").innerText;
+  navigator.clipboard.writeText(result).then(() => {
+    alert("✅ Результат скопійовано в буфер обміну!");
+  });
+}
 </script>
+
+
 </body>
 </html>
