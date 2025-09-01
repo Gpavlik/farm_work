@@ -11,9 +11,9 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         "o.dykonenko@pharmasco.com", "v.rainov@pharmasco.com", "h.bilousova@pharmasco.com",
         "s.ratushnenko@pharmasco.com", "o.leonova@pharmasco.com", "t.sazonova@pharmasco.com",
         "i.babenko@pharmasco.com", "i.melnychuk@pharmasco.com", "t.klimenko@pharmasco.com",
-        "i.pryhodko@pharmasco.com", "d.zahorodnyy@pharmasco.com",
-        "k.vyderko@pharmasco.com", "y.holovan@pharmasco.com", "s.nemesh@pharmasco.com",
-        "o.polishchuk@pharmasco.com", "d.minenko@pharmasco.com", "d.prykhodko@pharmasco.com",
+        "i.pryhodko@pharmasco.com", "d.zahorodnyy@pharmasco.com", "t.romanovska@pharmasco.com", "m.kulynska@pharmasco.com",
+        "k.vyderko@pharmasco.com", "y.holovan@pharmasco.com",
+        "o.polishchuk@pharmasco.com", "d.prykhodko@pharmasco.com",
         "a.volaniuk@pharmasco.com", "v.tuluchenko@pharmasco.com", "i.shlapak@pharmasco.com",
         "o.levchenko@pharmasco.com", "p.hrytsenko@pharmasco.com", "s.komashko@pharmasco.com", 
         "u.oleynik@pharmasco.com", "v.skopichenko@pharmasco.com", "svitlanaskopychenko@gmail.com", "g.kuznetsova@pharmasco.com", "v.popadiuk@pharmasco.com"
