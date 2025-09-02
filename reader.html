@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF з озвученням</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    #toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #f0f0f0;
+      padding: 10px;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #pdfViewer {
+      margin-top: 60px;
+      width: 100%;
+      height: calc(100vh - 60px);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toolbar">
+    <button onclick="readPDF()">📢 Прочитати вголос</button>
+  </div>
+
+  <iframe id="pdfViewer" src="./KB/KD.pdf#page=190"></iframe>
+
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    async function readPDF() {
+      try {
+        const response = await fetch('./KB/KD.pdf#page=190');
+        const arrayBuffer = await response.arrayBuffer();
+
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let fullText = '';
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          const strings = content.items.map(item => item.str).filter(str => str.trim() !== '');
+          fullText += strings.join(' ') + '\n';
+        }
+
+        if (!fullText.trim()) {
+          alert("Не вдалося витягнути текст із PDF.");
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(fullText);
+        utterance.lang = 'uk-UA';
+        utterance.rate = 1;
+        speechSynthesis.cancel(); // Зупиняє попереднє читання, якщо було
+        speechSynthesis.speak(utterance);
+      } catch (error) {
+        console.error("Помилка читання PDF:", error);
+        alert("Сталася помилка при спробі озвучити документ.");
+      }
+    }
+  </script>
+
+</body>
+</html>
