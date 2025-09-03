@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Дашборд продажів</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px 0;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      text-align: center;
+    }
+    h3, h4 {
+      margin-top: 30px;
+    }
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔐 Введіть вашу корпоративну пошту:</h2>
+  <input type="email" id="emailInput" placeholder="your.email@pharmasco.com">
+<button onclick="loadDashboard()">Показати дашборд</button>
+<div id="dashboard"></div>
+
+
+  <script>
+   async function fetchSheetData() {
+  const sheetId = "16lz01su0od0xcR3Nle1YNu6oYJ3P95gd";
+  const sheetName = "Аркуш1";
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+
+  const response = await fetch(url);
+  const text = await response.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+
+  const rows = json.table.rows.map(row => {
+    const c = row.c;
+    return {
+      name: c[0]?.v,
+      email: c[1]?.v?.trim().toLowerCase(),
+      testPlan: Number(c[2]?.v),
+      testFact: Number(c[3]?.v),
+      equipPlan: Number(c[4]?.v),
+      equipFact: Number(c[5]?.v),
+      dateRaw: c[6]?.v
+    };
+  });
+
+  return rows;
+}
+
+function getQuarterDates(date) {
+  const year = date.getFullYear();
+  const quarters = [
+    { start: new Date(year, 0, 1), end: new Date(year, 2, 31) },
+    { start: new Date(year, 3, 1), end: new Date(year, 5, 30) },
+    { start: new Date(year, 6, 1), end: new Date(year, 8, 30) },
+    { start: new Date(year, 9, 1), end: new Date(year, 11, 31) }
+  ];
+  return quarters.find(q => date >= q.start && date <= q.end);
+}
+
+function calculateDaysPassedInQuarter(currentDate) {
+  const quarter = getQuarterDates(currentDate);
+  const passed = Math.floor((currentDate - quarter.start) / (1000 * 60 * 60 * 24)) + 1;
+  const total = Math.floor((quarter.end - quarter.start) / (1000 * 60 * 60 * 24)) + 1;
+  return { passed, total };
+}
+
+function forecast(fact, passed, total) {
+  return Math.round((fact / passed) * total);
+}
+
+function forecastPercent(forecastValue, plan) {
+  return Math.round((forecastValue / plan) * 100);
+}
+
+async function loadDashboard() {
+  const emailInput = document.getElementById("emailInput").value.trim().toLowerCase();
+  const rows = await fetchSheetData();
+
+  const filteredRows = rows.filter(r =>
+    r.email &&
+    r.name &&
+    !["суми", "житомир", "херсон"].includes(r.name.trim().toLowerCase())
+  );
+
+  const user = filteredRows.find(r => r.email === emailInput);
+
+  if (!user) {
+    document.getElementById("dashboard").innerHTML = "❌ Email не знайдено.";
+    return;
+  }
+
+  const today = new Date();
+  const { passed: daysPassed, total: totalDays } = calculateDaysPassedInQuarter(today);
+
+  const testForecast = forecast(user.testFact, daysPassed, totalDays);
+  const equipForecast = forecast(user.equipFact, daysPassed, totalDays);
+  const testForecastPercent = forecastPercent(testForecast, user.testPlan);
+  const equipForecastPercent = forecastPercent(equipForecast, user.equipPlan);
+
+  document.getElementById("dashboard").innerHTML = `
+    <h3>👋 Вітаємо, ${user.name}!</h3>
+    <table>
+      <tr>
+        <th>Категорія</th>
+        <th>План (₴)</th>
+        <th>Факт (₴)</th>
+        <th>% Виконання</th>
+        <th>Прогноз (₴)</th>
+        <th>Прогноз (%)</th>
+      </tr>
+      <tr>
+        <td>Тести</td>
+        <td>${user.testPlan}</td>
+        <td>${user.testFact}</td>
+        <td>${Math.round((user.testFact / user.testPlan) * 100)}%</td>
+        <td>${testForecast}</td>
+        <td>${testForecastPercent}%</td>
+      </tr>
+      <tr>
+        <td>Обладнання</td>
+        <td>${user.equipPlan}</td>
+        <td>${user.equipFact}</td>
+        <td>${Math.round((user.equipFact / user.equipPlan) * 100)}%</td>
+        <td>${equipForecast}</td>
+        <td>${equipForecastPercent}%</td>
+      </tr>
+    </table>
+
+    <h4>📊 Тести</h4>
+    <canvas id="chartTests" width="200" height="200"></canvas>
+
+    <h4>📊 Обладнання</h4>
+    <canvas id="chartEquip" width="200" height="200"></canvas>
+  `;
+
+  new Chart(document.getElementById("chartTests"), {
+    type: "doughnut",
+    data: {
+      labels: ["Факт", "Залишок"],
+      datasets: [{
+        data: [
+          user.testFact,
+          user.testPlan - user.testFact
+        ],
+        backgroundColor: ["#4caf50", "#e0e0e0"]
+      }]
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Тести: виконання плану"
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById("chartEquip"), {
+    type: "doughnut",
+    data: {
+      labels: ["Факт", "Залишок"],
+      datasets: [{
+        data: [
+          user.equipFact,
+          user.equipPlan - user.equipFact
+        ],
+        backgroundColor: ["#2196f3", "#e0e0e0"]
+      }]
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Обладнання: виконання плану"
+        }
+      }
+    }
+  });
+}
+
+  </script>
+
+</body>
+</html>

@@ -42,6 +42,7 @@
     });
   }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header class="header">
@@ -131,6 +132,8 @@
           <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio news.html">Новини</a></button></li>
           <li class="button-section"><button class="btn" type="button"><a onclick="showPasswordPrompt(event, './portfolio PV.html')" style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio PV.html">ПВ</a></button></li>
         </ul>
+   <!--<button class="btn" onclick="toggleDashboard()">Показати дашборд</button><br><br>
+   <div id="dashboard" style="display: none; line-height: 10px;"></div><br>-->
         <ul class="works-cards">
           <li class="description">
             <div class="overflow">
@@ -742,8 +745,6 @@
       </div>
     </section>
   </main>
-  </section>
-  </main>
   <footer class="footer">
     <div class="container">
       <div class="find-us">
@@ -846,6 +847,194 @@
             }
         }
     </script>
-</body>
+    <script>
+const nameToEmail = {
+  "Марина Погрібна": "m.pohribna@pharmasco.com",
+  "Інга Лузан": "i.luzan@pharmasco.com",
+  "Людмила Присяжнюк": "l.prysiazhniuk@pharmasco.com",
+  "Вадим Білоус": "v.bilous@pharmasco.com",
+  "Олександр Красніков": "o.krasnikov@pharmasco.com",
+  "Єлизавета Левченко": "y.levchenko@pharmasco.com",
+  "Антоніна Онищук": "a.onischuk@pharmasco.com",
+  "Наталія Пилипчук": "n.pylypchuk@pharmasco.com",
+  "Анна Гаєвська": "a.haievska@pharmasco.com",
+  "Ірина Богуславець": "i.bohuslavets@pharmasco.com",
+  "Мілена Криштальян": "m.krishtalyan@pharmasco.com",
+  "Катерина Скрябіна": "k.skriabina@pharmasco.com",
+  "Антон Алєксєєнко": "a.alekseenko@pharmasco.com",
+  "Анастасія Прядко": "a.priadko@pharmasco.com",
+  "Олена Говоруха": "o.hovorukha@pharmasco.com",
+  "Тетяна Демус": "t.demus@pharmasco.com",
+  "Оксана Диконенко": "o.dykonenko@pharmasco.com",
+  "Валерій Райнов": "v.rainov@pharmasco.com",
+  "Ганна Білоусова": "h.bilousova@pharmasco.com",
+  "Сергій Ратушненко": "s.ratushnenko@pharmasco.com",
+  "Ольга Леонова": "o.leonova@pharmasco.com",
+  "Тетяна Сазонова": "t.sazonova@pharmasco.com",
+  "Ілона Бабенко": "i.babenko@pharmasco.com",
+  "Ірина Мельничук": "i.melnychuk@pharmasco.com",
+  "Тетяна Клименко": "t.klimenko@pharmasco.com",
+  "Ірина Приходько": "i.pryhodko@pharmasco.com",
+  "Дем'ян Загородній": "d.zahorodnyy@pharmasco.com",
+  "Катерина Видерко": "k.vyderko@pharmasco.com",
+  "Тетяна Романовська": "t.romanovska@pharmasco.com",
+  "Мар'яна Кулинська": "m.kulynska@pharmasco.com"
+};
 
+let dashboardVisible = false;
+
+async function fetchSheetData() {
+  const sheetId = "16lz01su0od0xcR3Nle1YNu6oYJ3P95gd";
+  const sheetName = "Аркуш1";
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+  const response = await fetch(url);
+  const text = await response.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+  return json.table.rows.map(row => {
+    const c = row.c;
+    return {
+      name: c[0]?.v,
+      email: c[1]?.v?.trim().toLowerCase(),
+      testPlan: Number(c[2]?.v),
+      testFact: Number(c[3]?.v),
+      equipPlan: Number(c[4]?.v),
+      equipFact: Number(c[5]?.v),
+      dateRaw: c[6]?.v
+    };
+  });
+}
+
+function getQuarterDates(date) {
+  const year = date.getFullYear();
+  return [
+    { start: new Date(year, 0, 1), end: new Date(year, 2, 31) },
+    { start: new Date(year, 3, 1), end: new Date(year, 5, 30) },
+    { start: new Date(year, 6, 1), end: new Date(year, 8, 30) },
+    { start: new Date(year, 9, 1), end: new Date(year, 11, 31) }
+  ].find(q => date >= q.start && date <= q.end);
+}
+
+function calculateDaysPassedInQuarter(currentDate) {
+  const quarter = getQuarterDates(currentDate);
+  const passed = Math.floor((currentDate - quarter.start) / (1000 * 60 * 60 * 24)) + 1;
+  const total = Math.floor((quarter.end - quarter.start) / (1000 * 60 * 60 * 24)) + 1;
+  return { passed, total, quarter };
+}
+
+function countWorkingDays(startDate, endDate) {
+  let count = 0;
+  const current = new Date(startDate);
+  while (current <= endDate) {
+    const day = current.getDay(); // 0 = неділя, 6 = субота
+    if (day !== 0 && day !== 6) count++;
+    current.setDate(current.getDate() + 1);
+  }
+  return count;
+}
+
+function forecast(fact, passed, total) {
+  return Math.round((fact / passed) * total);
+}
+
+function forecastPercent(forecastValue, plan) {
+  return Math.round((forecastValue / plan) * 100);
+}
+
+async function toggleDashboard() {
+  const container = document.getElementById("dashboard");
+  dashboardVisible = !dashboardVisible;
+
+  if (!dashboardVisible) {
+    container.style.display = "none";
+    container.innerHTML = "";
+    return;
+  }
+
+  const nameElement = document.getElementById("currentUser");
+  if (!nameElement) {
+    container.style.display = "block";
+    container.innerHTML = "❌ Ім’я користувача не знайдено на сторінці.";
+    return;
+  }
+
+  const rawText = nameElement.textContent.trim();
+  const currentName = rawText.replace("Ви зайшли як:", "").trim();
+  const currentUser = nameToEmail[currentName]?.toLowerCase();
+
+  if (!currentUser) {
+    container.style.display = "block";
+    container.innerHTML = "❌ Email для користувача не знайдено.";
+    return;
+  }
+
+  const rows = await fetchSheetData();
+  const filteredRows = rows.filter(r =>
+    r.email &&
+    r.name &&
+    !["суми", "житомир", "херсон"].includes(r.name.trim().toLowerCase())
+  );
+
+  const user = filteredRows.find(r => r.email === currentUser);
+
+  if (!user) {
+    container.style.display = "block";
+    container.innerHTML = "❌ Дані користувача не знайдено.";
+    return;
+  }
+
+  const today = new Date();
+  const { passed: daysPassed, total: totalDays, quarter } = calculateDaysPassedInQuarter(today);
+  const workingDaysPassed = countWorkingDays(quarter.start, today);
+  const totalWorkingDays = countWorkingDays(quarter.start, quarter.end);
+
+  const testForecast = forecast(user.testFact, workingDaysPassed, totalWorkingDays);
+  const equipForecast = forecast(user.equipFact, workingDaysPassed, totalWorkingDays);
+  const testForecastPercent = forecastPercent(testForecast, user.testPlan);
+  const equipForecastPercent = forecastPercent(equipForecast, user.equipPlan);
+
+  const remainingWorkingDays = totalWorkingDays - workingDaysPassed;
+
+const testDailyTarget = remainingWorkingDays > 0
+  ? Math.ceil((user.testPlan - user.testFact) / remainingWorkingDays)
+  : 0;
+
+const equipDailyTarget = remainingWorkingDays > 0
+  ? Math.ceil((user.equipPlan - user.equipFact) / remainingWorkingDays)
+  : 0;
+
+
+  container.style.display = "block";
+  container.innerHTML = `
+  <h3>Вітаємо, ${user.name}!</h3><br><br>
+  <table style="border: 2px solid #069606; border-radius: 10px; width: 100%; background: #fff;">
+    <thead>
+      <tr style="background-color: #f0f0f0;">
+        <th style="padding: 8px; border: 1px solid #ccc;">Категорія</th>
+        <th style="padding: 8px; border: 1px solid #ccc;">% Виконання</th>
+        <th style="padding: 8px; border: 1px solid #ccc;">% Прогноз</th>
+        <th style="padding: 8px; border: 1px solid #ccc;">Ціль/день (₴)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ccc;">Обладнання</td>
+        <td style="padding: 8px; border: 1px solid #ccc;">${Math.round((user.equipFact / user.equipPlan) * 100)}%</td>
+        <td style="padding: 8px; border: 1px solid #ccc;">${equipForecastPercent}%</td>
+        <td style="padding: 8px; border: 1px solid #ccc;">${equipDailyTarget}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 20px; font-style: italic;">
+    Сьогодні ${today.toLocaleDateString()}, пройшло ${workingDaysPassed} робочих днів з ${totalWorkingDays} у кварталі.
+    Залишилось ${remainingWorkingDays} робочих днів.
+  </p>
+`;
+
+  
+}
+
+</script>
+
+</body>
 </html>
