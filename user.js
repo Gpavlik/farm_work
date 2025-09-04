@@ -46,7 +46,8 @@ const users = {
   "svitlanaskopychenko@gmail.com": "Світлана Скопиченко",
   "g.kuznetsova@pharmasco.com": "Галина Кузнецова",
   "v.popadiuk@pharmasco.com": "Вікторія Попадюк",
-  "d.krasko@pharmasco.com": "Дар'я Красько"
+  "d.krasko@pharmasco.com": "Дар'я Красько",
+  "v.torishnyak@pharmasco.com": "Віталій Торішняк"
 };
 
 const managerToEmployees = {
