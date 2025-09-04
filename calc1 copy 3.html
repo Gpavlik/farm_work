@@ -286,7 +286,7 @@ reagents.forEach((r, i) => {
     <div id="inputs_${i}" style="display:none;">
       <label>Кількість аналізів на день:</label>
       <input type="number" id="daily_${i}">
-      <label>Ціна аналізу для пацієнта/відшкодування НЦЗУ:</label>
+      <label>Ціна аналізу для пацієнта/відшкодування НСЗУ:</label>
       <input type="number" id="price_${i}">
     </div>`;
   checkboxList.appendChild(block);
@@ -303,7 +303,7 @@ function calculate() {
   const now = new Date().toLocaleDateString('uk-UA');
 
   let totalTestsPerDay = 0;
-  let report = `<p><strong>📆 Дата розрахунку:</strong> ${now}</p>`;
+  let report = `<p><strong>Дата розрахунку:</strong> ${now}</p>`;
   let totalDailyProfit = 0;
   let totalYearlyCost = 0;
 
@@ -395,7 +395,7 @@ function calculate() {
       <li>📦 Закупівля на періоди:
         <ul>
           ${Object.entries(periodCosts).map(([label, obj]) =>
-            `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} упаковок / ${obj.cost} грн</li>`
+            `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} упак. / ${obj.cost} грн</li>`
           ).join("")}
         </ul>
       </li>
@@ -405,7 +405,7 @@ function calculate() {
             `<li>${label.charAt(0).toUpperCase() + label.slice(1)}:
               <ul>
                 ${items.map(item =>
-                  `<li>${item.name}: ${item.flacons} упаковок / ${item.cost} грн</li>`
+                  `<li>${item.name}: ${item.flacons} упак. / ${item.cost} грн</li>`
                 ).join("")}
               </ul>
             </li>`
