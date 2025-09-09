@@ -22,7 +22,7 @@
     #results { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 6px; }
     input{ width: 20%; padding: 5px; margin-top: 5px; border: 1px solid #ccc; border-radius: 10px; }
   </style>
-   <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/main.css" />
   <link rel="stylesheet" href="./css/styles.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -111,15 +111,15 @@
 <label>💰 Ціна приладу (грн):</label><br>
 <input type="number" id="deviceCost"><br>
 
-<h3 style="margin-top: 20px;">📋 Оберіть аналізи:</h3>
+<h3 style="margin-top: 20px;">Оберіть аналізи:</h3>
 <div id="checkboxList"></div>
 
 <div id="dailyReagentSelector"></div>
 
 <ul>
-  <li class="button"><button class="btn" onclick="calculate()">🔍 Розрахувати</button>
-  <button class="btn" onclick="copyReport()">📋 Скопіювати результат</button>
-<button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj1.html">Назад</a></button></li>
+  <li class="button"><button class="btn" onclick="calculate()">Розрахувати</button>
+  <button class="btn" onclick="copyReport()">Скопіювати результат</button>
+<button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj14.html">Назад</a></button></li>
 </ul>
 <p style="color: #666; font-style: italic; text-align: center;" >Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.</p>   
 
@@ -190,7 +190,6 @@
   </footer>
 
 <script>
-// Реагенти (приклад із 3-х, можеш вставити повний список)
 
 const reagents =[
   { name: "Альбумін", volume: 120, price: 610.00, testsPerSet: 80, usagePerTest: 1.5 },
@@ -450,7 +449,7 @@ function calculate() {
 function copyReport() {
   const text = document.getElementById("results").innerText;
   navigator.clipboard.writeText(text)
-    .then(() => alert("📋 Звіт скопійовано"))
+    .then(() => alert("Звіт скопійовано"))
     .catch(() => alert("⚠️ Не вдалося скопіювати"));
 }
 </script>
