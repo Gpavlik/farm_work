@@ -114,9 +114,6 @@
 <h3 style="margin-top: 20px;">Оберіть аналізи:</h3>
 <div id="checkboxList"></div>
 
-<div id="dailyReagentSelector"></div>
-
-<ul>
   <li class="button"><button class="btn" onclick="calculate()">Розрахувати</button>
   <button class="btn" onclick="copyReport()">Скопіювати результат</button>
 <button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj14.html">Назад</a></button></li>
@@ -193,29 +190,29 @@
 
 const reagents =[
   { name: "Альбумін", volume: 120, price: 610.00, testsPerSet: 80, usagePerTest: 1.5 },
-  { name: "АЛТ", volume: 250, price: 799.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "АЛТ б. уп.", volume: 250, price: 799.00, testsPerSet: 250, usagePerTest: 1.0 },
   { name: "АЛТ", volume: 250, price: 1337.00, testsPerSet: 250, usagePerTest: 1.0 },
   { name: "Амілаза", volume: 100, price: 4427.00, testsPerSet: 100, usagePerTest: 1.0 },
   { name: "АСТ", volume: 250, price: 1377.00, testsPerSet: 250, usagePerTest: 1.0 },
-  { name: "АСТ", volume: 250, price: 817.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "АСТ б. уп.", volume: 250, price: 817.00, testsPerSet: 250, usagePerTest: 1.0 },
   { name: "Білірубін прямий", volume: 250, price: 1001.00, testsPerSet: 167, usagePerTest: 1.5 },
   { name: "Білірубін загальний", volume: 250, price: 1492.00, testsPerSet: 167, usagePerTest: 1.5 },
   { name: "Білок загальний", volume: 200, price: 700.00, testsPerSet: 200, usagePerTest: 1.0 },
-  { name: "Білок загальний", volume: 1000, price: 954.00, testsPerSet: 1000, usagePerTest: 1.0 },
+  { name: "Білок загальний б. уп.", volume: 1000, price: 954.00, testsPerSet: 1000, usagePerTest: 1.0 },
   { name: "ГГТ", volume: 150, price: 1256.00, testsPerSet: 150, usagePerTest: 1.0 },
   { name: "Глікогемоглобін", volume: 40, price: 22086.00, testsPerSet: 40, usagePerTest: 1.0 },
   { name: "Розчин лізуючий для глікогемоглобіну", volume: 100, price: 314.00, testsPerSet: 100, usagePerTest: 1.0 },
   { name: "Глюкоза", volume: 600, price: 1578.00, testsPerSet: 600, usagePerTest: 1.0 },
-  { name: "Глюкоза", volume: 250, price: 495.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "Глюкоза б. уп.", volume: 250, price: 495.00, testsPerSet: 250, usagePerTest: 1.0 },
   { name: "ЗЗЗЗ", volume: 100, price: 2158.00, testsPerSet: 100, usagePerTest: 1.0 },
   { name: "Залізо", volume: 150, price: 885.00, testsPerSet: 150, usagePerTest: 1.0 },
-  { name: "Магній", volume: 120, price: 936.00, testsPerSet: 120, usagePerTest: 1.0 },
-  { name: "Магній", volume: 300, price: 1267.00, testsPerSet: 300, usagePerTest: 1.0 },
+  { name: "Магній ферм.", volume: 120, price: 936.00, testsPerSet: 120, usagePerTest: 1.0 },
+  { name: "Магній ксил.", volume: 300, price: 1267.00, testsPerSet: 300, usagePerTest: 1.0 },
   { name: "Калій", volume: 120, price: 3662.00, testsPerSet: 120, usagePerTest: 1.0 },
   { name: "Кальцій (Арсеназо)", volume: 150, price: 853.00, testsPerSet: 150, usagePerTest: 1.0 },
   { name: "Вільний кальцій", volume: 30, price: 545.00, testsPerSet: 30, usagePerTest: 1.0 },
-  { name: "Креатинін", volume: 300, price: 1148.00, testsPerSet: 300, usagePerTest: 1.0 },
-  { name: "Креатинін", volume: 600, price: 1506.00, testsPerSet: 600, usagePerTest: 1.0 },
+  { name: "Креатинін 300", volume: 300, price: 1148.00, testsPerSet: 300, usagePerTest: 1.0 },
+  { name: "Креатинін 600", volume: 600, price: 1506.00, testsPerSet: 600, usagePerTest: 1.0 },
   { name: "Лактат", volume: 50, price: 5719.00, testsPerSet: 50, usagePerTest: 1.0 },
   { name: "ЛДГ", volume: 60, price: 437.00, testsPerSet: 60, usagePerTest: 1.0 },
   { name: "Ліпаза", volume: 48, price: 10494.00, testsPerSet: 40, usagePerTest: 1.2 },
@@ -225,54 +222,50 @@ const reagents =[
   { name: "Сечова кислота", volume: 250, price: 1278.00, testsPerSet: 250, usagePerTest: 1.0 },
   { name: "Тригліцериди", volume: 150, price: 1719.00, testsPerSet: 150, usagePerTest: 1.0 },
   { name: "Фосфор", volume: 120, price: 607.00, testsPerSet: 120, usagePerTest: 1.0 },
-  { name: "Холестерин", volume: 300, price: 1940.00, testsPerSet: 300, usagePerTest: 1.0 },
-  { name: "Холестерин", volume: 250, price: 1130.00, testsPerSet: 250, usagePerTest: 1.0 },
+  { name: "Холестерин картон", volume: 300, price: 1940.00, testsPerSet: 300, usagePerTest: 1.0 },
+  { name: "Холестерин без уп.", volume: 250, price: 1130.00, testsPerSet: 250, usagePerTest: 1.0 },
   { name: "ЛПВЩ", volume: 80, price: 4674.00, testsPerSet: 80, usagePerTest: 1.0 },
   { name: "ЛПНЩ", volume: 80, price: 8494.00, testsPerSet: 80, usagePerTest: 1.0 },
-  { name: "Хлориди", volume: 180, price: 867.00, testsPerSet: 180, usagePerTest: 1.0 }
+  { name: "Хлориди", volume: 180, price: 867.00, testsPerSet: 180, usagePerTest: 1.0 },
+  { name: "Антистрептолізин-О", volume: 50, price: 54442.00, testsPerSet: 50, usagePerTest: 1.0 },
+  { name: "Ревматоїдний фактор", volume: 50, price: 3865.00, testsPerSet: 50, usagePerTest: 1.0 },
+  { name: "С реактивний білок", volume: 50, price: 4429.00, testsPerSet: 50, usagePerTest: 1.0 },
 ];
 
 // Щоденні реагенти — тепер з чекбоксами
 const dailyReagents = [
-  { name: "Калібратори біохім. тестів Рівень 2", volume: 5, dailyUsage: 0.238, price: 3795 },
-  { name: "Контролі біохім. тестів Рівень 2/3", volume: 30, dailyUsage: 1, price: 12432 },
-  { name: "Калібратори ліпідів", volume: 3, dailyUsage: 0.048, price: 6325 },
-  { name: "Контролі ліпідів", volume: 6, dailyUsage: 1, price: 8464 },
-  { name: "Контролі специфічних білків", volume: 6, dailyUsage: 1, price: 4226 },
-  { name: "Контролі глікогемоглобіну", volume: 1.5, dailyUsage: 0.25, price: 4077 },
+  { name: "SERACAL", volume: 18, dailyUsage: 0.143, price: 7312 },
+  { name: "SERACONTROL N", volume: 30, dailyUsage: 0.017, price: 8392 },
+  { name: "SERACONTROL P", volume: 30, dailyUsage: 0.017, price: 9558 },
+  { name: "ЛПBЩ/ ЛПНЩ контроль", volume: 9, dailyUsage: 0.037, price: 8978 },
+  { name: "ЛПBЩ/ ЛПНЩ калібратор", volume: 3, dailyUsage: 0.048, price: 2462 },
+  { name: "Глікогемоглобін калібратори", volume: 2, dailyUsage: 0.024, price: 12014 },
+  { name: "Глікогемоглобін контроль", volume: 20, dailyUsage: 0.25, price: 10949 },
+  { name: "Bільний кальцій Контроль", volume: 20, dailyUsage: 0.5, price: 304 },
+  { name: "Натрій контроль", volume: 6, dailyUsage: 0.5, price: 98884 },
+  { name: "АСО/СРБ/РФ контроль норма", volume: 6, dailyUsage: 0.33, price: 19419 },
+  { name: "АСО/СРБ/РФ контроль висока концентрація ", volume: 3, dailyUsage: 0.33, price: 4107 },
 ];
 
-const dailyReagentsGrouped = {
-  "Біохімія": [
-    { name: "Калібратори біохім. тестів Рівень 2", volume: 5, dailyUsage: 0.238, price: 3795 },
-    { name: "Контролі біохім. тестів Рівень 2/3", volume: 30, dailyUsage: 1, price: 12432 },
-  ],
-  "Ліпіди": [
-    { name: "Калібратори ліпідів", volume: 3, dailyUsage: 0.048, price: 6325 },
-    { name: "Контролі ліпідів", volume: 6, dailyUsage: 1, price: 8464 },
-  ],
-  "Специфічні білки": [
-    { name: "Контролі специфічних білків", volume: 6, dailyUsage: 1, price: 4226 },
-  ],
-  
-  "Діагностика цукрового діабету": [
-    { name: "Контролі глікогемоглобіну", volume: 1.5, dailyUsage: 0.25, price: 4077 },
-  ]
-};
 
 const dailyReagentMap = {
-  "Контролі глікогемоглобіну": ["Глікогемоглобін"],
-  "Контролі ліпідів": ["ХЛПВЩ", "ХЛПНЩ", "Холестерин", "Тригліцериди", "Аполіпопротеїн Е", "Ліпопротеїн (а)", "Гомоцистеїн", "АпоА1", "Апо В"],
-  "Контролі специфічних білків": ["Трансферин", "Ig А", "Ig G", "Ig М", "С-реактивний білок", "Цистатін С", "Ревматоїдний фактор", "АСО"],
-  "Контролі біохім. тестів Рівень 2/3": ["АЛТ", "Альбумін", "АСТ", "Білірубін загальний", "Білірубін прямий", "Загальний білок", "ГГТ", "Глюкоза", "Залізо", "Кальцій", "Креатинін", "Креатинкіназа загальна (NAC)", "Креатинкіназа серцева фракція (МВ)", "a-HBDH", "ЛДГ", "Лактат", "Сечова кислота", "Сечовина", "Фосфатаза лужна", "Фосфор", "Магній"],
-  "Калібратори ліпідів": ["ХЛПВЩ", "ХЛПНЩ"],
-  "Калібратори біохім. тестів Рівень 2": ["АЛТ", "Альбумін", "АСТ", "Білірубін загальний", "Білірубін прямий", "Загальний білок", "ГГТ", "Глюкоза", "Креатинін", "Креатинкіназа загальна (NAC)", "Креатинкіназа серцева фракція (МВ)", "a-HBDH", "ЛДГ", "Лактат", "Сечова кислота", "Сечовина", "Фосфатаза лужна", "Холестерин", "Тригліцериди"]
+  "SERACAL": ["Альбумін","АЛТ б. уп.","АЛТ","Амілаза","АСТ","АСТ б. уп.","Білірубін прямий","Білірубін загальний","Білок загальний","Білок загальний б. уп.","ГГТ","Глюкоза","Глюкоза б. уп.","ЗЗЗЗ","Залізо","Магній ферм.","Магній ксил.","Калій","Кальцій (Арсеназо)","Креатинін 300","Креатинін 600","Лактат","ЛДГ","Ліпаза","Лужна фосфатаза DGKC","Сечовина","Сечова кислота","Тригліцериди","Фосфор","Холестерин картон","Холестерин без уп.","ЛПВЩ","ЛПНЩ","Хлориди"],
+  "SERACONTROL N": ["Альбумін","АЛТ б. уп.","АЛТ","Амілаза","АСТ","АСТ б. уп.","Білірубін прямий","Білірубін загальний","Білок загальний","Білок загальний б. уп.","ГГТ","Глюкоза","Глюкоза б. уп.","ЗЗЗЗ","Залізо","Магній ферм.","Магній ксил.","Калій","Кальцій (Арсеназо)","Креатинін 300","Креатинін 600","Лактат","ЛДГ","Ліпаза","Лужна фосфатаза DGKC","Сечовина","Сечова кислота","Тригліцериди","Фосфор","Холестерин картон","Холестерин без уп.","ЛПВЩ","ЛПНЩ","Хлориди"],
+  "SERACONTROL P": ["Альбумін","АЛТ б. уп.","АЛТ","Амілаза","АСТ","АСТ б. уп.","Білірубін прямий","Білірубін загальний","Білок загальний","Білок загальний б. уп.","ГГТ","Глюкоза","Глюкоза б. уп.","ЗЗЗЗ","Залізо","Магній ферм.","Магній ксил.","Калій","Кальцій (Арсеназо)","Креатинін 300","Креатинін 600","Лактат","ЛДГ","Ліпаза","Лужна фосфатаза DGKC","Сечовина","Сечова кислота","Тригліцериди","Фосфор","Холестерин картон","Холестерин без уп.","ЛПВЩ","ЛПНЩ","Хлориди"],
+  "ЛПBЩ/ ЛПНЩ контроль": ["ЛПВЩ", "ЛПНЩ"],
+  "ЛПBЩ/ ЛПНЩ калібратор": ["ЛПВЩ", "ЛПНЩ"],
+  "Глікогемоглобін калібратори": ["Глікогемоглобін","Розчин лізуючий для глікогемоглобіну"],
+  "Глікогемоглобін контроль": ["Глікогемоглобін","Розчин лізуючий для глікогемоглобіну"],
+  "Bільний кальцій Контроль": ["Вільний кальцій"],
+  "Натрій контроль": ["Натрій"],
+  "АСО/СРБ/РФ контроль норма": ["Антистрептолізин-О", "С реактивний білок", "Ревматоїдний фактор"],
+  "АСО/СРБ/РФ контроль висока концентрація ": ["Антистрептолізин-О", "С реактивний білок", "Ревматоїдний фактор"]
 };
 
 const checkboxList = document.getElementById("checkboxList");
 reagents.forEach((r, i) => {
   r.usagePerTest = +(r.volume / r.testsPerSet).toFixed(4);
-  if (excludedNames.includes(r.name)) return;
+  //if (excludedNames.includes(r.name)) return;
 
   const block = document.createElement("div");
   block.innerHTML = `
@@ -292,71 +285,66 @@ function toggleInputs(i) {
 }
 
 function calculate() {
-  const deviceCost = +document.getElementById("deviceCost").value;
+  const deviceCost = +document.getElementById("deviceCost").value || 0;
   const workDays = { month: 21, quarter: 63, year: 252 };
   const now = new Date().toLocaleDateString('uk-UA');
 
   let totalTestsPerDay = 0;
-  let report = `<p><strong>📆 Дата розрахунку:</strong> ${now}</p>`;
   let totalDailyProfit = 0;
   let totalYearlyCost = 0;
+  let report = `<p><strong>📆 Дата розрахунку:</strong> ${now}</p>`;
 
-  const washReagents = reagents.filter(r => excludedNames.includes(r.name));
-
-  const selectedTests = reagents.filter((r, i) => {
+  // Отримуємо індекси обраних чекбоксів
+  const selectedIndexes = reagents.map((r, i) => {
     const check = document.getElementById(`check_${i}`);
-    return check?.checked;
-  });
+    return check?.checked ? i : null;
+  }).filter(i => i !== null);
 
-  const selectedTestNames = selectedTests.map(r => r.name);
+  const selectedTestNames = selectedIndexes.map(i => reagents[i].name);
 
+  // Активуємо щоденні реагенти, які пов’язані з обраними тестами
   const activeDailyReagents = Object.entries(dailyReagentMap).flatMap(([reagentName, testList]) => {
-    const isUsed = testList.some(test => selectedTestNames.includes(test));
+    const isUsed = testList.some(test =>
+      selectedTestNames.some(name => name.trim().toLowerCase() === test.trim().toLowerCase())
+    );
     if (!isUsed) return [];
-    return Object.values(dailyReagentsGrouped).flat().filter(r => r.name === reagentName);
+    return dailyReagents.filter(r => r.name === reagentName);
   });
 
+  // Розрахунок вартості щоденних реагентів на один тест
   activeDailyReagents.forEach(r => {
-    const relatedTests = dailyReagentMap[r.name];
-    const totalRelatedTestCount = selectedTests.reduce((sum, reagent, i) => {
-      if (relatedTests.includes(reagent.name)) {
-        const count = +document.getElementById(`daily_${i}`).value;
-        return sum + count;
-      }
-      return sum;
+    const relatedTests = dailyReagentMap[r.name].map(t => t.trim().toLowerCase());
+    const totalRelatedTestCount = selectedIndexes.reduce((sum, i) => {
+      const count = +document.getElementById(`daily_${i}`).value || 0;
+      const testName = reagents[i].name.trim().toLowerCase();
+      return relatedTests.includes(testName) ? sum + count : sum;
     }, 0);
 
-    if (totalRelatedTestCount > 0) {
-      r._costPerTest = +(r.price * r.dailyUsage / r.volume / totalRelatedTestCount).toFixed(4);
-      r._totalCost = +(r.price * r.dailyUsage / r.volume).toFixed(2);
-    }
+    r._costPerTest = totalRelatedTestCount > 0
+      ? +(r.price * r.dailyUsage / r.volume / totalRelatedTestCount).toFixed(4)
+      : 0;
+    r._totalCost = +(r.price * r.dailyUsage / r.volume).toFixed(2);
   });
 
-  selectedTests.forEach((r, i) => {
-    const check = document.getElementById(`check_${i}`);
-    if (!check?.checked) return;
+  // Основний розрахунок по кожному обраному тесту
+  selectedIndexes.forEach(i => {
+    const r = reagents[i];
+    const count = +document.getElementById(`daily_${i}`).value || 0;
+    const patientPrice = +document.getElementById(`price_${i}`).value || 0;
 
-    const count = +document.getElementById(`daily_${i}`).value;
-    const patientPrice = +document.getElementById(`price_${i}`).value;
     totalTestsPerDay += count;
 
     const reagentPerTestCost = +(r.price * r.usagePerTest / r.volume).toFixed(2);
 
-    let washCostPerTest = 0;
-    washReagents.forEach(wash => {
-      const cost = +(wash.price * wash.usagePerTest / wash.volume).toFixed(2);
-      washCostPerTest += cost;
-    });
-
     let dailyReagentCostForThisTest = 0;
     activeDailyReagents.forEach(dr => {
-      const relatedTests = dailyReagentMap[dr.name];
-      if (relatedTests.includes(r.name)) {
+      const relatedTests = dailyReagentMap[dr.name].map(t => t.trim().toLowerCase());
+      if (relatedTests.includes(r.name.trim().toLowerCase())) {
         dailyReagentCostForThisTest += +(dr._costPerTest || 0);
       }
     });
 
-    const costPerTest = +(reagentPerTestCost + washCostPerTest + dailyReagentCostForThisTest).toFixed(2);
+    const costPerTest = +(reagentPerTestCost + dailyReagentCostForThisTest).toFixed(2);
     const profitPerTest = +(patientPrice - costPerTest).toFixed(2);
     const dailyProfit = +(profitPerTest * count).toFixed(2);
     totalDailyProfit += dailyProfit;
@@ -370,21 +358,10 @@ function calculate() {
       if (label === "year") totalYearlyCost += cost;
     });
 
-    let washPeriodCosts = {};
-    washReagents.forEach(wash => {
-      Object.entries(workDays).forEach(([label, days]) => {
-        const totalVolume = wash.usagePerTest * count * days;
-        const flacons = Math.ceil(totalVolume / wash.volume);
-        const cost = flacons * wash.price;
-        if (!washPeriodCosts[label]) washPeriodCosts[label] = [];
-        washPeriodCosts[label].push({ name: wash.name, flacons, cost });
-        if (label === "year") totalYearlyCost += cost;
-      });
-    });
-
     report += `<h4>${r.name}</h4><ul>
-      <li>Собівартість тесту з урахуванням щоденних реагентів і промивок: ${costPerTest} грн</li>
+      <li>Собівартість тесту з урахуванням щоденних реагентів: ${costPerTest} грн</li>
       <li>Кількість тестів на день: ${count}</li>
+      <li>Ціна для пацієнта: ${patientPrice} грн</li>
       <li>Добовий прибуток: ${dailyProfit} грн</li>
       <li>📦 Закупівля на періоди:
         <ul>
@@ -393,22 +370,10 @@ function calculate() {
           ).join("")}
         </ul>
       </li>
-      <li>📦 Додаткові реагенти (промивки):
-        <ul>
-          ${Object.entries(washPeriodCosts).map(([label, items]) =>
-            `<li>${label.charAt(0).toUpperCase() + label.slice(1)}:
-              <ul>
-                ${items.map(item =>
-                  `<li>${item.name}: ${item.flacons} упаковок / ${item.cost} грн</li>`
-                ).join("")}
-              </ul>
-            </li>`
-          ).join("")}
-        </ul>
-      </li>
     </ul>`;
   });
 
+  // Розрахунок щоденних реагентів
   report += `<hr><h3>🧪 Щоденні реагенти</h3><ul>`;
   activeDailyReagents.forEach(r => {
     let periodCosts = {};
@@ -430,6 +395,7 @@ function calculate() {
   });
   report += `</ul>`;
 
+  // Підсумки
   const yearlyProfitGross = +(totalDailyProfit * workDays.year).toFixed(2);
   const yearlyProfitNet = +(yearlyProfitGross - deviceCost).toFixed(2);
   const paybackDays = totalDailyProfit > 0 ? Math.ceil(deviceCost / totalDailyProfit) : "∞";
@@ -439,7 +405,7 @@ function calculate() {
     <li>Сумарний прибуток на день: ${totalDailyProfit.toFixed(2)} грн</li>
     <li>Окупність приладу: ${paybackDays} робочих днів</li>
     <li>Чистий річний прибуток: ${yearlyProfitNet} грн</li><br>
-    <li>Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.</li><br>
+    <li>Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись залежно від кількості проб, обраної програми контролю якості, та інших факторів.</li><br>
   </ul>`;
 
   document.getElementById("results").innerHTML = report;
