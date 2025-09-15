@@ -190,7 +190,7 @@
   </footer>
 
 <script>
-// Реагенти (приклад із 3-х, можеш вставити повний список)
+// Реагенти 
 const excludedNames = ["Лужна промивка", "Кисла промивка"];
 const reagents = [
   { name: "АЛТ", volume: 70, price: 531, testsPerSet: 295, usagePerTest: 0.25 },
@@ -309,10 +309,13 @@ function calculate() {
 
   const washReagents = reagents.filter(r => excludedNames.includes(r.name));
 
-  const selectedTests = reagents.filter((r, i) => {
-    const check = document.getElementById(`check_${i}`);
-    return check?.checked;
-  });
+  // Зберігаємо індекс з оригінального масиву
+  const selectedTests = reagents
+    .map((r, i) => ({ ...r, index: i }))
+    .filter(r => {
+      const check = document.getElementById(`check_${r.index}`);
+      return check?.checked;
+    });
 
   const selectedTestNames = selectedTests.map(r => r.name);
 
@@ -324,9 +327,9 @@ function calculate() {
 
   activeDailyReagents.forEach(r => {
     const relatedTests = dailyReagentMap[r.name];
-    const totalRelatedTestCount = selectedTests.reduce((sum, reagent, i) => {
+    const totalRelatedTestCount = selectedTests.reduce((sum, reagent) => {
       if (relatedTests.includes(reagent.name)) {
-        const count = +document.getElementById(`daily_${i}`).value;
+        const count = +document.getElementById(`daily_${reagent.index}`).value;
         return sum + count;
       }
       return sum;
@@ -338,12 +341,17 @@ function calculate() {
     }
   });
 
-  selectedTests.forEach((r, i) => {
+  selectedTests.forEach((r) => {
+    const i = r.index;
     const check = document.getElementById(`check_${i}`);
     if (!check?.checked) return;
 
     const count = +document.getElementById(`daily_${i}`).value;
-    const patientPrice = +document.getElementById(`price_${i}`).value;
+const patientPriceRaw = document.getElementById(`price_${i}`).value;
+const patientPrice = patientPriceRaw ? +patientPriceRaw : 0;
+
+if (!count) return;
+
     totalTestsPerDay += count;
 
     const reagentPerTestCost = +(r.price * r.usagePerTest / r.volume).toFixed(2);
@@ -399,19 +407,7 @@ function calculate() {
           ).join("")}
         </ul>
       </li>
-      <li>📦 Додаткові реагенти (промивки):
-        <ul>
-          ${Object.entries(washPeriodCosts).map(([label, items]) =>
-            `<li>${label.charAt(0).toUpperCase() + label.slice(1)}:
-              <ul>
-                ${items.map(item =>
-                  `<li>${item.name}: ${item.flacons} упак. / ${item.cost} грн</li>`
-                ).join("")}
-              </ul>
-            </li>`
-          ).join("")}
-        </ul>
-      </li>
+      
     </ul>`;
   });
 
@@ -435,6 +431,30 @@ function calculate() {
     </li>`;
   });
   report += `</ul>`;
+
+  report += `<hr><h3>🧼 Промивки (загальні витрати)</h3><ul>`;
+washReagents.forEach(wash => {
+  let periodCosts = {};
+  Object.entries(workDays).forEach(([label, days]) => {
+    const totalVolume = wash.usagePerTest * totalTestsPerDay * days;
+    const flacons = Math.ceil(totalVolume / wash.volume);
+    const cost = flacons * wash.price;
+    periodCosts[label] = { flacons, cost };
+    if (label === "year") totalYearlyCost += cost;
+  });
+
+  report += `<li><strong>${wash.name}</strong>
+    <ul>
+      ${Object.entries(periodCosts).map(([label, obj]) =>
+        `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} упаковок / ${obj.cost} грн</li>`
+      ).join("")}
+    </ul>
+  </li>`;
+});
+report += `</ul>`;
+  report += `<hr><h3>💵 Загальні витрати на реагенти</h3><ul>
+    <li>Річні витрати на всі реагенти: ${totalYearlyCost} грн</li>
+  </ul>`;
 
   const yearlyProfitGross = +(totalDailyProfit * workDays.year).toFixed(2);
   const yearlyProfitNet = +(yearlyProfitGross - deviceCost).toFixed(2);
