@@ -17,7 +17,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         "a.volaniuk@pharmasco.com", "v.tuluchenko@pharmasco.com", "i.shlapak@pharmasco.com",
         "o.levchenko@pharmasco.com", "p.hrytsenko@pharmasco.com", "s.komashko@pharmasco.com", 
         "u.oleynik@pharmasco.com", "v.skopichenko@pharmasco.com", "svitlanaskopychenko@gmail.com", "g.kuznetsova@pharmasco.com", "v.popadiuk@pharmasco.com","d.krasko@pharmasco.com",
-        "v.torishnyak@pharmasco.com"
+        "v.torishnyak@pharmasco.com", "k.prokhorenko@pharmasco.com"
     ];
 
     if (allowedEmails.includes(email)) {
