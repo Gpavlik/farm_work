@@ -31,7 +31,7 @@
 
         .menu a {
             display: block;
-            padding: 10px;
+            padding: 4px;
             text-decoration: none;
             color: black;
         }
@@ -1851,7 +1851,7 @@ margin-bottom: 6px;
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
-  line-height: 36px;
+  line-height: 18px;
   letter-spacing: 0.06em;
   color: var(--title-color);
 }

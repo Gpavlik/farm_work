@@ -22,7 +22,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
 
     if (allowedEmails.includes(email)) {
         localStorage.setItem("allowedEmail", email); // Зберігаємо електронну адресу
-        window.location.href = "./portfolio.html"; // Перенаправлення на закриту сторінку
+        window.location.href = "./portfolio news.html"; // Перенаправлення на закриту сторінку
     } else {
         alert("Доступ заборонено!");
     }
