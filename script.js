@@ -8,7 +8,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         "n.pylypchuk@pharmasco.com", "a.haievska@pharmasco.com", "i.bohuslavets@pharmasco.com",
         "m.krishtalyan@pharmasco.com", "k.skriabina@pharmasco.com", "a.alekseenko@pharmasco.com",
         "a.priadko@pharmasco.com", "o.hovorukha@pharmasco.com", "t.demus@pharmasco.com",
-        "o.dykonenko@pharmasco.com", "v.rainov@pharmasco.com", "h.bilousova@pharmasco.com",
+        "v.rainov@pharmasco.com", "h.bilousova@pharmasco.com",
         "s.ratushnenko@pharmasco.com", "o.leonova@pharmasco.com", "t.sazonova@pharmasco.com",
         "i.babenko@pharmasco.com", "i.melnychuk@pharmasco.com", "t.klimenko@pharmasco.com",
         "i.pryhodko@pharmasco.com", "d.zahorodnyy@pharmasco.com", "t.romanovska@pharmasco.com", "m.kulynska@pharmasco.com",
