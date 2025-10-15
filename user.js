@@ -4,7 +4,6 @@ const users = {
   "i.luzan@pharmasco.com": "Інга Лузан",
   "l.prysiazhniuk@pharmasco.com": "Людмила Присяжнюк",
   "v.bilous@pharmasco.com": "Вадим Білоус",
-  "y.levchenko@pharmasco.com": "Єлизавета Левченко",
   "o.krasnikov@pharmasco.com": "Олександр Красніков",
   "a.onischuk@pharmasco.com": "Антоніна Онищук",
   "m.pohribna@pharmasco.com": "Марина Погрібна",
@@ -19,7 +18,6 @@ const users = {
   "t.demus@pharmasco.com": "Тетяна Демус",
   "v.rainov@pharmasco.com": "Валерій Райнов",
   "h.bilousova@pharmasco.com": "Ганна Білоусова",
-  "s.ratushnenko@pharmasco.com": "Сергій Ратушненко",
   "o.leonova@pharmasco.com": "Ольга Леонова",
   "t.sazonova@pharmasco.com": "Тетяна Сазонова",
   "i.babenko@pharmasco.com": "Ілона Бабенко",
@@ -52,12 +50,12 @@ const users = {
 const managerToEmployees = {
   'P.yyy@lkj.com' : ['P.xxx@lkj.com'],
   'a.onischuk@pharmasco.com': ['m.pohribna@pharmasco.com', 'n.pylypchuk@pharmasco.com', 'a.haievska@pharmasco.com', 'i.bohuslavets@pharmasco.com'],
-  'i.luzan@pharmasco.com': ['l.prysiazhniuk@pharmasco.com', 'v.bilous@pharmasco.com', 'y.levchenko@pharmasco.com', 'o.krasnikov@pharmasco.com'],
+  'i.luzan@pharmasco.com': ['l.prysiazhniuk@pharmasco.com', 'v.bilous@pharmasco.com', 'o.krasnikov@pharmasco.com'],
   'm.krishtalyan@pharmasco.com': ['k.skriabina@pharmasco.com', 'a.alekseenko@pharmasco.com', 'a.priadko@pharmasco.com', 'o.hovorukha@pharmasco.com', 't.demus@pharmasco.com'],
-  'v.rainov@pharmasco.com': ['h.bilousova@pharmasco.com', 's.ratushnenko@pharmasco.com', 'o.leonova@pharmasco.com', 't.sazonova@pharmasco.com'],
+  'v.rainov@pharmasco.com': ['h.bilousova@pharmasco.com', 'o.leonova@pharmasco.com', 't.sazonova@pharmasco.com'],
   'i.babenko@pharmasco.com': ['i.melnychuk@pharmasco.com', 't.klimenko@pharmasco.com', 'i.pryhodko@pharmasco.com', 'd.zahorodnyy@pharmasco.com', 'k.vyderko@pharmasco.com', 't.romanovska@pharmasco.com', 'm.kulynska@pharmasco.com'],
-  'y.holovan@pharmasco.com': ['i.luzan@pharmasco.com','l.prysiazhniuk@pharmasco.com', 'v.bilous@pharmasco.com', 'y.levchenko@pharmasco.com', 'o.krasnikov@pharmasco.com', 'a.onischuk@pharmasco.com', 'm.pohribna@pharmasco.com', 'n.pylypchuk@pharmasco.com', 'a.haievska@pharmasco.com', 'i.bohuslavets@pharmasco.com', 'm.krishtalyan@pharmasco.com', 'k.skriabina@pharmasco.com', 'a.alekseenko@pharmasco.com', 'a.priadko@pharmasco.com', 'o.hovorukha@pharmasco.com', 't.demus@pharmasco.com', 'o.dykonenko@pharmasco.com', 'v.rainov@pharmasco.com', 'h.bilousova@pharmasco.com', 's.ratushnenko@pharmasco.com', 'o.leonova@pharmasco.com', 't.sazonova@pharmasco.com', 'i.babenko@pharmasco.com', 'i.melnychuk@pharmasco.com', 't.klimenko@pharmasco.com', 'i.pryhodko@pharmasco.com', 'd.zahorodnyy@pharmasco.com', 'k.vyderko@pharmasco.com', 't.romanovska@pharmasco.com', 'm.kulynska@pharmasco.com'],
-  'p.hrytsenko@pharmasco.com': ['i.luzan@pharmasco.com','l.prysiazhniuk@pharmasco.com', 'v.bilous@pharmasco.com', 'y.levchenko@pharmasco.com', 'o.krasnikov@pharmasco.com', 'a.onischuk@pharmasco.com', 'm.pohribna@pharmasco.com', 'n.pylypchuk@pharmasco.com', 'a.haievska@pharmasco.com', 'i.bohuslavets@pharmasco.com', 'm.krishtalyan@pharmasco.com', 'k.skriabina@pharmasco.com', 'a.alekseenko@pharmasco.com', 'a.priadko@pharmasco.com', 'o.hovorukha@pharmasco.com', 't.demus@pharmasco.com', 'o.dykonenko@pharmasco.com', 'v.rainov@pharmasco.com', 'h.bilousova@pharmasco.com', 's.ratushnenko@pharmasco.com', 'o.leonova@pharmasco.com', 't.sazonova@pharmasco.com', 'i.babenko@pharmasco.com', 'i.melnychuk@pharmasco.com', 't.klimenko@pharmasco.com', 'i.pryhodko@pharmasco.com', 'd.zahorodnyy@pharmasco.com', 'k.vyderko@pharmasco.com', 't.romanovska@pharmasco.com', 'm.kulynska@pharmasco.com']
+  'y.holovan@pharmasco.com': ['i.luzan@pharmasco.com','l.prysiazhniuk@pharmasco.com', 'v.bilous@pharmasco.com', 'o.krasnikov@pharmasco.com', 'a.onischuk@pharmasco.com', 'm.pohribna@pharmasco.com', 'n.pylypchuk@pharmasco.com', 'a.haievska@pharmasco.com', 'i.bohuslavets@pharmasco.com', 'm.krishtalyan@pharmasco.com', 'k.skriabina@pharmasco.com', 'a.alekseenko@pharmasco.com', 'a.priadko@pharmasco.com', 'o.hovorukha@pharmasco.com', 't.demus@pharmasco.com', 'o.dykonenko@pharmasco.com', 'v.rainov@pharmasco.com', 'h.bilousova@pharmasco.com', 'o.leonova@pharmasco.com', 't.sazonova@pharmasco.com', 'i.babenko@pharmasco.com', 'i.melnychuk@pharmasco.com', 't.klimenko@pharmasco.com', 'i.pryhodko@pharmasco.com', 'd.zahorodnyy@pharmasco.com', 'k.vyderko@pharmasco.com', 't.romanovska@pharmasco.com', 'm.kulynska@pharmasco.com'],
+  'p.hrytsenko@pharmasco.com': ['i.luzan@pharmasco.com','l.prysiazhniuk@pharmasco.com', 'v.bilous@pharmasco.com', 'o.krasnikov@pharmasco.com', 'a.onischuk@pharmasco.com', 'm.pohribna@pharmasco.com', 'n.pylypchuk@pharmasco.com', 'a.haievska@pharmasco.com', 'i.bohuslavets@pharmasco.com', 'm.krishtalyan@pharmasco.com', 'k.skriabina@pharmasco.com', 'a.alekseenko@pharmasco.com', 'a.priadko@pharmasco.com', 'o.hovorukha@pharmasco.com', 't.demus@pharmasco.com', 'o.dykonenko@pharmasco.com', 'v.rainov@pharmasco.com', 'h.bilousova@pharmasco.com', 'o.leonova@pharmasco.com', 't.sazonova@pharmasco.com', 'i.babenko@pharmasco.com', 'i.melnychuk@pharmasco.com', 't.klimenko@pharmasco.com', 'i.pryhodko@pharmasco.com', 'd.zahorodnyy@pharmasco.com', 'k.vyderko@pharmasco.com', 't.romanovska@pharmasco.com', 'm.kulynska@pharmasco.com']
 };
 
 const SupervisorToManager = {
