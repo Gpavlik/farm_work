@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Розрахунок потреби реагентів та їх вартості</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.css"
+    integrity="sha512-Y0MM+V6ymRKN2zStTqzQ227DWhhp4Mzdo6gnlRnuaNCbc+YN/ZH0sBCLTM4M0oSy9c9VKiCvd4Jk44aCLrNS5Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/styles.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5BZZCV5DRK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-5BZZCV5DRK");
+</script>
+<script>
+  const email = localStorage.getItem("allowedEmail");
+  if (email) {
+    gtag("set", "user_properties", {
+      user_id: email
+    });
+  }
+</script>
+<script>
+  function sha256(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    return crypto.subtle.digest("SHA-256", data).then(hash => {
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    });
+  }
+</script>
+  <style>
+  input, select {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+
+  label {
+    margin-top: 10px;
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  main {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+  .result {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 1000px;
+    text-align: left;
+  }
+  .output-line {
+  display: block;
+  padding: 4px 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  border-bottom: 1px dashed #ccc;
+}
+
+  @media screen and (min-width: 600px) {
+    input, option {
+      width: 60%;
+    }
+
+    .btn {
+      width: auto;
+      display: inline-block;
+    }
+    
+  }
+
+  @media screen and (min-width: 900px) {
+    input, option {
+      width: 30%;
+    }
+    
+     .result { margin-top: 30px; padding: 15px; border: 1px solid #ccc; background: #f9f9f9; white-space: pre-wrap; }
+  }
+</style>
+</head>
+<body>
+<header class="header">
+    <div class="header__container">
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
+      <!--<ul class="nav">
+        <li class="nav__referent"><a class="nav__link" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts" target="_blank" rel="noopener noreferrer">Контакти</a></li>
+      </ul>-->
+      <ul class="contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-envelope"></use>
+            </svg>contact@pharmasco.com</a>
+          </a>
+        </li>
+       <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+      </ul>
+    </div>
+    <button class="mobile-menu-btn" type="button" data-menu-button>
+      <svg class="mobile-menu-icon" width="24" height="16">
+        <use class="mobile-menu-burger" href="./images/sprite.svg#24-menu"></use>
+        <use class="mobile-menu-close" href="./images/sprite.svg#icon-X"></use>
+      </svg>
+    </button>
+    <div class="mobile-menu" data-menu>
+      <!--<ul class="mobile-menu-nav">
+        <li class="mobile-menu-nav-item">
+          <a class="link " href="./index.html">Головна</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link current" href="./portfolio.html">Курси</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="/contact">Контакти</a>
+        </li>
+      </ul>-->
+      <ul class="mobile-menu-contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+        <li class="mobile-menu-contacts-item">
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-socials">
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer">Youtube</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+  
+  <main>
+    <section class="works">
+  <div class="container">
+  <h1>Розрахунок потреби реагентів та їх вартості MINI ISE</h1>
+
+  <label>💰 Вартість приладу (грн):
+    <input type="number" id="deviceCost" />
+  </label>
+
+  <label>🔬 Кількість аналізів на день:
+    <input type="number" id="testsPerDay" />
+  </label>
+
+  <label>🏥 Компенсація НСЗУ за один аналіз (грн):
+    <input type="number" id="nszuCompensation" />
+  </label><br>
+
+  <label>⚙️ Калібрування:
+  <select id="calibrationMode">
+    <option value="noCalibration">Без калібрування</option>
+    <option value="withCalibration">З калібруванням</option>
+  </select>
+</label>
+
+<label>⏱ Інтервал подачі зразків:
+  <select id="intervalMode">
+    <option value="none">Без інтервалу</option>
+    <option value="interval15">Інтервал ≤15 хв</option>
+    <option value="intervalMore15">Інтервал >15 хв</option>
+  </select>
+</label>
+
+
+  <label>🧪 Об’єм реагенту:
+    <select id="reagentVolume">
+      <option value="650">650 мл (AFT-ISE III)</option>
+      <option value="850">850 мл (MINI II)</option>
+    </select>
+  </label><br>
+
+  <button class="btn" onclick="calculate()">🔍 Розрахувати</button>
+  <button class="btn" onclick="copyResult()">📋 Скопіювати результат</button>
+  <button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj8.html">Назад</a></button>
+  <div class="result" id="output"></div>
+  <p style="color: #666; font-style: italic; text-align: center;" >Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.</p>
+  </div>
+</section>
+  </main>
+<footer class="footer">
+    <div class="container">
+      <div class="find-us">
+        <div class="find">
+          <a class="logo footer__logo" href="/"><img src="./images/logo.svg" alt="logo" width="160"></a>
+          <ul class="contacts contacts--footer">
+            <li class="contacts__contact contacts__contact--footer">
+              <address class="contacts__post"><p>Україна, Київська обл.,</p> <p>м. Вишгород,</p> <p>вул. Шолуденка, 15г</p></address>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-mail contacts__contact-mail--footer"
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
+            </li>
+          </ul>
+        </div>
+        <div class="social social--footer">
+          <h2 class="social__title">приєднуйтесь</h2>
+          <ul class="social__list social__list--footer">
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer"
+                aria-label="инстаграм иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-instagram"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer"
+                aria-label="твиттер иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/uoytube.svg"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer"
+                aria-label="фейсбук иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-facebook"></use>
+                </svg></a> 
+            </li>       
+          </ul>
+        </div>
+        <div class="spam">
+          <h2 class="spam__title" style="line-height: 2;">ТОВ «НВК «Фармаско» – провідний постачальник засобів діагностики для українських закладів охорони здоров’я, лікарів та пацієнтів.</h2>
+          <!--<form class="spam__form">
+            <label class="spam__label">
+              <input class="spam__input" type="email" name="email" placeholder="E-mail" />
+            </label>
+            <button class="btn btn--spam" type="submit">Підписатися<a class="spam-link link" href="" target="_blank"
+                rel="noopener noreferrer" aria-label="инстаграм иконка">
+                <svg class="spam__icon" width="24px" height="24px">
+                  <use href="./images/sprite.svg#icon-send"></use>
+                </svg></a></button>
+          </form>-->
+        </div>
+      </div>
+    </div>
+        <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+        <button id="scrollTopBtn" title="До гори">⬆</button>
+  </footer>
+
+  <script>
+    const rawData = {
+      noCalibration: {
+        650: { x: [10, 20, 30, 50, 100, 200], cost: [24.04, 14.14, 10.84, 8.20, 6.22, 5.23], days: [25.37, 21.57, 18.75, 14.88, 9.81, 5.83] },
+        850: { x: [10, 20, 30, 50, 100, 200], cost: [26.42, 15.54, 11.91, 9.01, 6.84, 5.75], days: [33.21, 28.23, 24.55, 19.47, 12.84, 7.63] }
+      },
+      withCalibration: {
+        650: { x: [10, 20, 30, 50, 100, 200], cost: [24.41, 14.33, 10.96, 8.27, 6.26, 5.25], days: [24.99, 21.29, 18.55, 14.74, 9.75, 5.81] },
+        850: { x: [10, 20, 30, 50, 100, 200], cost: [26.83, 15.74, 12.05, 9.09, 6.88, 5.77], days: [32.71, 27.87, 24.28, 19.30, 12.76, 7.61] }
+      },
+      interval15: {
+        650: { x: [10, 20, 30, 50, 100, 200], cost: [25.06, 15.16, 11.86, 9.22, 7.24, 6.25], days: [24.34, 20.12, 17.15, 13.23, 8.43, 4.88] },
+        850: { x: [10, 20, 30, 50, 100, 200], cost: [27.95, 16.86, 13.17, 10.21, 8.00, 6.89], days: [31.40, 26.02, 22.20, 17.19, 10.97, 6.37] }
+      },
+      intervalMore15: {
+        650: { x: [10, 20, 30, 50, 100, 200], cost: [28.74, 18.84, 15.53, 12.89, 10.91, 9.92], days: [21.23, 16.19, 13.09, 9.46, 5.59, 3.07] },
+        850: { x: [10, 20, 30, 50, 100, 200], cost: [31.58, 20.70, 17.07, 14.17, 11.99, 10.91], days: [27.79, 21.20, 17.13, 12.38, 7.32, 4.02] }
+      }
+    };
+
+    function quadraticFit(x, y) {
+      const n = x.length;
+      let sumX = 0, sumX2 = 0, sumX3 = 0, sumX4 = 0;
+      let sumY = 0, sumXY = 0, sumX2Y = 0;
+
+      for (let i = 0; i < n; i++) {
+        sumX += x[i];
+        sumX2 += x[i] ** 2;
+        sumX3 += x[i] ** 3;
+        sumX4 += x[i] ** 4;
+        sumY += y[i];
+        sumXY += x[i] * y[i];
+        sumX2Y += x[i] ** 2 * y[i];
+      }
+
+      const A = [
+        [n, sumX, sumX2],
+        [sumX, sumX2, sumX3],
+        [sumX2, sumX3, sumX4]
+      ];
+      const B = [sumY, sumXY, sumX2Y];
+
+      function determinant(m) {
+        return m[0][0]*m[1][1]*m[2][2] + m[0][1]*m[1][2]*m[2][0] + m[0][2]*m[1][0]*m[2][1]
+             - m[0][2]*m[1][1]*m[2][0] - m[0][0]*m[1][2]*m[2][1] - m[0][1]*m[1][0]*m[2][2];
+      }
+
+      function replaceColumn(matrix, columnIndex, newColumn) {
+        return matrix.map((row, i) => row.map((val, j) => j === columnIndex ? newColumn[i] : val));
+      }
+
+      const D = determinant(A);
+      const D0 = determinant(replaceColumn(A, 0, B));
+      const D1 = determinant(replaceColumn(A, 1, B));
+      const D2 = determinant(replaceColumn(A, 2, B));
+
+      const a = D0 / D;
+      const b = D1 / D;
+      const c = D2 / D;
+
+      return function(xVal) {
+        return a + b * xVal + c * xVal ** 2;
+      };
+    }
+
+    function calculate() {
+  const deviceCost = parseFloat(document.getElementById("deviceCost").value);
+  const testsPerDay = parseFloat(document.getElementById("testsPerDay").value);
+  const nszuCompensation = parseFloat(document.getElementById("nszuCompensation").value);
+  const calibrationMode = document.getElementById("calibrationMode").value;
+  const intervalMode = document.getElementById("intervalMode").value;
+  const reagentVolume = parseInt(document.getElementById("reagentVolume").value);
+
+  // Визначення режиму
+  let sampleMode = calibrationMode;
+  if (intervalMode !== "none") {
+    sampleMode = intervalMode;
+  }
+
+  const data = rawData[sampleMode][reagentVolume];
+  const costFn = quadraticFit(data.x, data.cost);
+  const daysFn = quadraticFit(data.x, data.days);
+
+  const costPerTest = costFn(testsPerDay);
+  const daysToReplace = daysFn(testsPerDay);
+  const dailyProfit = (nszuCompensation - costPerTest) * testsPerDay;
+  const yearlyProfit = dailyProfit * 365;
+  const paybackDays = deviceCost / dailyProfit;
+
+  // Витрати на реагенти
+  const reagentKitPrice = 71375; // грн
+  const electrodeSetPrice = 8700 * 6; // 6 електродів по 8700 грн
+
+  const reagentVolumeMl = reagentVolume;
+  const dailyReagentUse = reagentVolumeMl / daysToReplace;
+
+  const monthDays = 30;
+  const quarterDays = 90;
+  const yearDays = 365;
+
+  const monthUse = dailyReagentUse * monthDays;
+  const quarterUse = dailyReagentUse * quarterDays;
+  const yearUse = dailyReagentUse * yearDays;
+
+  const monthKits = Math.ceil(monthUse / reagentVolumeMl);
+  const quarterKits = Math.ceil(quarterUse / reagentVolumeMl);
+  const yearKits = Math.ceil(yearUse / reagentVolumeMl);
+
+  const monthCost = monthKits * reagentKitPrice;
+  const quarterCost = quarterKits * reagentKitPrice;
+  const yearCost = yearKits * reagentKitPrice + electrodeSetPrice;
+
+  const netYearlyProfit = yearlyProfit - yearCost;
+
+  const resultText = 
+    `📊 Результати:\n` +
+    `🗓 Кількість днів до заміни реагенту: ${daysToReplace.toFixed(2)}\n` +
+    `💸 Собівартість одного аналізу: ${costPerTest.toFixed(2)} грн\n` +
+    `📈 Добовий прибуток: ${dailyProfit.toFixed(2)} грн\n` +
+    `📅 Річний прибуток (без витрат): ${yearlyProfit.toFixed(2)} грн\n` +
+    `📉 Річний прибуток (з урахуванням витрат): ${netYearlyProfit.toFixed(2)} грн\n` +
+    `⏳ Окупність приладу: ${paybackDays.toFixed(1)} днів\n\n` +
+    `🧪 Витрати на реагенти:\n` +
+    `📆 Місяць: ${monthKits} наборів → ${monthCost.toLocaleString()} грн\n` +
+    `📆 Квартал: ${quarterKits} наборів → ${quarterCost.toLocaleString()} грн\n` +
+    `📆 Рік: ${yearKits} наборів + електроди → ${yearCost.toLocaleString()} грн`;
+    `Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.`;
+  document.getElementById("output").textContent = resultText;
+}
+
+function copyResult() {
+  const output = document.getElementById("output").textContent;
+  navigator.clipboard.writeText(output).then(() => {
+    alert("✅ Результат скопійовано в буфер обміну!");
+  }).catch(err => {
+    alert("⚠️ Не вдалося скопіювати: " + err);
+  });
+}
+
+  </script>
+</body>
+</html>
