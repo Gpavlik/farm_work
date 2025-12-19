@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Обладнання</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.css"
+    integrity="sha512-Y0MM+V6ymRKN2zStTqzQ227DWhhp4Mzdo6gnlRnuaNCbc+YN/ZH0sBCLTM4M0oSy9c9VKiCvd4Jk44aCLrNS5Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/styles.css">
+
+<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5BZZCV5DRK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-5BZZCV5DRK");
+</script>
+<script>
+  const email = localStorage.getItem("allowedEmail");
+  if (email) {
+    gtag("set", "user_properties", {
+      user_id: email
+    });
+  }
+</script>
+<script>
+  function sha256(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    return crypto.subtle.digest("SHA-256", data).then(hash => {
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    });
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__container">
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
+      <!--<ul class="nav">
+        <li class="nav__referent"><a class="nav__link" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts" target="_blank" rel="noopener noreferrer">Контакти</a></li>
+      </ul>-->
+      <ul class="contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-envelope"></use>
+            </svg>contact@pharmasco.com</a>
+          </a>
+        </li>
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+      </ul>
+    </div>
+    <button class="mobile-menu-btn" type="button" data-menu-button>
+      <svg class="mobile-menu-icon" width="24" height="16">
+        <use class="mobile-menu-burger" href="./images/sprite.svg#24-menu"></use>
+        <use class="mobile-menu-close" href="./images/sprite.svg#icon-X"></use>
+      </svg>
+    </button>
+    <div class="mobile-menu" data-menu>
+      <!--<ul class="mobile-menu-nav">
+        <li class="mobile-menu-nav-item">
+          <a class="link " href="./index.html">Головна</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link current" href="./portfolio.html">Курси</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="/contact">Контакти</a>
+        </li>
+      </ul>-->
+      <ul class="mobile-menu-contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+        <li class="mobile-menu-contacts-item">
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-socials">
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer">Youtube</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </li>
+      </ul>
+    </div>
+    
+  </header>
+  <main>
+    <section class="works">
+      <div class="container">
+        <h2 class="works__title"></h2>
+        <ul class="button">
+          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio news.html">Новини</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio.html">Обладнання</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio testy.html">Швидкі тести</a></button></li>
+          <li class="button-section"><button class="btn btn--select" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio Cryo">Анальгезія</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio trenings.html">Тренінги</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio standart.html">Стандарти</a></button></li>
+          <li class="button-section"><button class="btn" type="button"><a onclick="showPasswordPrompt(event, './portfolio PV.html')" style="text-decoration: none; font-size: smaller;" class="text__work" href="./portfolio PV.html">ПВ</a></button></li>
+        </ul>
+   <!--<button class="btn" onclick="toggleDashboard()">Показати дашборд</button><br><br>
+   <div id="dashboard" style="display: none; line-height: 10px;"></div><br>-->
+        <ul class="works-cards">
+                   <li class="description">
+            <div class="overflow">
+              <picture>
+                <!-- desktop screen -->
+                <source media="(min-width: 1200px)"
+                  srcset="./images2/works/img-8_lg1x.webp, ./images2/works/img-8_lg2x.webp" type="image/webp" />
+                <source media="(min-width: 1200px)"
+                  srcset="./images2/works/img-8_lg1x.jpg, ./images2/works/img-8_lg2x.jpg" type="image/jpg" />
+
+                <!-- tablet screen -->
+                <source media="(min-width: 768px)"
+                  srcset="./images2/works/img-8_md1x.webp, ./images2/works/img-8_md2x.webp" type="image/webp" />
+                <source media="(min-width: 768px)"
+                  srcset="./images2/works/img-8_md1x.jpg, ./images2/works/img-8_md2x.jpg" type="image/jpg" />
+
+                <!-- mobile screen -->
+                <source media="(max-width: 767px)"
+                  srcset="./images2/works/img-8_sm1x.webp, ./images2/works/img-8_sm2x.webp" type="image/webp" />
+                <source media="(max-width: 767px)"
+                  srcset="./images2/works/img-8_sm1x.jpg, ./images2/works/img-8_sm2x.jpg" type="image/jpg" />
+                <img src="./images2/works/img-8_sm1x.j" alt="Business" width="450" height="294" />
+              </picture>
+
+              <div class="bg">
+                <a class="atext" href="./obj10.html"> 
+                <p class="bg__uppertext">
+                  CRYO-S® Painless – високотехнологічний пристрій для кріонанальгезії. Інноваційний метод лікування хронічного болю. КОМПАНІЯ ФАРМАСКО – ексклюзивний дистриб'ютор CRYO-S ® Painless в УКРАЇНІ
+                </p>
+                </a>
+              </div>
+            </div>
+            <div class="text">
+              <h3 class="text__work"><span lang="en">CRYO-S® Painless</span></h3>
+              <p class="text__sub">Апарат для кріоанальгезії Metrum Cryoflex</p>
+            </div>
+          </li>
+          <li class="description">
+            <div class="overflow">
+              <picture>
+                <!-- desktop screen -->
+                <source media="(min-width: 1200px)"
+                  srcset="./PHARM/Kio.jpg, ./images2/works/img-8_lg2x.webp" type="image/webp" />
+                <source media="(min-width: 1200px)"
+                  srcset="./images2/works/img-8_lg1x.jpg, ./images2/works/img-8_lg2x.jpg" type="image/jpg" />
+
+                <!-- tablet screen -->
+                <source media="(min-width: 768px)"
+                  srcset="./PHARM/Kio.jpg, ./images2/works/img-8_md2x.webp" type="image/webp" />
+                <source media="(min-width: 768px)"
+                  srcset="./images2/works/img-8_md1x.jpg, ./images2/works/img-8_md2x.jpg" type="image/jpg" />
+
+                <!-- mobile screen -->
+                <source media="(max-width: 767px)"
+                  srcset="./PHARM/Kio.jpg, ./images2/works/img-8_sm2x.webp" type="image/webp" />
+                <source media="(max-width: 767px)"
+                  srcset="./PHARM/Kio.jpg, ./images2/works/img-8_sm2x.jpg" type="image/jpg" />
+                <img src="./images2/works/img-8_sm1x.jpg" alt="Business" width="450" height="294" />
+              </picture>
+
+              <div class="bg">
+                <a class="atext" href="./obj18.html"> 
+                <p class="bg__uppertext">
+                Kiomedine – це інноваційний рідкий внутрішньосуглобовий імплант, розроблений для ефективного лікування остеоартриту (ОА). Його унікальна формула сприяє зменшенню болю, покращенню рухливості суглобів та відновленню їх функцій.                 </p>
+                </p>
+                </a>
+              </div>
+            </div>
+            <div class="text">
+              <h3 class="text__work"><span lang="en">Kiomedine</span></h3>
+              <p class="text__sub">Рідкий внутрішньосуглобовий імплант
+              для лікування остеоартриту</p>
+            </div>
+          </li>
+              <!--<li class="description">
+            <div class="overflow">
+              <picture>
+                desktop screen
+                <source media="(min-width: 1200px)"
+                  srcset="./PHARM/dock.jpg, ./images2/works/img-2_lg2x.webp" type="image/webp" />
+                <source media="(min-width: 1200px)"
+                  srcset="./images2/works/img-2_lg1x.jpg, ./images2/works/img-2_lg2x.jpg" type="image/jpg" />
+
+                tablet screen
+                <source media="(min-width: 768px)"
+                  srcset="./PHARM/dock.jpg, ./images2/works/img-2_md2x.webp" type="image/webp" />
+                <source media="(min-width: 768px)"
+                  srcset="./images2/works/img-2_md1x.jpg, ./images2/works/img-2_md2x.jpg" type="image/jpg" />
+
+                mobile screen
+                <source media="(max-width: 767px)"
+                  srcset="./PHARM/dock.jpg, ./images2/works/img-2_sm2x.webp" type="image/webp" />
+                <source media="(max-width: 767px)"
+                  srcset="./images2/works/img-2_sm1x.jpg, ./images2/works/img-2_sm2x.jpg" type="image/jpg" />
+                <img src="./images2/works/img-2_sm1x.jpg" alt="Ресторан" width="450" height="294" />
+              </picture>
+
+              <div class="bg">
+                <a class="atext" target="_blank" rel="noopener noreferrer" href="./News3.html">
+                <p class="bg__uppertext">
+                  Для підвищення ефективності роботи з партнерами ми зібрали необхідну документацію для Вас тут.
+                </p>
+              </a>
+              </div>
+            </div>
+            <div class="text">
+              <h3 class="text__work">Документаційний супровід</span></h3>
+              <p class="text__sub">Необхідна документація для партнерів</p>
+            </div>
+          </li>-->
+           <li class="description">
+            <div class="overflow">
+              <picture>
+                <!-- desktop screen -->
+                <source media="(min-width: 1200px)"
+                  srcset="./PHARM/ping.jpg, ./images2/works/img-8_lg2x.webp" type="image/webp" />
+                <source media="(min-width: 1200px)"
+                  srcset="./images2/works/img-8_lg1x.jpg, ./images2/works/img-8_lg2x.jpg" type="image/jpg" />
+
+                <!-- tablet screen -->
+                <source media="(min-width: 768px)"
+                  srcset="./PHARM/ping.jpg, ./images2/works/img-8_md2x.webp" type="image/webp" />
+                <source media="(min-width: 768px)"
+                  srcset="./images2/works/img-8_md1x.jpg, ./images2/works/img-8_md2x.jpg" type="image/jpg" />
+
+                <!-- mobile screen -->
+                <source media="(max-width: 767px)"
+                  srcset="./PHARM/ping.jpg, ./images2/works/img-8_sm2x.webp" type="image/webp" />
+                <source media="(max-width: 767px)"
+                  srcset="./PHARM/ping.jpg, ./images2/works/img-8_sm2x.jpg" type="image/jpg" />
+                <img src="./images2/works/img-8_sm1x.j" alt="Business" width="450" height="294" />
+              </picture>
+
+              <div class="bg">
+                <a class="atext" href="./obj11.html"> 
+                <p class="bg__uppertext">
+                  Тут ви зможете написати своє побажання, або пропозицію чи зауваження у відділ лабораторного обладнання та реагентів.
+                </p>
+                </a>
+              </div>
+            </div>
+            <div class="text">
+              <h3 class="text__work"><span lang="en">Надіслати запит</span></h3>
+              <p class="text__sub">У відділ лабораторного обладнання та реагентів</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <div class="find-us">
+        <div class="find">
+          <a class="logo footer__logo" href="/"><img src="./images/logo.svg" alt="logo" width="160"></a>
+          <ul class="contacts contacts--footer">
+            <li class="contacts__contact contacts__contact--footer">
+              <address class="contacts__post"><p>Україна, Київська обл.,</p> <p>м. Вишгород,</p> <p>вул. Шолуденка, 15г</p></address>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-mail contacts__contact-mail--footer"
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
+            </li>
+          </ul>
+        </div>
+        <div class="social social--footer">
+          <h2 class="social__title">приєднуйтесь</h2>
+          <ul class="social__list social__list--footer">
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer"
+                aria-label="инстаграм иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-instagram"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer"
+                aria-label="твиттер иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/uoytube.svg"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer"
+                aria-label="фейсбук иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-facebook"></use>
+                </svg></a> 
+            </li>       
+          </ul>
+        </div>
+        <div class="spam">
+          <h2 class="spam__title" style="line-height: 2;">ТОВ «НВК «Фармаско» – провідний постачальник засобів діагностики для українських закладів охорони здоров’я, лікарів та пацієнтів.</h2>
+          <!--<form class="spam__form">
+            <label class="spam__label">
+              <input class="spam__input" type="email" name="email" placeholder="E-mail" />
+            </label>
+            <button class="btn btn--spam" type="submit">Підписатися<a class="spam-link link" href="" target="_blank"
+                rel="noopener noreferrer" aria-label="инстаграм иконка">
+                <svg class="spam__icon" width="24px" height="24px">
+                  <use href="./images/sprite.svg#icon-send"></use>
+                </svg></a></button>
+          </form>-->
+        </div>
+      </div>
+    </div>
+    <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+    <button id="scrollTopBtn" title="До гори">⬆</button>
+  </footer>
+  <script src="./js/menu.js"></script>
+  <script src="theme-toggle.js"></script>
+  <script src="tracking.js"></script>
+  <script>
+  // Кнопка "До гори"
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+  window.onscroll = function() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      scrollTopBtn.style.display = "block";
+    } else {
+      scrollTopBtn.style.display = "none";
+    }
+  };
+
+  scrollTopBtn.onclick = function() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  };
+</script>
+<script>
+        function showPasswordPrompt(event, url) {
+            event.preventDefault(); // Зупиняємо стандартне відкриття посилання
+            
+            if (localStorage.getItem("accessGranted") === "true") {
+                window.location.href = url; // Якщо пароль вже введено раніше, переходимо автоматично
+                return;
+            }
+
+            const password = prompt("Введіть пароль:");
+            const correctPassword = "12345"; // Замініть на реальний пароль
+
+            if (password === correctPassword) {
+                localStorage.setItem("accessGranted", "true"); // Зберігаємо статус входу
+                window.location.href = url; // Переходимо до захищеного контенту
+            } else {
+                alert("Неправильний пароль!");
+            }
+        }
+    </script>
+    <script>
+const nameToEmail = {
+  "Марина Погрібна": "m.pohribna@pharmasco.com",
+  "Інга Лузан": "i.luzan@pharmasco.com",
+  "Людмила Присяжнюк": "l.prysiazhniuk@pharmasco.com",
+  "Вадим Білоус": "v.bilous@pharmasco.com",
+  "Олександр Красніков": "o.krasnikov@pharmasco.com",
+  "Єлизавета Левченко": "y.levchenko@pharmasco.com",
+  "Антоніна Онищук": "a.onischuk@pharmasco.com",
+  "Наталія Пилипчук": "n.pylypchuk@pharmasco.com",
+  "Анна Гаєвська": "a.haievska@pharmasco.com",
+  "Ірина Богуславець": "i.bohuslavets@pharmasco.com",
+  "Мілена Криштальян": "m.krishtalyan@pharmasco.com",
+  "Катерина Скрябіна": "k.skriabina@pharmasco.com",
+  "Антон Алєксєєнко": "a.alekseenko@pharmasco.com",
+  "Анастасія Прядко": "a.priadko@pharmasco.com",
+  "Олена Говоруха": "o.hovorukha@pharmasco.com",
+  "Тетяна Демус": "t.demus@pharmasco.com",
+  "Оксана Диконенко": "o.dykonenko@pharmasco.com",
+  "Валерій Райнов": "v.rainov@pharmasco.com",
+  "Ганна Білоусова": "h.bilousova@pharmasco.com",
+  "Сергій Ратушненко": "s.ratushnenko@pharmasco.com",
+  "Ольга Леонова": "o.leonova@pharmasco.com",
+  "Тетяна Сазонова": "t.sazonova@pharmasco.com",
+  "Ілона Бабенко": "i.babenko@pharmasco.com",
+  "Ірина Мельничук": "i.melnychuk@pharmasco.com",
+  "Тетяна Клименко": "t.klimenko@pharmasco.com",
+  "Ірина Приходько": "i.pryhodko@pharmasco.com",
+  "Дем'ян Загородній": "d.zahorodnyy@pharmasco.com",
+  "Катерина Видерко": "k.vyderko@pharmasco.com",
+  "Тетяна Романовська": "t.romanovska@pharmasco.com",
+  "Мар'яна Кулинська": "m.kulynska@pharmasco.com"
+};
+
+let dashboardVisible = false;
+
+async function fetchSheetData() {
+  const sheetId = "16lz01su0od0xcR3Nle1YNu6oYJ3P95gd";
+  const sheetName = "Аркуш1";
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+  const response = await fetch(url);
+  const text = await response.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+  return json.table.rows.map(row => {
+    const c = row.c;
+    return {
+      name: c[0]?.v,
+      email: c[1]?.v?.trim().toLowerCase(),
+      testPlan: Number(c[2]?.v),
+      testFact: Number(c[3]?.v),
+      equipPlan: Number(c[4]?.v),
+      equipFact: Number(c[5]?.v),
+      dateRaw: c[6]?.v
+    };
+  });
+}
+
+function getQuarterDates(date) {
+  const year = date.getFullYear();
+  return [
+    { start: new Date(year, 0, 1), end: new Date(year, 2, 31) },
+    { start: new Date(year, 3, 1), end: new Date(year, 5, 30) },
+    { start: new Date(year, 6, 1), end: new Date(year, 8, 30) },
+    { start: new Date(year, 9, 1), end: new Date(year, 11, 31) }
+  ].find(q => date >= q.start && date <= q.end);
+}
+
+function calculateDaysPassedInQuarter(currentDate) {
+  const quarter = getQuarterDates(currentDate);
+  const passed = Math.floor((currentDate - quarter.start) / (1000 * 60 * 60 * 24)) + 1;
+  const total = Math.floor((quarter.end - quarter.start) / (1000 * 60 * 60 * 24)) + 1;
+  return { passed, total, quarter };
+}
+
+function countWorkingDays(startDate, endDate) {
+  let count = 0;
+  const current = new Date(startDate);
+  while (current <= endDate) {
+    const day = current.getDay(); // 0 = неділя, 6 = субота
+    if (day !== 0 && day !== 6) count++;
+    current.setDate(current.getDate() + 1);
+  }
+  return count;
+}
+
+function forecast(fact, passed, total) {
+  return Math.round((fact / passed) * total);
+}
+
+function forecastPercent(forecastValue, plan) {
+  return Math.round((forecastValue / plan) * 100);
+}
+
+async function toggleDashboard() {
+  const container = document.getElementById("dashboard");
+  dashboardVisible = !dashboardVisible;
+
+  if (!dashboardVisible) {
+    container.style.display = "none";
+    container.innerHTML = "";
+    return;
+  }
+
+  const nameElement = document.getElementById("currentUser");
+  if (!nameElement) {
+    container.style.display = "block";
+    container.innerHTML = "❌ Ім’я користувача не знайдено на сторінці.";
+    return;
+  }
+
+  const rawText = nameElement.textContent.trim();
+  const currentName = rawText.replace("Ви зайшли як:", "").trim();
+  const currentUser = nameToEmail[currentName]?.toLowerCase();
+
+  if (!currentUser) {
+    container.style.display = "block";
+    container.innerHTML = "❌ Email для користувача не знайдено.";
+    return;
+  }
+
+  const rows = await fetchSheetData();
+  const filteredRows = rows.filter(r =>
+    r.email &&
+    r.name &&
+    !["суми", "житомир", "херсон"].includes(r.name.trim().toLowerCase())
+  );
+
+  const user = filteredRows.find(r => r.email === currentUser);
+
+  if (!user) {
+    container.style.display = "block";
+    container.innerHTML = "❌ Дані користувача не знайдено.";
+    return;
+  }
+
+  const today = new Date();
+  const { passed: daysPassed, total: totalDays, quarter } = calculateDaysPassedInQuarter(today);
+  const workingDaysPassed = countWorkingDays(quarter.start, today);
+  const totalWorkingDays = countWorkingDays(quarter.start, quarter.end);
+
+  const testForecast = forecast(user.testFact, workingDaysPassed, totalWorkingDays);
+  const equipForecast = forecast(user.equipFact, workingDaysPassed, totalWorkingDays);
+  const testForecastPercent = forecastPercent(testForecast, user.testPlan);
+  const equipForecastPercent = forecastPercent(equipForecast, user.equipPlan);
+
+  const remainingWorkingDays = totalWorkingDays - workingDaysPassed;
+
+const testDailyTarget = remainingWorkingDays > 0
+  ? Math.ceil((user.testPlan - user.testFact) / remainingWorkingDays)
+  : 0;
+
+const equipDailyTarget = remainingWorkingDays > 0
+  ? Math.ceil((user.equipPlan - user.equipFact) / remainingWorkingDays)
+  : 0;
+
+
+  container.style.display = "block";
+  container.innerHTML = `
+  <h3>Вітаємо, ${user.name}!</h3><br><br>
+  <table style="border: 2px solid #069606; border-radius: 10px; width: 100%; background: #fff;">
+    <thead>
+      <tr style="background-color: #f0f0f0;">
+        <th style="padding: 8px; border: 1px solid #ccc;">Категорія</th>
+        <th style="padding: 8px; border: 1px solid #ccc;">% Виконання</th>
+        <th style="padding: 8px; border: 1px solid #ccc;">% Прогноз</th>
+        <th style="padding: 8px; border: 1px solid #ccc;">Ціль/день (₴)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ccc;">Обладнання</td>
+        <td style="padding: 8px; border: 1px solid #ccc;">${Math.round((user.equipFact / user.equipPlan) * 100)}%</td>
+        <td style="padding: 8px; border: 1px solid #ccc;">${equipForecastPercent}%</td>
+        <td style="padding: 8px; border: 1px solid #ccc;">${equipDailyTarget}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 20px; font-style: italic;">
+    Сьогодні ${today.toLocaleDateString()}, пройшло ${workingDaysPassed} робочих днів з ${totalWorkingDays} у кварталі.
+    Залишилось ${remainingWorkingDays} робочих днів.
+  </p>
+`;
+
+  
+}
+
+</script>
+
+</body>
+</html>
