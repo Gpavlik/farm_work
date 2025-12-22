@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Розрахунок потреби реагентів</title>
+  <style>
+    main { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto;  margin-top: 150px;}
+    .anBlock { margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+    label { display: block; margin-top: 8px; }
+    button { margin-top: 10px; padding: 6px 12px; }
+    #results { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 6px; }
+    input{ width: 20%; padding: 5px; margin-top: 5px; border: 1px solid #ccc; border-radius: 10px; }
+  </style>
+   <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <header class="header">
+        <div class="header__container">
+      <h2 id="greetingMessage"></h2>
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
+      <!--<ul class="nav">
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts" target="_blank" rel="noopener noreferrer">Контакти</a></li>
+      </ul>-->
+      <ul class="contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-envelope"></use>
+            </svg>contact@pharmasco.com</a>
+          </a>
+        </li>
+    <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+      </ul>
+      
+    </div>
+    <button class="mobile-menu-btn" type="button" data-menu-button>
+      <svg class="mobile-menu-icon" width="24" height="16">
+        <use class="mobile-menu-burger" href="./images/sprite.svg#24-menu"></use>
+        <use class="mobile-menu-close" href="./images/sprite.svg#icon-X"></use>
+      </svg>
+    </button>
+    <div class="mobile-menu" data-menu>
+      <ul class="mobile-menu-nav">
+        <li class="mobile-menu-nav-item">
+          <a class="link current" href="./index.html">Головна</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="./portfolio.html">Курси</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="/contact">Контакти</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+        <li class="mobile-menu-contacts-item">
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-socials">
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer">Youtube</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </li>
+        
+      </ul>
+      
+    </div>
+    </header>
+    <main>
+  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості BK-120</h2>
+<label>💰 Ціна приладу (грн):</label><br>
+<input type="number" id="deviceCost"><br>
+
+<h3 style="margin-top: 20px;">📋 Оберіть аналізи:</h3>
+<div id="checkboxList"></div>
+
+
+<div id="dailyReagentSelector"></div>
+
+<ul>
+  <li class="button"><button class="btn" onclick="calculate()">🔍 Розрахувати</button>
+  <button class="btn" onclick="copyReport()">📋 Скопіювати результат</button>
+<button class="btn" type="button"><a style="text-decoration: none;" class="text__work" href="./obj17.html">Назад</a></button></li>
+</ul>
+<p style="color: #666; font-style: italic; text-align: center;" >Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.</p>   
+
+<div id="results"></div>
+</main>
+  <footer class="footer">
+    <div class="container">
+      <div class="find-us">
+        <div class="find">
+          <a class="logo footer__logo" href="index.html"><img src="./images/logo.svg" alt="logo" width="200"></a>
+          <ul class="contacts contacts--footer">
+            <li class="contacts__contact contacts__contact--footer">
+              <address class="contacts__post"><p>Україна, Київська обл.,</p> <p>м. Вишгород,</p> <p>вул. Шолуденка, 15г</p></address>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-mail contacts__contact-mail--footer"
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
+            </li>
+          </ul>
+        </div>
+        <div class="social social--footer">
+          <h2 class="social__title">приєднуйтесь</h2>
+          <ul class="social__list social__list--footer">
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer"
+                aria-label="инстаграм иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-instagram"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer"
+                aria-label="твиттер иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/uoytube.svg"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer"
+                aria-label="фейсбук иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-facebook"></use>
+                </svg></a> 
+            </li>           
+          </ul>
+        </div>
+        <div class="spam">
+          <h2 class="spam__title" style="line-height: 2;">ТОВ «НВК «Фармаско» – провідний постачальник засобів діагностики для українських закладів охорони здоров’я, лікарів та пацієнтів.</h2>
+          <!--<form class="spam__form">
+            <label class="spam__label">
+              <input class="spam__input" type="email" name="email" placeholder="E-mail" />
+            </label>
+            <button class="btn btn--spam" type="submit">Підписатися<a class="spam-link link" href="" target="_blank"
+                rel="noopener noreferrer" aria-label="инстаграм иконка">
+                <svg class="spam__icon" width="24px" height="24px">
+                  <use href="./images/sprite.svg#icon-send"></use>
+                </svg></a></button>
+          </form>-->
+        </div>
+      </div>
+    </div>
+        <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+        <button id="scrollTopBtn" title="До гори">⬆</button>
+  </footer>
+
+<script>
+
+const reagents = [
+  { name: "Набір для визначення глюкози (GLU)", volume: 25, price: 1490, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення загального холестерину", volume: 25, price: 2450, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для кількісного визначення високочутливого серцевого тропоніну I", volume: 25, price: 7375, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення гемоглобіну (HB)", volume: 25, price: 1995, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення ліпідів крові (TG/TCH/HDL-C/LDL-C)", volume: 25, price: 4125, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення функції печінки (AST/ALT)", volume: 25, price: 5600, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення функції нирок (UA/Cre/Urea)", volume: 25, price: 4980, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення креатиніну (CRE)", volume: 25, price: 2625, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення креатиніну та мікроальбуміну (Cre/MAU) ", volume: 25, price: 5250, testsPerSet: 25, usagePerTest:  1 },
+  { name: "Набір для кількісного визначення глікованого гемоглобіну (HbAlc)", volume: 25, price: 3236, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для визначення глюкози та глікованого гемоглобіну (GLU/HbA1c)", volume: 25, price: 4385, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для кількісного визначення C-реактивного білка (hs-CRP+CRP)", volume: 25, price: 3800, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Набір для кількісного визначення прихованої крові у калі (FOB)", volume: 25, price: 6375, testsPerSet: 25, usagePerTest: 1 }
+];
+const checkboxList = document.getElementById("checkboxList");
+reagents.forEach((r, i) => {
+  r.usagePerTest = +(r.volume / r.testsPerSet).toFixed(4);
+  const block = document.createElement("div");
+  block.innerHTML = `
+    <label><input type="checkbox" id="check_${i}" onchange="toggleInputs(${i})"> ${r.name}</label>
+    <div id="inputs_${i}" style="display:none;">
+      <label>Кількість аналізів на день:</label>
+      <input type="number" id="daily_${i}">
+      <label>Ціна аналізу для пацієнта/відшкодування НСЗУ:</label>
+      <input type="number" id="price_${i}">
+    </div>`;
+  checkboxList.appendChild(block);
+});
+
+function toggleInputs(i) {
+  document.getElementById(`inputs_${i}`).style.display =
+    document.getElementById(`check_${i}`).checked ? "block" : "none";
+}
+
+function calculate() {
+  const deviceCost = +document.getElementById("deviceCost").value;
+  const workDays = { month: 21, quarter: 63, year: 252 };
+  const now = new Date().toLocaleDateString('uk-UA');
+
+  let totalTestsPerDay = 0;
+  let report = `<p><strong>📆 Дата розрахунку:</strong> ${now}</p>`;
+  let totalDailyProfit = 0;
+  let totalYearlyCost = 0;
+
+  reagents.forEach((r, i) => {
+    const check = document.getElementById(`check_${i}`);
+    if (!check?.checked) return;
+
+    const count = +document.getElementById(`daily_${i}`).value;
+    const patientPrice = +document.getElementById(`price_${i}`).value;
+    totalTestsPerDay += count;
+
+    const reagentPerTestCost = +(r.price * r.usagePerTest / r.volume).toFixed(2);
+    const costPerTest = reagentPerTestCost;
+    const profitPerTest = +(patientPrice - costPerTest).toFixed(2);
+    const dailyProfit = +(profitPerTest * count).toFixed(2);
+
+    totalDailyProfit += dailyProfit;
+
+    let periodCosts = {};
+    Object.entries(workDays).forEach(([label, days]) => {
+      const totalVolume = r.usagePerTest * count * days;
+      const flacons = Math.ceil(totalVolume / r.volume);
+      const cost = flacons * r.price;
+      periodCosts[label] = { flacons, cost };
+      if (label === "year") totalYearlyCost += cost;
+    });
+
+    report += `<h4>${r.name}</h4><ul>
+      <li>Собівартість тесту: ${costPerTest} грн</li>
+      <li>Кількість тестів на день: ${count}</li>
+      <li>Добовий прибуток: ${dailyProfit} грн</li>
+      <li>📦 Закупівля на періоди:
+        <ul>
+          ${Object.entries(periodCosts).map(([label, obj]) =>
+            `<li>${label.charAt(0).toUpperCase() + label.slice(1)}: ${obj.flacons} упаковок / ${obj.cost} грн</li>`
+          ).join("")}
+        </ul>
+      </li>
+    </ul>`;
+  });
+
+  const yearlyProfitGross = +(totalDailyProfit * workDays.year).toFixed(2);
+  const yearlyProfitNet = +(yearlyProfitGross - deviceCost).toFixed(2);
+  const paybackDays = totalDailyProfit > 0 ? Math.ceil(deviceCost / totalDailyProfit) : "∞";
+
+  report += `<hr><h3>📊 Загальні фінансові показники</h3><ul>
+    <li>Загальна кількість тестів: ${totalTestsPerDay} на день</li>
+    <li>Сумарний прибуток на день: ${totalDailyProfit.toFixed(2)} грн</li>
+    <li>Окупність приладу: ${paybackDays} робочих днів</li>
+    <li>Чистий річний прибуток: ${yearlyProfitNet} грн</li><br>
+    <li>Усі розрахунки є орієнтовними і зроблені на підставі технічних характеристик приладу при ідеальних умовах роботи. Тому вартість може змінюватись від дії різних факторів, таких як: кількість проб в день, вибраної програми внутрішнього контролю якості лабораторією, та інш.</li><br>
+  </ul>`;
+
+  document.getElementById("results").innerHTML = report;
+}
+
+function copyReport() {
+  const text = document.getElementById("results").innerText;
+  navigator.clipboard.writeText(text)
+    .then(() => alert("📋 Звіт скопійовано"))
+    .catch(() => alert("⚠️ Не вдалося скопіювати"));
+}
+</script>
+</body>
+
+</html>
