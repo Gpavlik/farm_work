@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Інструкції Gesan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.css"
+    integrity="sha512-Y0MM+V6ymRKN2zStTqzQ227DWhhp4Mzdo6gnlRnuaNCbc+YN/ZH0sBCLTM4M0oSy9c9VKiCvd4Jk44aCLrNS5Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/styles.css">
+
+<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5BZZCV5DRK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-5BZZCV5DRK");
+</script>
+<script>
+  const email = localStorage.getItem("allowedEmail");
+  if (email) {
+    gtag("set", "user_properties", {
+      user_id: email
+    });
+  }
+</script>
+<script>
+  function sha256(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    return crypto.subtle.digest("SHA-256", data).then(hash => {
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    });
+  }
+</script>
+</head>
+<body>
+    <header class="header">
+    <div class="container header__container">
+      <a class="logo" href="./index.html"><img src="./images/logo.svg" alt="logo" width="160"></a>
+      <!--<ul class="nav">
+        <li class="nav__referent"><a class="nav__link" href="./index.html">Головна</a></li>
+        <li class="nav__referent"><a class="nav__link nav__link--active" href="./portfolio.html">Курси</a></li>
+        <li class="nav__referent"><a class="nav__link" href="https://pharmasco.com/contacts" target="_blank" rel="noopener noreferrer">Контакти</a></li>
+      </ul>-->
+      <ul class="contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-mail " href="mailto:contact@pharmasco.com">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-envelope"></use>
+            </svg>contact@pharmasco.com</a>
+          </a>
+        </li>
+       <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+      </ul>
+    </div>
+    <button class="mobile-menu-btn" type="button" data-menu-button>
+      <svg class="mobile-menu-icon" width="24" height="16">
+        <use class="mobile-menu-burger" href="./images/sprite.svg#24-menu"></use>
+        <use class="mobile-menu-close" href="./images/sprite.svg#icon-X"></use>
+      </svg>
+    </button>
+    <div class="mobile-menu" data-menu>
+      <!--<ul class="mobile-menu-nav">
+        <li class="mobile-menu-nav-item">
+          <a class="link " href="./index.html">Головна</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link current" href="./portfolio.html">Курси</a>
+        </li>
+        <li class="mobile-menu-nav-item">
+          <a class="link" href="/contact">Контакти</a>
+        </li>
+      </ul>-->
+      <ul class="mobile-menu-contacts">
+        <li class="contacts__contact">
+          <a class="contacts__contact-phone " href="tel:+38 (044) 537-08-04">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (044) 537-08-04</a>
+            <a class="contacts__contact-phone" style="margin-top: 8px;" href="tel:+38 (067) 500-82-74">
+            <svg class="contacts__contact-icon" width="20px" height="20px">
+              <use href="./images/sprite.svg#icon-phone"></use>
+            </svg>+38 (067) 500-82-74</a>
+        </li>
+        <li class="mobile-menu-contacts-item">
+          <a class="link" href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+        </li>
+      </ul>
+      <ul class="mobile-menu-socials">
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer">Youtube</a>
+        </li>
+        <li class="mobile-menu-socials-item">
+          <a class="mobile-menu-socials-link link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <main>
+    <section class="works">
+      <div class="container">
+        <h2 class="title" style="color: black; text-align: center; font-size: 20px; margin-bottom: 30px;">Інструкції Gesan</h2>
+        <h3 class="subtitle" style="text-align: start; margin-bottom: 20px;"></h3>
+        <ul class="button">
+          <li class="button-section">
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/AСЛО_REF 7000150S_7001100S_10.2023.pdf" >АСЛ-О</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/CRP (REF_7100150_7101100)_10.2023.pdf" >ЦРБ</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/HbA1C Контроль (REF_ 990CTL_LOT 8002)_10.2023.pdf" >Глікогемоглобн Контроль</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/HbA1C(REF_9900140 ручна методика)_10.2023.pdf" >Глікогемоглобін (ручна методика)</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/RF_REF 7200150S_7201100S_10.2023.pdf" >Ремофактор</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/TIBC_291L_291H_10.2023.pdf" >ЗЗЗ</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/АЛТ-GPT (REF_B3800250_B3801250)_10.2023.pdf" >АЛТ GPT</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/АЛТ-GPT (REF_E3800550_E3805100_Е380340130)_10.2023.pdf" >АЛТ GPT 10/2023</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Альбумин (REF_Е1206100_1200430)_10.2023.pdf" >Альбумін</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Амілаза (REF_1401010_1400510)_10.2023.pdf" >Амілаза</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/АСЛ-О_СРБ_РФ контроль N_(REF_705CN_LOT 13315)_10.2023.pdf" >АСЛ-О_СРБ_РФ контроль</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/АСЛ-О_СРБ_РФ контроль високий_(REF_705CH_LOT 11177)_10.2023.pdf" >АСЛ-О_СРБ_РФ контроль високий</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/АСТ-GOT (REF_B3700250_B3701250)_10.2023.pdf" >АСТ-GOT</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Билирубин общий (REF_E1600550_E160340130)_10.2023.pdf" >Білірубін загальний</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Билирубин прямой (REF_E1700550_E170340130)_10.2023.pdf" >Білірубін прямий</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Білок загальний (REF_E4500450)_10.2023.pdf" >Білок загальний</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/ГГТ (REF_E3500550_E350340130)_10.2023.pdf" >ГГТ</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Глюкоза (REF_3656100)_10.2023.pdf" >Глюкоза</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Залізо (REF_E2905100_E290340130)_10.2023.pdf" >Залізо</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Кальцій Арсеназо (REF_Е1850650_Е1850350)_10.2023.pdf" >Кальцій Арсеназо</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Кальцій Вільний (REF_ 1810130)_10.2023.pdf" >Кальцій Вільний</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Кальцій Вільний Контроль (REF_181CTL) Lot 1811123_10.2023.pdf" >Кальцій Вільний Контроль</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Калій (REF 4900430, 4900650)_10.2023.pdf" >Калій</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Контрольна сироватка НОРМА (SERACONTROL N) (REF_5010605R)_10.2023.pdf" >SERACONTROL N</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Контрольна сироватка ПАТОЛОГІЯ (SERACONTROL Р) (REF_5020605R)_10.2023.pdf" >SERACONTROL Р</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Креатинкіназа серцева (MB) (REF_1950130_1950175)_10.2023.pdf" >Креатинкіназа серцева</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Креатинін (REF_Е2700650_E2706100)_10.2023.pdf" >Креатинін</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Лактат (REF_4100510_С4100310_С4100310А)_10.2023.pdf" >Лактат</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/ЛДГ (REF_E4000550_E4000230)_10.2023.pdf" >ЛДГ</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/ЛПНП_ЛПВП_Калибратор (REF_5030301_CАL_LOT 39202)_10.2023.pdf" >ЛПНП_ЛПВП_Калібратор</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Ліпаза (REF_475LPS)_10.2023.pdf" >Ліпаза</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Ліпіди Контролі (REF_505CTL)_ЛОТ 26035_10.2023.pdf" >Ліпіди Контролі</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Магній Ферментативний (REF_E4410550_Е4410430)_10.2023.pdf" >Магній Ферментативний</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Мультикалібратор SERACAL (REF_ 5000603R)_10.2023.pdf" >Мультикалібратор SERACAL</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Натрій (REF_4950260)_10.2023.pdf" >Натрій</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Натрій контроль_(Кат._495CТL) LOT 323452.pdf" >Натрій контроль</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Сечова кислота (REF_E1000550_E1000340130)_10.2023.pdf" >Сечова кислота</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Сечовина (REF_4800530)_10.2023.pdf" >Сечовина</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Тригліцериди (REF_4730350_4730650_B4731500)_10.2023.pdf" >Тригліцериди</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Фосфатаза лужна (REF_E3000550, E300340130)_10.2023.pdf" >Фосфатаза лужна</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Фосфор (REF_E3300650_3300430)_10.2023.pdf" >Фосфор</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Хлориди (REF_E2100630)_10.2023.pdf" >Хлориди</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Холестерин (REF_2230350_2230650)_10.2023.pdf" >Холестерин</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Холестерин ЛПВЩ (REF_Е2210180)_10.2023.pdf" >Холестерин ЛПВЩ</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a target="_blank" rel="noopener noreferrer" style="text-decoration: none; font-size: smaller;" class="text__work" href="./PRD/gesan/Холестерин ЛПНЩ (REF_Е2220180)_10.2023.pdf" >Холестерин ЛПНЩ</a></button></li>
+<li class="button-section"><button class="btn" type="button"><a style="text-decoration: none; font-size: smaller;" class="text__work" href="./obj13.html">Назад</a></button></li>
+        </ul>
+      </div>
+  </section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <div class="find-us">
+        <div class="find">
+          <a class="logo footer__logo" href="/"><img src="./images/logo.svg" alt="logo" width="160"></a>
+          <ul class="contacts contacts--footer">
+            <li class="contacts__contact contacts__contact--footer">
+              <address class="contacts__post"><p>Україна, Київська обл.,</p> <p>м. Вишгород,</p> <p>вул. Шолуденка, 15г</p></address>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-mail contacts__contact-mail--footer"
+                href="mailto:contact@pharmasco.com">contact@pharmasco.com</a>
+            </li>
+            <li class="contacts__contact contacts__contact--footer">
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (044) 537-08-04">+38 (044) 537-08-04</a>
+              <a class="contacts__contact-phone contacts__contact-phone--footer" href="tel:+38 (067) 500-82-74">+38 (067) 500-82-74</a>
+            </li>
+          </ul>
+        </div>
+        <div class="social social--footer">
+          <h2 class="social__title">приєднуйтесь</h2>
+          <ul class="social__list social__list--footer">
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.instagram.com/pharmascocom/" target="_blank" rel="noopener noreferrer"
+                aria-label="инстаграм иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-instagram"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.youtube.com/@Pharmasco" target="_blank" rel="noopener noreferrer"
+                aria-label="твиттер иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/uoytube.svg"></use>
+                </svg></a>
+            </li>
+            <li class="social__item social__item--footer">
+              <a class="social__link social__link--footer link" href="https://www.facebook.com/Pharmasco/" target="_blank" rel="noopener noreferrer"
+                aria-label="фейсбук иконка">
+                <svg class="social__icon social__icon--footer" width="20px" height="20px">
+                  <use href="./images/sprite.svg#icon-facebook"></use>
+                </svg></a> 
+            </li>       
+          </ul>
+        </div>
+        <div class="spam">
+          <h2 class="spam__title" style="line-height: 2;">ТОВ «НВК «Фармаско» – провідний постачальник засобів діагностики для українських закладів охорони здоров’я, лікарів та пацієнтів.</h2>
+          <!--<form class="spam__form">
+            <label class="spam__label">
+              <input class="spam__input" type="email" name="email" placeholder="E-mail" />
+            </label>
+            <button class="btn btn--spam" type="submit">Підписатися<a class="spam-link link" href="" target="_blank"
+                rel="noopener noreferrer" aria-label="инстаграм иконка">
+                <svg class="spam__icon" width="24px" height="24px">
+                  <use href="./images/sprite.svg#icon-send"></use>
+                </svg></a></button>
+          </form>-->
+        </div>
+      </div>
+    </div>
+        <p id="currentUser" style="font-size: smaller; color: #666; text-align: center;"></p>
+  </footer>
+  <script src="./js/menu.js"></script>
+  <script src="theme-toggle.js"></script>
+  <script src="tracking.js"></script>
+<script src="ref.js"></script>
+</body>
+
+</html>
