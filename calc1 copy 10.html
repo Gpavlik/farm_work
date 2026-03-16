@@ -94,7 +94,7 @@
     </div>
     </header>
     <main>
-  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості LS-1100</h2>
+  <h2 style="text-align: center;">🧪 Розрахунок потреби реагентів та їх вартості LS-1100, LS-2100</h2>
 <label>💰 Ціна приладу (грн):</label><br>
 <input type="number" id="deviceCost"><br>
 
@@ -180,36 +180,32 @@
 <script>
 
 const reagents = [
-  { name: "Тест для визначення антигену коронавірусу", volume: 25, price: 10863, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення антитіл IgM/IgG до коронавірусу", volume: 25, price: 7323, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення D-димеру", volume: 25, price: 6301, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення сироваткового амілоїду та СРБ", volume: 25, price: 9179, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення СРБ", volume: 25, price: 3406, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення прокальцитоніну ", volume: 25, price: 9537, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення вітаміну D", volume: 25, price: 6890, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення тропоніну I", volume: 25, price: 6131, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення КК-МВ", volume: 25, price: 6131, testsPerSet: 25, usagePerTest:  1 },
-  { name: "Тест для визначення міоглобіну", volume: 25, price: 6131, testsPerSet: 25, usagePerTest: 1 },
+  
+  { name: "Тест для визначення D-димеру", volume: 25, price: 6740, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення СРБ", volume: 25, price: 3640, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення прокальцитоніну ", volume: 25, price: 9650, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення вітаміну D", volume: 25, price: 7580, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення тропоніну I", volume: 25, price: 6560, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення КК-МВ", volume: 25, price: 6560, testsPerSet: 25, usagePerTest:  1 },
+  { name: "Тест для визначення міоглобіну", volume: 25, price: 6660, testsPerSet: 25, usagePerTest: 1 },
   { name: "Тест для визначення тропоніну І, КК-МВ і міоглобіну", volume: 25, price: 16350, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення глікованого гемоглобіну", volume: 25, price: 3236, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення ТТГ", volume: 25, price: 3576, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення Т3", volume: 25, price: 3576, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення Т4", volume: 25, price: 3576, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення глікованого гемоглобіну", volume: 25, price: 3550, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення ТТГ", volume: 25, price: 3930, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення Т3", volume: 25, price: 3930, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення Т4", volume: 25, price: 3930, testsPerSet: 25, usagePerTest: 1 },
   { name: "Тест для визначення мозкового натрійуретичного пептиду", volume: 25, price: 16350, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення ХГЛ", volume: 25, price: 3576, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення ЛГ", volume: 25, price: 4428, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення ФСГ", volume: 25, price: 4428, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення пролактину", volume: 25, price: 4428, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення ПСА", volume: 25, price: 5790, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення нейтралізуючих антитіл  до коронавірусу", volume: 25, price: 10900, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення ХГЛ", volume: 25, price: 3980, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення ЛГ", volume: 25, price: 4870, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення ФСГ", volume: 25, price: 4980, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення пролактину", volume: 25, price: 4870, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення ПСА", volume: 25, price: 6365, testsPerSet: 25, usagePerTest: 1 },
   { name: "Тест для визначення інтерлейкіну-6", volume: 25, price: 10218, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення H-FABP", volume: 25, price: 11717, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення феритину", volume: 25, price: 6642, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення вільного Т4(FT4)", volume: 25, price: 4410, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення вільного Т3(FT3)", volume: 25, price: 4410, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення імуноглобуліну Е (IgE)", volume: 25, price: 5778, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення ревматоїдного фактору (RF)", volume: 25, price: 5925, testsPerSet: 25, usagePerTest: 1 },
-  { name: "Тест для визначення Антистрептолізину-О(ASO)", volume: 25, price: 5925, testsPerSet: 25, usagePerTest: 1 }
+  { name: "Тест для визначення феритину", volume: 25, price: 7110, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення вільного Т4(FT4)", volume: 25, price: 4850, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення вільного Т3(FT3)", volume: 25, price: 4850, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення імуноглобуліну Е (IgE)", volume: 25, price: 6365, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення ревматоїдного фактору (RF)", volume: 25, price: 6520, testsPerSet: 25, usagePerTest: 1 },
+  { name: "Тест для визначення Антистрептолізину-О(ASO)", volume: 25, price: 6520, testsPerSet: 25, usagePerTest: 1 }
 ];
 const checkboxList = document.getElementById("checkboxList");
 reagents.forEach((r, i) => {

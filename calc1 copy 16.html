@@ -140,7 +140,7 @@
   <main>
   <section class="works">
   <div class="container">
-  <h2>Розрахунок потреби реагентів та їх вартості СА1200</h2>
+  <h2>Розрахунок потреби реагентів та їх вартості DC-1040</h2>
 
   <label style="text-align: center;">💰 Ціна приладу (грн): <input type="number" id="deviceCost" value="0"></label>
 
@@ -230,6 +230,8 @@ function formatNumber(val) {
 
 const cuvettePrice = 9350;
 const cuvettePackSize = 1000;
+const magneticHeadPrice = 3450;
+const magneticHeadPackSize = 2000;
 const daysMonth = 21, daysQuarter = 63, daysYear = 252;
 const today = new Date().toLocaleDateString("uk-UA");
 
@@ -238,12 +240,6 @@ const testReagents = [
   { name: "АЧТЧ", vialPrice: 3950, usagePerTest: 0.002508 },
   { name: "Фібриноген", vialPrice: 18700, usagePerTest: 0.001248 },
   { name: "ТЧ", vialPrice: 6100, usagePerTest: 0.002508 },
-  { name: "D-димер", vialPrice: 35770, usagePerTest: 0.0083 }
-];
-
-const cleaningReagents = [
-  { name: "Промивний розчин", vialPrice: 2220, usagePerTest: 0.003 },
-  { name: "Очисник", vialPrice: 1330, usagePerTest: 0.003 }
 ];
 
 const dailyReagents = [
@@ -288,6 +284,7 @@ function calculate() {
   let testCost = { month: 0, quarter: 0, year: 0 };
   let cleaningCost = { month: 0, quarter: 0, year: 0 };
   let cuvetteCost = { month: 0, quarter: 0, year: 0 };
+  let magneticHeadCost = { month: 0, quarter: 0, year: 0 };
   let dailyCost = { month: 0, quarter: 0, year: 0 };
   let html = `📅 Дата розрахунку: ${today}\n\n📊 Результати:\n`;
 
@@ -318,8 +315,8 @@ function calculate() {
     testCost.year += costYear;
 
     const costPerTest = r.usagePerTest * r.vialPrice +
-      cleaningReagents.reduce((sum, x) => sum + x.usagePerTest * x.vialPrice, 0) +
-      cuvettePrice / cuvettePackSize;
+      cuvettePrice / cuvettePackSize +
+      magneticHeadPrice / magneticHeadPackSize;
 
     const profitYear = (price - costPerTest) * tYear;
     totalProfit += profitYear;
@@ -353,25 +350,23 @@ function calculate() {
 ▸ Квартал: ${cPackQuarter} уп. × ${formatNumber(cuvettePrice)} грн = ${formatNumber(cQuarter)} грн
 ▸ Рік: ${cPackYear} уп. × ${formatNumber(cuvettePrice)} грн = ${formatNumber(cYear)} грн\n\n`;
 
-  // Очищення
-  cleaningReagents.forEach(cl => {
-    const vMonth = Math.ceil(cl.usagePerTest * totalTestsMonth);
-    const vQuarter = Math.ceil(cl.usagePerTest * totalTestsQuarter);
-    const vYear = Math.ceil(cl.usagePerTest * totalTestsYear);
+  // Магнітні мішалки
+  const mPackMonth = Math.ceil(totalTestsMonth / magneticHeadPackSize);
+  const mPackQuarter = Math.ceil(totalTestsQuarter / magneticHeadPackSize);
+  const mPackYear = Math.ceil(totalTestsYear / magneticHeadPackSize);
 
-    const costMonth = vMonth * cl.vialPrice;
-    const costQuarter = vQuarter * cl.vialPrice;
-    const costYear = vYear * cl.vialPrice;
+  const mMonth = mPackMonth * magneticHeadPrice;
+  const mQuarter = mPackQuarter * magneticHeadPrice;
+  const mYear = mPackYear * magneticHeadPrice;
 
-    cleaningCost.month += costMonth;
-    cleaningCost.quarter += costQuarter;
-    cleaningCost.year += costYear;
+  magneticHeadCost.month = mMonth;
+  magneticHeadCost.quarter = mQuarter;
+  magneticHeadCost.year = mYear;
 
-    html += `🧼 ${cl.name}:
-▸ Місяць: ${vMonth} уп. × ${formatNumber(cl.vialPrice)} грн = ${formatNumber(costMonth)} грн
-▸ Квартал: ${vQuarter} уп. × ${formatNumber(cl.vialPrice)} грн = ${formatNumber(costQuarter)} грн
-▸ Рік: ${vYear} уп. × ${formatNumber(cl.vialPrice)} грн = ${formatNumber(costYear)} грн\n`;
-  });
+  html += `🧫 Магнітні мішалки:
+▸ Місяць: ${mPackMonth} уп. × ${formatNumber(magneticHeadPrice)} грн = ${formatNumber(mMonth)} грн
+▸ Квартал: ${mPackQuarter} уп. × ${formatNumber(magneticHeadPrice)} грн = ${formatNumber(mQuarter)} грн
+▸ Рік: ${mPackYear} уп. × ${formatNumber(magneticHeadPrice)} грн = ${formatNumber(mYear)} грн\n\n`;
 
 // Щоденні реагенти
 dailyReagents.forEach(r => {
@@ -466,6 +461,5 @@ function copyResult() {
 }
   
 </script>
-
-  </body>
+</body>
 </html>
