@@ -1,32 +1,43 @@
-document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Запобігаємо стандартному надсиланню форми
-    const email = document.getElementById("emailInput").value;
+// Виносимо масив у глобальну область видимості та виправляємо назву змінної
+const allowedEmails = [
+    "o.krasnikov@pharmasco.com",
+    "m.pohribna@pharmasco.com", "i.bohuslavets@pharmasco.com", "k.skriabina@pharmasco.com", "a.alekseenko@pharmasco.com",
+    "t.demus@pharmasco.com", "o.leonova@pharmasco.com", "t.sazonova@pharmasco.com",
+    "i.babenko@pharmasco.com", "i.melnychuk@pharmasco.com", "t.klimenko@pharmasco.com",
+    "i.pryhodko@pharmasco.com", "d.zahorodnyy@pharmasco.com", "t.romanovska@pharmasco.com", "m.kulynska@pharmasco.com",
+    "o.polishchuk@pharmasco.com", "d.prykhodko@pharmasco.com",
+    "a.volaniuk@pharmasco.com", "v.tuluchenko@pharmasco.com", "i.shlapak@pharmasco.com",
+    "o.levchenko@pharmasco.com", "p.hrytsenko@pharmasco.com",
+    "u.oleynik@pharmasco.com", "v.skopichenko@pharmasco.com", "m.skopichenko@pharmasco.com",
+    "s.skopychenko@pharmasco.com", "g.kuznetsova@pharmasco.com", "v.popadiuk@pharmasco.com", 
+    "v.torishnyak@pharmasco.com", "k.prokhorenko@pharmasco.com", "y.bebko@pharmasco.com", "v.haptenko@pharmasco.com", "admin"
+];
 
-    const allowedEmSails = [
-       "o.krasnikov@pharmasco.com",
-        "m.pohribna@pharmasco.com", "i.bohuslavets@pharmasco.com","k.skriabina@pharmasco.com", "a.alekseenko@pharmasco.com",
-        "t.demus@pharmasco.com", "o.leonova@pharmasco.com", "t.sazonova@pharmasco.com",
-        "i.babenko@pharmasco.com", "i.melnychuk@pharmasco.com", "t.klimenko@pharmasco.com",
-        "i.pryhodko@pharmasco.com", "d.zahorodnyy@pharmasco.com", "t.romanovska@pharmasco.com", "m.kulynska@pharmasco.com",
-        "o.polishchuk@pharmasco.com", "d.prykhodko@pharmasco.com",
-        "a.volaniuk@pharmasco.com", "v.tuluchenko@pharmasco.com", "i.shlapak@pharmasco.com",
-        "o.levchenko@pharmasco.com", "p.hrytsenko@pharmasco.com",
-        "u.oleynik@pharmasco.com", "v.skopichenko@pharmasco.com", "m.skopichenko@pharmasco.com",
-        "s.skopychenko@pharmasco.com", "g.kuznetsova@pharmasco.com", "v.popadiuk@pharmasco.com", 
-        "v.torishnyak@pharmasco.com", "k.prokhorenko@pharmasco.com", "y.bebko@pharmasco.com", "v.haptenko@pharmasco.com", "admin" ];
-
-    if (allowedEmails.includes(email)) {
-        localStorage.setItem("allowedEmail", email); // Зберігаємо електронну адресу
-        window.location.href = "./portfolio news.html"; // Перенаправлення на закриту сторінку
-    } else {
-        alert("Доступ заборонено!");
-    }
-});
-
-// Автоматичне відкриття посилань для користувачів із збереженою поштою
 document.addEventListener("DOMContentLoaded", function() {
+    
+    const loginForm = document.getElementById("loginForm");
+    
+    // Перевіряємо, чи є форма на поточній сторінці
+    if (loginForm) {
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Запобігаємо стандартному надсиланню форми
+            
+            const email = document.getElementById("emailInput").value;
+
+            if (allowedEmails.includes(email)) {
+                localStorage.setItem("allowedEmail", email); // Зберігаємо електронну адресу
+                window.location.href = "./portfolio news.html"; // Перенаправлення на закриту сторінку
+            } else {
+                alert("Доступ заборонено!");
+            }
+        });
+    }
+
+    // Автоматичне відкриття посилань для користувачів із збереженою поштою
     let storedEmail = localStorage.getItem("allowedEmail");
     if (storedEmail && allowedEmails.includes(storedEmail)) {
-        window.location.href = "./portfolio.html";
+        // Зверни увагу: тут ти перенаправляєш на "./portfolio.html", 
+        // а при сабміті форми на "./portfolio news.html". Перевір, чи так і задумано.
+        window.location.href = "./portfolio news.html"; 
     }
 });

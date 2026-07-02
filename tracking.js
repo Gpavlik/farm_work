@@ -7,13 +7,21 @@ document.addEventListener("DOMContentLoaded", function () {
     sessionStorage.setItem("activeUserName", nameOrEmail);
 
     // Передаємо user_id в Google Analytics
-    gtag("config", GA_MEASUREMENT_ID, { user_id: nameOrEmail });
-    gtag("set", "user_properties", { user_id: nameOrEmail });
+    if (typeof gtag === "function") {
+      gtag("config", GA_MEASUREMENT_ID, { user_id: nameOrEmail });
+      gtag("set", "user_properties", { user_id: nameOrEmail });
+    }
 
     // Відображаємо у футері
     const el = document.getElementById("currentUser");
     if (el) {
       el.textContent = "Ви зайшли як: " + nameOrEmail;
+    }
+
+    // Відображаємо привітання в хедері (перенесено сюди)
+    const greeting = document.getElementById("greetingMessage");
+    if (greeting) {
+      greeting.textContent = "Вітаємо, " + nameOrEmail + "! Сьогодні доступні нові курси 👇";
     }
   }
 
@@ -39,10 +47,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const entryTime = Date.now();
   window.addEventListener("beforeunload", function () {
     const timeSpent = Math.round((Date.now() - entryTime) / 1000);
-    gtag("event", "time_on_page", {
-      page_path: window.location.pathname,
-      duration_sec: timeSpent
-    });
+    if (typeof gtag === "function") {
+      gtag("event", "time_on_page", {
+        page_path: window.location.pathname,
+        duration_sec: timeSpent
+      });
+    }
   });
 
   // 🧭 Трекінг всіх <a> посилань
@@ -73,16 +83,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     link.addEventListener("click", function () {
-      gtag("event", eventType, {
-        label: link.textContent.trim(),
-        href: href,
-        resource_type: resourceType,
-        page_path: window.location.pathname
-      });
+      if (typeof gtag === "function") {
+        gtag("event", eventType, {
+          label: link.textContent.trim(),
+          href: href,
+          resource_type: resourceType,
+          page_path: window.location.pathname
+        });
+      }
     });
   });
 });
-const greeting = document.getElementById("greetingMessage");
-if (greeting) {
-  greeting.textContent = "Вітаємо, " + nameOrEmail + "! Сьогодні доступні нові курси 👇";
-}
